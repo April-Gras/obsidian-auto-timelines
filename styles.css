@@ -6,3 +6,90 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
+
+.aat-vertical-timeline {
+	--timelineCursorWidth: 64px;
+
+	display: grid;
+	gap: 32px;
+	grid-template-columns: auto var(--timelineCursorWidth);
+}
+
+.aat-timeline-root {
+	background-color: bisque;
+	height: 100%;
+	width: 100%;
+}
+
+.aat-card-list-root {
+	display: grid;
+	gap: 24px;
+	grid-template-columns: 1fr;
+}
+
+.aat-card-text-wraper,
+a.internal-link.aat-card {
+	width: 100%;
+	overflow: hidden;
+	display: grid;
+	gap: 16px;
+}
+
+a.internal-link.aat-card.aat-card-has-image {
+	grid-template-columns: 120px 1fr;
+}
+
+.aat-card-text-wraper {
+	padding: 16px;
+}
+
+a.internal-link.aat-card {
+	text-decoration: none !important;
+	background-color: var(--background-secondary);
+	border-radius: 8px;
+	box-shadow: var(--panel-shadow);
+
+	transition: all 150ms ease-in-out;
+}
+
+a.internal-link.aat-card:hover {
+	background-color: var(--background-secondary-alt);
+	box-shadow: var(--panel-shadow-hover);
+}
+
+h2.aat-card-title {
+	margin: 0 !important;
+	color: var(--color-accent);
+}
+
+header.aat-card-head-wrap {
+	display: flex;
+	gap: 16px;
+	justify-content: space-between;
+	align-items: center;
+}
+
+img.aat-card-image {
+	height: 100%;
+	width: 168px;
+	object-fit: cover;
+	object-position: center;
+	border-radius: 8px;
+	box-shadow: var(--panel-shadow);
+	position: relative;
+}
+
+p.aat-card-body {
+	overflow: hidden;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	display: -webkit-box;
+	margin: 0;
+	color: var(--text-normal);
+}
+
+h4.aat-card-start-date {
+	margin: 0 !important;
+	color: var(--color-muted);
+	font-size: smaller;
+}

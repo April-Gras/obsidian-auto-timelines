@@ -1,89 +1,76 @@
-import { App, Editor, MarkdownView, Modal, Notice, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { Plugin } from "obsidian";
 
-// Remember to rename these classes and interfaces!
+import type {
+	AutoTimelineSettings,
+	MarkdownCodeBlockTimelineProcessingContext,
+} from "~/types";
+import { setupTimelineCreation, getMetadataKey } from "~/utils";
+import { DEFAULT_METADATA_KEYS } from "~/settings";
 
-interface MyPluginSettings {
-	mySetting: string;
-}
-
-const DEFAULT_SETTINGS: MyPluginSettings = {
-	mySetting: 'default'
-}
+const DEFAULT_SETTINGS: AutoTimelineSettings = {};
 
 export default class MyPlugin extends Plugin {
-	settings: MyPluginSettings;
+	settings: AutoTimelineSettings;
 
 	async onload() {
 		await this.loadSettings();
 
-		// This creates an icon in the left ribbon.
-		const ribbonIconEl = this.addRibbonIcon('dice', 'Sample Plugin', (evt: MouseEvent) => {
-			// Called when the user clicks the icon.
-			new Notice('This is a notice!');
-		});
-		// Perform additional things with the ribbon
-		ribbonIconEl.addClass('my-plugin-ribbon-class');
+		this.registerMarkdownCodeBlockProcessor(
+			"aat-vertical",
+			async (source, element, _ctx) => {
+				console.time("[April's auto-timeline plugin] - Run time");
+				const {
+					app: { vault, metadataCache },
+				} = this;
+				// Find what tags we need
+				const tagsToFind = source.split(" ");
+				const creationContext = await setupTimelineCreation(
+					vault,
+					metadataCache,
+					element
+				);
 
-		// This adds a status bar item to the bottom of the app. Does not work on mobile apps.
-		const statusBarItemEl = this.addStatusBarItem();
-		statusBarItemEl.setText('Status Bar Text');
+				console.time("[April's auto-timeline plugin] - Data fetch");
+				const cards = (
+					await Promise.all(
+						creationContext.map((e) =>
+							getCardDataFromContext(e, tagsToFind)
+						)
+					)
+				)
+					.filter(isDefined)
+					.sort(
+						(
+							{ cardData: { startDate: a } },
+							{ cardData: { startDate: b } }
+						) => {
+							// Since these are numbers we can't check with `!`
+							if (a === undefined && b === undefined) return 0;
+							if (a === undefined) return 1;
+							if (b === undefined) return -1;
+							return a - b;
+						}
+					);
+				console.timeEnd("[April's auto-timeline plugin] - Data fetch");
 
-		// This adds a simple command that can be triggered anywhere
-		this.addCommand({
-			id: 'open-sample-modal-simple',
-			name: 'Open sample modal (simple)',
-			callback: () => {
-				new SampleModal(this.app).open();
+				console.time("[April's auto-timeline plugin] - Render");
+				cards.forEach(({ context, cardData }) =>
+					createCardFromBuiltContext(context, cardData)
+				);
+				console.timeEnd("[April's auto-timeline plugin] - Render");
+				console.timeEnd("[April's auto-timeline plugin] - Run time");
 			}
-		});
-		// This adds an editor command that can perform some operation on the current editor instance
-		this.addCommand({
-			id: 'sample-editor-command',
-			name: 'Sample editor command',
-			editorCallback: (editor: Editor, view: MarkdownView) => {
-				console.log(editor.getSelection());
-				editor.replaceSelection('Sample Editor Command');
-			}
-		});
-		// This adds a complex command that can check whether the current state of the app allows execution of the command
-		this.addCommand({
-			id: 'open-sample-modal-complex',
-			name: 'Open sample modal (complex)',
-			checkCallback: (checking: boolean) => {
-				// Conditions to check
-				const markdownView = this.app.workspace.getActiveViewOfType(MarkdownView);
-				if (markdownView) {
-					// If checking is true, we're simply "checking" if the command can be run.
-					// If checking is false, then we want to actually perform the operation.
-					if (!checking) {
-						new SampleModal(this.app).open();
-					}
-
-					// This command will only show up in Command Palette when the check function returns true
-					return true;
-				}
-			}
-		});
-
-		// This adds a settings tab so the user can configure various aspects of the plugin
-		this.addSettingTab(new SampleSettingTab(this.app, this));
-
-		// If the plugin hooks up any global DOM events (on parts of the app that doesn't belong to this plugin)
-		// Using this function will automatically remove the event listener when this plugin is disabled.
-		this.registerDomEvent(document, 'click', (evt: MouseEvent) => {
-			console.log('click', evt);
-		});
-
-		// When registering intervals, this function will automatically clear the interval when the plugin is disabled.
-		this.registerInterval(window.setInterval(() => console.log('setInterval'), 5 * 60 * 1000));
+		);
 	}
 
-	onunload() {
-
-	}
+	onunload() {}
 
 	async loadSettings() {
-		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+		this.settings = Object.assign(
+			{},
+			DEFAULT_SETTINGS,
+			await this.loadData()
+		);
 	}
 
 	async saveSettings() {
@@ -91,47 +78,163 @@ export default class MyPlugin extends Plugin {
 	}
 }
 
-class SampleModal extends Modal {
-	constructor(app: App) {
-		super(app);
-	}
+const RENDER_GREENLIGHT_METADATA_KEY = ["aat-render-enabled"];
+async function getCardDataFromContext(
+	context: MarkdownCodeBlockTimelineProcessingContext,
+	tagsToFind: string[]
+) {
+	const { cachedMetadata } = context;
+	const { frontmatter: metaData } = cachedMetadata;
 
-	onOpen() {
-		const {contentEl} = this;
-		contentEl.setText('Woah!');
-	}
+	if (!metaData) return undefined;
+	if (!RENDER_GREENLIGHT_METADATA_KEY.some((key) => metaData[key] === true))
+		return undefined;
+	if (
+		!metaData.timelines ||
+		!(metaData.timelines instanceof Array) ||
+		!metaData.timelines.length
+	)
+		return undefined;
+	const timelineTags = metaData.timelines.filter(isDefinedAsString);
 
-	onClose() {
-		const {contentEl} = this;
-		contentEl.empty();
-	}
+	// TimelineTags is not defined as an array :<
+	if (!timelineTags.length || !timelineTags.some(() => tagsToFind.includes))
+		return undefined;
+
+	return {
+		cardData: await getCardContentFromContext(context),
+		context,
+	} as const;
 }
 
-class SampleSettingTab extends PluginSettingTab {
-	plugin: MyPlugin;
+function createElementShort(
+	el: HTMLElement,
+	element: keyof HTMLElementTagNameMap,
+	classes?: string[] | string,
+	content?: string | number
+) {
+	const out = el.createEl(element);
 
-	constructor(app: App, plugin: MyPlugin) {
-		super(app, plugin);
-		this.plugin = plugin;
+	if (classes instanceof Array) out.addClass(...classes);
+	else if (classes) out.addClass(classes);
+	if (content !== undefined) out.innerHTML = content.toString();
+	return out;
+}
+
+function createCardFromBuiltContext(
+	{
+		elements: { cardListRootElement },
+		file,
+	}: MarkdownCodeBlockTimelineProcessingContext,
+	{ body, title, imageURL, startDate }: CardContent
+) {
+	const cardBaseDiv = createElementShort(cardListRootElement, "a", [
+		"internal-link",
+		"aat-card",
+	]);
+	cardBaseDiv.setAttribute("href", file.path);
+
+	if (imageURL) {
+		createElementShort(cardBaseDiv, "img", "aat-card-image").setAttribute(
+			"src",
+			imageURL
+		);
+		cardBaseDiv.addClass("aat-card-has-image");
 	}
 
-	display(): void {
-		const {containerEl} = this;
+	const cardTextWraper = createElementShort(
+		cardBaseDiv,
+		"div",
+		"aat-card-text-wraper"
+	);
 
-		containerEl.empty();
+	const titleWrap = createElementShort(
+		cardTextWraper,
+		"header",
+		"aat-card-head-wrap"
+	);
 
-		containerEl.createEl('h2', {text: 'Settings for my awesome plugin.'});
+	createElementShort(titleWrap, "h2", "aat-card-title", title);
+	console.log({ startDate });
+	if (startDate !== undefined)
+		createElementShort(titleWrap, "h4", "aat-card-start-date", startDate);
 
-		new Setting(containerEl)
-			.setName('Setting #1')
-			.setDesc('It\'s a secret')
-			.addText(text => text
-				.setPlaceholder('Enter your secret')
-				.setValue(this.plugin.settings.mySetting)
-				.onChange(async (value) => {
-					console.log('Secret: ' + value);
-					this.plugin.settings.mySetting = value;
-					await this.plugin.saveSettings();
-				}));
-	}
+	// TODO image styles
+
+	createElementShort(
+		cardTextWraper,
+		"p",
+		"aat-card-body",
+		body ? body : "No body for this note :("
+	);
+}
+
+type CardContent = Awaited<ReturnType<typeof getCardContentFromContext>>;
+async function getCardContentFromContext(
+	context: MarkdownCodeBlockTimelineProcessingContext
+) {
+	const { file, cachedMetadata } = context;
+	const rawFileContent = await file.vault.cachedRead(file);
+	const fileTitle = file.basename;
+
+	return {
+		title: fileTitle,
+		body: getBodyFromContextOrDocument(rawFileContent, context),
+		imageURL: getImageUrlFromContextOrDocument(rawFileContent, context),
+		startDate: getMetadataKey(
+			cachedMetadata,
+			DEFAULT_METADATA_KEYS.eventStartDate,
+			"number"
+		),
+	} as const;
+}
+
+function getBodyFromContextOrDocument(
+	rawFileText: string,
+	context: MarkdownCodeBlockTimelineProcessingContext
+): string | null {
+	const {
+		cachedMetadata: { frontmatter: metadata },
+	} = context;
+	const overrideBody = metadata?.["aat-body"] ?? null;
+
+	if (!rawFileText) return overrideBody;
+
+	const rawTextArray = rawFileText.split("\n");
+	rawTextArray.shift();
+	const processedArray = rawTextArray.slice(rawTextArray.indexOf("---") + 1);
+	const finalString = processedArray.join("\n").trim();
+
+	return (
+		finalString
+			// Remove vanilla links
+			.replace(/\[\[([a-z0-9 ]*)\]\]/gi, "<b>$1</b>")
+			// Remove named links
+			.replace(/\[\[[a-z0-9 ]*\|([a-z0-9 ]*)\]\]/gi, "<b>$1</b>")
+			// Remove clutter
+			.replace(/#|!\[\[.*\]\]/gi, "")
+			.trim()
+	);
+}
+
+function getImageUrlFromContextOrDocument(
+	rawFileText: string,
+	context: MarkdownCodeBlockTimelineProcessingContext
+): string | null {
+	const {
+		cachedMetadata: { frontmatter: metadata },
+	} = context;
+	const matchs = rawFileText.match(/!\[\[(?<src>.*)\]\]/);
+
+	if (!matchs || !matchs.groups || !matchs.groups.src)
+		return metadata?.["aat-image-url"] || null;
+
+	return `app://local/home/mgras/book/Book/${encodeURI(matchs.groups.src)}`;
+}
+
+function isDefined<T>(argument: T | undefined): argument is T {
+	return !!argument;
+}
+function isDefinedAsString(argument: unknown): argument is string {
+	return typeof argument === "string";
 }
