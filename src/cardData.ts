@@ -1,6 +1,5 @@
-import { getMetadataKey } from "~/utils";
+import { getMetadataKey, isDefinedAsString } from "~/utils";
 import { DEFAULT_METADATA_KEYS } from "~/settings";
-import { MarkdownCodeBlockTimelineProcessingContext } from "~/types";
 
 import type { MarkdownCodeBlockTimelineProcessingContext } from "~/types";
 
@@ -36,7 +35,7 @@ export async function getDataFromNote(
 async function extractCardData(
 	context: MarkdownCodeBlockTimelineProcessingContext
 ) {
-	const { file, cachedMetadata } = context;
+	const { file, cachedMetadata: c } = context;
 	const rawFileContent = await file.vault.cachedRead(file);
 	const fileTitle = file.basename;
 
@@ -45,10 +44,13 @@ async function extractCardData(
 		body: getBodyFromContextOrDocument(rawFileContent, context),
 		imageURL: getImageUrlFromContextOrDocument(rawFileContent, context),
 		startDate: getMetadataKey(
-			cachedMetadata,
+			c,
 			DEFAULT_METADATA_KEYS.eventStartDate,
 			"number"
 		),
+		endDate:
+			getMetadataKey(c, DEFAULT_METADATA_KEYS.eventEndDate, "number") ??
+			getMetadataKey(c, DEFAULT_METADATA_KEYS.eventEndDate, "boolean"),
 	} as const;
 }
 export type FnExtractCardData = typeof extractCardData;
@@ -94,8 +96,4 @@ function getImageUrlFromContextOrDocument(
 		return metadata?.["aat-image-url"] || null;
 
 	return `app://local/home/mgras/book/Book/${encodeURI(matchs.groups.src)}`;
-}
-
-function isDefinedAsString(argument: unknown): argument is string {
-	return typeof argument === "string";
 }

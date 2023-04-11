@@ -8,11 +8,13 @@ import type { MarkdownCodeBlockTimelineProcessingContext } from "~/types";
  * @param { "string" | "number" } type - The expected type of the key value.
  * @returns { null | T } The metadata value assigned to the given key or null if unvalidated or missing.
  */
-export function getMetadataKey<T extends "string" | "number">(
+export function getMetadataKey<T extends "string" | "number" | "boolean">(
 	cachedMetadata: MarkdownCodeBlockTimelineProcessingContext["cachedMetadata"],
 	key: string,
 	type: T
-): (T extends "string" ? string : number) | undefined {
+):
+	| (T extends "string" ? string : T extends "number" ? number : boolean)
+	| undefined {
 	// Bail if no formatter object or if the key is missing
 	if (!cachedMetadata.frontmatter) return undefined;
 
@@ -22,5 +24,9 @@ export function getMetadataKey<T extends "string" | "number">(
 }
 
 export function isDefined<T>(argument: T | undefined): argument is T {
-	return !!argument;
+	return argument !== undefined;
+}
+
+export function isDefinedAsString(argument: unknown): argument is string {
+	return typeof argument === "string";
 }

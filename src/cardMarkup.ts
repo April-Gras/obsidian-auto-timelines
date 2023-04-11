@@ -3,6 +3,8 @@ import type {
 	CardContent,
 } from "~/types";
 
+import { isDefined } from "~/utils";
+
 function createElementShort(
 	el: HTMLElement,
 	element: keyof HTMLElementTagNameMap,
@@ -22,7 +24,7 @@ export function createCardFromBuiltContext(
 		elements: { cardListRootElement },
 		file,
 	}: MarkdownCodeBlockTimelineProcessingContext,
-	{ body, title, imageURL, startDate }: CardContent
+	{ body, title, imageURL, startDate, endDate }: CardContent
 ) {
 	const cardBaseDiv = createElementShort(cardListRootElement, "a", [
 		"internal-link",
@@ -51,9 +53,24 @@ export function createCardFromBuiltContext(
 	);
 
 	createElementShort(titleWrap, "h2", "aat-card-title", title);
-	console.log({ startDate });
-	if (startDate !== undefined)
-		createElementShort(titleWrap, "h4", "aat-card-start-date", startDate);
+
+	if (isDefined(startDate) || isDefined(endDate)) {
+		const hasStart = isDefined(startDate);
+		const hasEnd = isDefined(endDate);
+		const both = hasStart && hasEnd;
+
+		console.log(endDate, hasEnd, title);
+		createElementShort(
+			titleWrap,
+			"h4",
+			"aat-card-start-date",
+			`${both ? "From" : ""} ${startDate} ${
+				hasEnd
+					? `to ${typeof endDate === "number" ? endDate : "now"}`
+					: ""
+			}`.trim()
+		);
+	}
 
 	// TODO image styles
 
