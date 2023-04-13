@@ -30,3 +30,17 @@ export function isDefined<T>(argument: T | undefined): argument is T {
 export function isDefinedAsString(argument: unknown): argument is string {
 	return typeof argument === "string";
 }
+
+export function findLastIndex<T extends unknown[]>(
+	arr: T,
+	predicate: (arg: T[number]) => boolean
+): number {
+	const length = arr ? arr.length : 0;
+	if (!length) {
+		return -1;
+	}
+	let index = length - 1;
+
+	while (index--) if (predicate(arr[index])) return index;
+	return -1;
+}

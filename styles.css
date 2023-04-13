@@ -19,18 +19,19 @@ If your plugin does not need CSS, delete this file.
 	background-color: bisque;
 	height: 100%;
 	width: 100%;
+	position: relative;
 }
 
 .aat-card-list-root {
 	display: grid;
 	gap: 24px;
 	grid-template-columns: 1fr;
+	position: relative;
 }
 
 .aat-card-text-wraper,
 a.internal-link.aat-card {
 	width: 100%;
-	overflow: hidden;
 	display: grid;
 	gap: 16px;
 }
@@ -77,6 +78,7 @@ img.aat-card-image {
 	border-radius: 8px;
 	box-shadow: var(--panel-shadow);
 	position: relative;
+	transform: scale(1.1);
 }
 
 p.aat-card-body {

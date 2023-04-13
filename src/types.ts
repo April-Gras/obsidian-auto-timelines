@@ -1,6 +1,7 @@
 import type { CachedMetadata, TFile } from "obsidian";
 
-import { FnExtractCardData } from "~/cardData";
+import {} from "";
+import { FnExtractCardData, getDataFromNote } from "~/cardData";
 
 export interface AutoTimelineSettings {}
 export interface MarkdownCodeBlockTimelineProcessingContext {
@@ -12,4 +13,8 @@ export interface MarkdownCodeBlockTimelineProcessingContext {
 	};
 }
 
+export type CompleteCardContext = Exclude<
+	Awaited<ReturnType<typeof getDataFromNote>>,
+	undefined
+>;
 export type CardContent = Awaited<ReturnType<FnExtractCardData>>;

@@ -59,7 +59,6 @@ export function createCardFromBuiltContext(
 		const hasEnd = isDefined(endDate);
 		const both = hasStart && hasEnd;
 
-		console.log(endDate, hasEnd, title);
 		createElementShort(
 			titleWrap,
 			"h4",
@@ -71,8 +70,6 @@ export function createCardFromBuiltContext(
 			}`.trim()
 		);
 	}
-
-	// TODO image styles
 
 	createElementShort(
 		cardTextWraper,

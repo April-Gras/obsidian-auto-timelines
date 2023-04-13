@@ -5,6 +5,7 @@ import { isDefined } from "~/utils";
 import { getDataFromNote } from "~/cardData";
 import { setupTimelineCreation } from "~/timelineMarkup";
 import { createCardFromBuiltContext } from "~/cardMarkup";
+import { evaluateTimelineGutterCreationFromContexts } from "~/timelineRangeCardGutter";
 
 const DEFAULT_SETTINGS: AutoTimelineSettings = {};
 
@@ -57,6 +58,13 @@ export default class MyPlugin extends Plugin {
 					createCardFromBuiltContext(context, cardData)
 				);
 				console.timeEnd("[April's auto-timeline plugin] - Render");
+
+				console.time("[April's auto-timeline plugin] - Gutter compute");
+				evaluateTimelineGutterCreationFromContexts(cards);
+				console.timeEnd(
+					"[April's auto-timeline plugin] - Gutter compute"
+				);
+
 				console.timeEnd("[April's auto-timeline plugin] - Run time");
 			}
 		);
