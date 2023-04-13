@@ -145,24 +145,3 @@ function getChildAtIndexInHTMLElement(
 
 const lerp = (a: number, b: number, t: number) => a + t * (b - a);
 const inLerp = (a: number, b: number, v: number) => (v - a) / (b - a);
-
-type DefinedMetadata = {
-	startDate: Exclude<CardContent["startDate"], undefined>;
-	endDate: Exclude<CardContent["endDate"], undefined | false>;
-};
-function reasignEndDate(e: DefinedMetadata["endDate"]) {
-	return e === true ? Infinity : e;
-}
-
-const normalize = (val: number, max: number, min = 0) =>
-	(val - min) / (max - min);
-
-function hasDateOverlap(
-	{ startDate: sA, endDate: eA }: DefinedMetadata,
-	{ startDate: sB, endDate: eB }: DefinedMetadata
-) {
-	eA = reasignEndDate(eA);
-	eB = reasignEndDate(eB);
-
-	return (sA <= eB && sA >= sB) || (sB <= eA && sB >= sA);
-}
