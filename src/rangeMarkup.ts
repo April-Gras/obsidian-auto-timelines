@@ -6,6 +6,10 @@ import {
 
 import type { Range } from "~/types";
 
+/**
+ * The color palette that obsidian defined in it's css bundle.
+ * Useful for applying colors to elements programatically.
+ */
 const availableColors = [
 	"red",
 	"orange",
@@ -17,6 +21,12 @@ const availableColors = [
 	"pink",
 ] as const;
 
+/**
+ * Renders the little stripes in the gutter of the timeline.
+ *
+ * @param { Range[] } ranges - A collection of ranges.
+ * @param { HTMLElement } rootElement - The root of all elements for this complete timeline.
+ */
 export function renderRanges(ranges: Range[], rootElement: HTMLElement) {
 	const endDates: (number | true | undefined)[] = availableColors.map(
 		() => undefined
@@ -41,6 +51,13 @@ export function renderRanges(ranges: Range[], rootElement: HTMLElement) {
 	});
 }
 
+/**
+ * Renders a single range element based off the offset computed previously.
+ *
+ * @param { Range } param0 - A single range.
+ * @param { number } offset - The left offet index for this range.
+ * @param { HTMLElement } rootElelement
+ */
 function renderSingleRange(
 	{
 		relatedCardData: {
@@ -77,6 +94,7 @@ function renderSingleRange(
 
 		relativeCard.classList.add(relativeCardClassName);
 	};
+
 	el.onmouseleave = () => {
 		const relativeCard = getChildAtIndexInHTMLElement(
 			cardListRootElement,
