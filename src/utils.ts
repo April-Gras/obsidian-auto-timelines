@@ -28,10 +28,8 @@ export function getMetadataKey<T extends "string" | "number" | "boolean">(
  * @param { T | undefined } argument a possibly undefined argument.
  * @returns { boolean } `true` if the element is defined, `false` if not.
  */
-export const isDefined =
-	<T>() =>
-	(argument: T | undefined): argument is T =>
-		argument !== undefined;
+export const isDefined = <T>(argument: T | undefined): argument is T =>
+	argument !== undefined;
 
 /**
  *
