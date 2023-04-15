@@ -23,14 +23,31 @@ export function getMetadataKey<T extends "string" | "number" | "boolean">(
 		: undefined;
 }
 
-export function isDefined<T>(argument: T | undefined): argument is T {
-	return argument !== undefined;
-}
+/**
+ *
+ * @param { T | undefined } argument a possibly undefined argument.
+ * @returns { boolean } `true` if the element is defined, `false` if not.
+ */
+export const isDefined =
+	<T>() =>
+	(argument: T | undefined): argument is T =>
+		argument !== undefined;
 
-export function isDefinedAsString(argument: unknown): argument is string {
-	return typeof argument === "string";
-}
+/**
+ *
+ * @param { T | undefined } argument a possibly undefined argument.
+ * @returns { boolean } `true` if the element is indeed a string, `false` if not.
+ */
+export const isDefinedAsString = (argument: unknown): argument is string =>
+	typeof argument === "string";
 
+/**
+ * Same as `Array.findIndex()` but going from right to left.
+ *
+ * @param { unknown[] } arr - An array of values
+ * @param { (unknowd)=> boolean  } predicate - An evaluation function that works like the one you feed `.findIndex()`
+ * @returns {number} `-1` if no index was found, or the last occurence of the predicament.
+ */
 export function findLastIndex<T extends unknown[]>(
 	arr: T,
 	predicate: (arg: T[number]) => boolean
@@ -45,9 +62,33 @@ export function findLastIndex<T extends unknown[]>(
 	return -1;
 }
 
+/**
+ * https://en.wikipedia.org/wiki/Linear_interpolation
+ *
+ * @description A naive implementation of the linear interpolation function.
+ * @param { number } a - First point.
+ * @param { number } b - Last point.
+ * @param { number } t - From 0f to 1f, represent the percent of advancement.
+ * @returns { number } the position between `a` and `b` @ `t`.
+ */
 export const lerp = (a: number, b: number, t: number) => a + t * (b - a);
+/**
+ * https://en.wikipedia.org/wiki/Linear_interpolation
+ *
+ * @description The inverse of a lerp.
+ * @param { number } a - First point.
+ * @param { number } b - Last point.
+ * @param { number } v - The desired point to look for.
+ * @returns The percent value of advancement for `v`
+ */
 export const inLerp = (a: number, b: number, v: number) => (v - a) / (b - a);
 
+/**
+ * Quick util to measure performance.
+ *
+ * @param { string } str - Label for the timer.
+ * @returns the handler that will close the timer.
+ */
 export const measureTime = (str: string) => {
 	const value = `[April's automatic timelines] - ${str}`;
 	console.time(value);
@@ -74,6 +115,15 @@ export function getChildAtIndexInHTMLElement(
 	return child;
 }
 
+/**
+ * Shorthand function to create an HTMLElement in a given HTMLElement.
+ *
+ * @param { HTMLElement } el - The root element.
+ * @param { keyof HTMLElementTagNameMap } element - The desired HTML tag.
+ * @param { string[] | string | undefined } classes - A single or a collection of tags.
+ * @param { string | number | undefined } content - The content to inject inside the created element.
+ * @returns { HTMLElement } The created element.
+ */
 export function createElementShort(
 	el: HTMLElement,
 	element: keyof HTMLElementTagNameMap,
