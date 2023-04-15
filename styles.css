@@ -8,15 +8,14 @@ If your plugin does not need CSS, delete this file.
 */
 
 .aat-vertical-timeline {
-	--timelineCursorWidth: 64px;
+	--timelineCursorWidth: 96px;
 
 	display: grid;
-	gap: 32px;
+	gap: 8px;
 	grid-template-columns: auto var(--timelineCursorWidth);
 }
 
 .aat-timeline-root {
-	background-color: bisque;
 	height: 100%;
 	width: 100%;
 	position: relative;
@@ -36,6 +35,22 @@ a.internal-link.aat-card {
 	gap: 16px;
 }
 
+a.internal-link.aat-card {
+	transition: filter 150ms ease-in-out;
+}
+
+.theme-dark {
+	--highlight-intensity: 150%;
+}
+
+.theme-light {
+	--highlight-intensity: 90%;
+}
+
+.internal-link.aat-card.aat-highlight-relative-card-to-range {
+	filter: brightness(var(--highlight-intensity));
+}
+
 a.internal-link.aat-card.aat-card-has-image {
 	grid-template-columns: 120px 1fr;
 }
@@ -48,14 +63,14 @@ a.internal-link.aat-card {
 	text-decoration: none !important;
 	background-color: var(--background-secondary);
 	border-radius: 8px;
-	box-shadow: var(--panel-shadow);
+	box-shadow: var(--input-shadow);
 
 	transition: all 150ms ease-in-out;
 }
 
 a.internal-link.aat-card:hover {
 	background-color: var(--background-secondary-alt);
-	box-shadow: var(--panel-shadow-hover);
+	box-shadow: var(--input-shadow-hover);
 }
 
 h2.aat-card-title {
@@ -94,4 +109,17 @@ h4.aat-card-start-date {
 	margin: 0 !important;
 	color: var(--color-muted);
 	font-size: smaller;
+}
+
+div.aat-range-element {
+	position: absolute;
+	width: 8px;
+	border-radius: 4px;
+	opacity: 0.75;
+	transition: opacity 150ms ease-in-out;
+	cursor: pointer;
+}
+
+div.aat-range-element:hover {
+	opacity: 1;
 }

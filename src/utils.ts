@@ -44,3 +44,46 @@ export function findLastIndex<T extends unknown[]>(
 	while (index--) if (predicate(arr[index])) return index;
 	return -1;
 }
+
+export const lerp = (a: number, b: number, t: number) => a + t * (b - a);
+export const inLerp = (a: number, b: number, v: number) => (v - a) / (b - a);
+
+export const measureTime = (str: string) => {
+	const value = `[April's automatic timelines] - ${str}`;
+	console.time(value);
+
+	return () => {
+		console.timeEnd(value);
+	};
+};
+
+/**
+ * Shorthand function to get childs of a given HTML Element.
+ *
+ * @param {HTMLElement} el - Target HTMLElement.
+ * @param {number} index - The desired child index.
+ * @returns {HTMLElement} - The child at the desired index. If the element is missing the function will throw.
+ */
+export function getChildAtIndexInHTMLElement(
+	el: HTMLElement,
+	index: number
+): HTMLElement {
+	const child = el.children.item(index) as HTMLElement | null;
+
+	if (!child) throw new Error(`Missing child @ index ${index} for element`);
+	return child;
+}
+
+export function createElementShort(
+	el: HTMLElement,
+	element: keyof HTMLElementTagNameMap,
+	classes?: string[] | string,
+	content?: string | number
+) {
+	const out = el.createEl(element);
+
+	if (classes instanceof Array) out.addClass(...classes);
+	else if (classes) out.addClass(classes);
+	if (content !== undefined) out.innerHTML = content.toString();
+	return out;
+}

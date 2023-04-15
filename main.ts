@@ -1,11 +1,12 @@
 import { Plugin } from "obsidian";
 
 import type { AutoTimelineSettings } from "~/types";
-import { isDefined } from "~/utils";
+import { isDefined, measureTime } from "~/utils";
 import { getDataFromNote } from "~/cardData";
 import { setupTimelineCreation } from "~/timelineMarkup";
 import { createCardFromBuiltContext } from "~/cardMarkup";
-import { evaluateTimelineGutterCreationFromContexts } from "~/timelineRangeCardGutter";
+import { getAllRangeData } from "~/rangeData";
+import { renderRanges } from "~/rangeMarkup";
 
 const DEFAULT_SETTINGS: AutoTimelineSettings = {};
 
@@ -18,7 +19,7 @@ export default class MyPlugin extends Plugin {
 		this.registerMarkdownCodeBlockProcessor(
 			"aat-vertical",
 			async (source, element, _ctx) => {
-				console.time("[April's auto-timeline plugin] - Run time");
+				const runtimeTime = measureTime("Run time");
 				const {
 					app: { vault, metadataCache },
 				} = this;
@@ -30,7 +31,7 @@ export default class MyPlugin extends Plugin {
 					element
 				);
 
-				console.time("[April's auto-timeline plugin] - Data fetch");
+				const cardDataTime = measureTime("Data fetch");
 				const cards = (
 					await Promise.all(
 						creationContext.map((e) =>
@@ -45,27 +46,29 @@ export default class MyPlugin extends Plugin {
 							{ cardData: { startDate: b } }
 						) => {
 							// Since these are numbers we can't check with `!`
-							if (a === undefined && b === undefined) return 0;
-							if (a === undefined) return 1;
-							if (b === undefined) return -1;
+							if (!isDefined(a) && !isDefined(b)) return 0;
+							if (!isDefined(a)) return 1;
+							if (!isDefined(b)) return -1;
 							return a - b;
 						}
 					);
-				console.timeEnd("[April's auto-timeline plugin] - Data fetch");
+				cardDataTime();
 
-				console.time("[April's auto-timeline plugin] - Render");
+				const cardRenderTime = measureTime("Card Render");
 				cards.forEach(({ context, cardData }) =>
 					createCardFromBuiltContext(context, cardData)
 				);
-				console.timeEnd("[April's auto-timeline plugin] - Render");
+				cardRenderTime();
 
-				console.time("[April's auto-timeline plugin] - Gutter compute");
-				evaluateTimelineGutterCreationFromContexts(cards);
-				console.timeEnd(
-					"[April's auto-timeline plugin] - Gutter compute"
-				);
+				const rangeDataFecthTime = measureTime("Range Data");
+				const ranges = getAllRangeData(cards);
+				rangeDataFecthTime();
 
-				console.timeEnd("[April's auto-timeline plugin] - Run time");
+				const rangeRenderTime = measureTime("Range Render");
+				renderRanges(ranges, element);
+				rangeRenderTime();
+
+				runtimeTime();
 			}
 		);
 	}

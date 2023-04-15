@@ -1,6 +1,6 @@
 import type { CachedMetadata, TFile } from "obsidian";
 
-import {} from "";
+import { FnGetRangeData } from "./rangeData";
 import { FnExtractCardData, getDataFromNote } from "~/cardData";
 
 export interface AutoTimelineSettings {}
@@ -18,3 +18,4 @@ export type CompleteCardContext = Exclude<
 	undefined
 >;
 export type CardContent = Awaited<ReturnType<FnExtractCardData>>;
+export type Range = ReturnType<FnGetRangeData>[number];

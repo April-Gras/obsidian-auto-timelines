@@ -3,21 +3,7 @@ import type {
 	CardContent,
 } from "~/types";
 
-import { isDefined } from "~/utils";
-
-function createElementShort(
-	el: HTMLElement,
-	element: keyof HTMLElementTagNameMap,
-	classes?: string[] | string,
-	content?: string | number
-) {
-	const out = el.createEl(element);
-
-	if (classes instanceof Array) out.addClass(...classes);
-	else if (classes) out.addClass(classes);
-	if (content !== undefined) out.innerHTML = content.toString();
-	return out;
-}
+import { isDefined, createElementShort } from "~/utils";
 
 export function createCardFromBuiltContext(
 	{
