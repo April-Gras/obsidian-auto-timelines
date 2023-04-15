@@ -10,7 +10,7 @@ import type { Range } from "~/types";
  * The color palette that obsidian defined in it's css bundle.
  * Useful for applying colors to elements programatically.
  */
-const availableColors = [
+const AVAILABLE_COLORS = [
 	"red",
 	"orange",
 	"yellow",
@@ -28,7 +28,7 @@ const availableColors = [
  * @param { HTMLElement } rootElement - The root of all elements for this complete timeline.
  */
 export function renderRanges(ranges: Range[], rootElement: HTMLElement) {
-	const endDates: (number | true | undefined)[] = availableColors.map(
+	const endDates: (number | true | undefined)[] = AVAILABLE_COLORS.map(
 		() => undefined
 	);
 
@@ -81,7 +81,7 @@ function renderSingleRange(
 	el.style.height = `${targetPosition - cardRelativeTopPosition}px`;
 	el.style.top = `${cardRelativeTopPosition}px`;
 	el.style.left = `${offset * 12}px`;
-	el.style.backgroundColor = `var(--color-${availableColors[offset]})`;
+	el.style.backgroundColor = `var(--color-${AVAILABLE_COLORS[offset]})`;
 
 	// Setup highlight link
 	const relativeCardClassName = "aat-highlight-relative-card-to-range";
