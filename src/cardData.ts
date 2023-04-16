@@ -37,7 +37,9 @@ async function extractCardData(
 ) {
 	const { file, cachedMetadata: c } = context;
 	const rawFileContent = await file.vault.cachedRead(file);
-	const fileTitle = file.basename;
+	const fileTitle =
+		c?.frontmatter?.[DEFAULT_METADATA_KEYS.eventTitleOverride] ||
+		file.basename;
 
 	return {
 		title: fileTitle,
@@ -92,12 +94,14 @@ function getImageUrlFromContextOrDocument(
 	const {
 		cachedMetadata: { frontmatter: metadata },
 	} = context;
+	const override = metadata?.[DEFAULT_METADATA_KEYS.eventPictureOverride];
+
+	if (override) return override;
 	const internalLinkMatch = rawFileText.match(/!\[\[(?<src>.*)\]\]/);
 	const matchs =
 		internalLinkMatch || rawFileText.match(/!\[.*\]\((?<src>.*)\)/);
 
-	if (!matchs || !matchs.groups || !matchs.groups.src)
-		return metadata?.["aat-image-url"] || null;
+	if (!matchs || !matchs.groups || !matchs.groups.src) return null;
 
 	if (internalLinkMatch)
 		return `app://local/home/mgras/book/Book/${encodeURI(

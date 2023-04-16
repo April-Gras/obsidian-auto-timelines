@@ -1,11 +1,11 @@
 {
 	"id": "obsidian-auto-timelines",
-	"name": "Auto timelines",
-	"version": "0.0.1",
+	"name": "April's Automatic Timelines",
+	"version": "0.0.2",
 	"minAppVersion": "0.15.0",
 	"description": "This plugin aims to simplify creating and maintaining timelines",
 	"author": "April",
 	"authorUrl": "https://github.com/April-Gras",
 	"fundingUrl": "https://obsidian.md/pricing",
-	"isDesktopOnly": false
+	"isDesktopOnly": true
 }
