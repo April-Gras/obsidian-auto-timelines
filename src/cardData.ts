@@ -71,16 +71,18 @@ function getBodyFromContextOrDocument(
 	const processedArray = rawTextArray.slice(rawTextArray.indexOf("---") + 1);
 	const finalString = processedArray.join("\n").trim();
 
-	return (
-		finalString
-			// Remove vanilla links
-			.replace(/\[\[([a-z0-9 ]*)\]\]/gi, "<b>$1</b>")
-			// Remove named links
-			.replace(/\[\[[a-z0-9 ]*\|([a-z0-9 ]*)\]\]/gi, "<b>$1</b>")
-			// Remove clutter
-			.replace(/#|!\[\[.*\]\]/gi, "")
-			.trim()
-	);
+	const out = finalString
+		// Remove vanilla internal links
+		.replace(/\[\[([a-z0-9 ]*)\]\]/gi, "<b>$1</b>")
+		// Remove named internal links
+		.replace(/\[\[[a-z0-9 ]*\|([a-z0-9 ]*)\]\]/gi, "<b>$1</b>")
+		// Remove external image links
+		.replace(/!\[.*\]\(.*\)/gi, "")
+		// Remove markdown clutter
+		.replace(/#|!\[\[.*\]\]/gi, "")
+		// Trim the text
+		.trim();
+	return out;
 }
 
 function getImageUrlFromContextOrDocument(
@@ -90,10 +92,16 @@ function getImageUrlFromContextOrDocument(
 	const {
 		cachedMetadata: { frontmatter: metadata },
 	} = context;
-	const matchs = rawFileText.match(/!\[\[(?<src>.*)\]\]/);
+	const internalLinkMatch = rawFileText.match(/!\[\[(?<src>.*)\]\]/);
+	const matchs =
+		internalLinkMatch || rawFileText.match(/!\[.*\]\((?<src>.*)\)/);
 
 	if (!matchs || !matchs.groups || !matchs.groups.src)
 		return metadata?.["aat-image-url"] || null;
 
-	return `app://local/home/mgras/book/Book/${encodeURI(matchs.groups.src)}`;
+	if (internalLinkMatch)
+		return `app://local/home/mgras/book/Book/${encodeURI(
+			matchs.groups.src
+		)}`;
+	else return encodeURI(matchs.groups.src);
 }
