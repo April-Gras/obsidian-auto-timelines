@@ -1,4 +1,4 @@
-import { Plugin } from "obsidian";
+import { MarkdownPostProcessorContext, Plugin } from "obsidian";
 
 import type { AutoTimelineSettings } from "~/types";
 import { isDefined, measureTime } from "~/utils";
@@ -16,25 +16,27 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 
 		this.registerMarkdownCodeBlockProcessor(
 			"aat-vertical",
-			(source, element) => {
-				this.run(source, element);
+			(source, element, context) => {
+				this.run(source, element, context);
 			}
 		);
 	}
 
 	onunload() {}
 
-	async run(source: string, element: HTMLElement) {
+	async run(
+		source: string,
+		element: HTMLElement,
+		{ sourcePath }: MarkdownPostProcessorContext
+	) {
 		const runtimeTime = measureTime("Run time");
-		const {
-			app: { vault, metadataCache },
-		} = this;
+		const { app } = this;
 		// Find what tags we need
 		const tagsToFind = source.split(" ");
 		const creationContext = await setupTimelineCreation(
-			vault,
-			metadataCache,
-			element
+			app,
+			element,
+			sourcePath
 		);
 
 		const cardDataTime = measureTime("Data fetch");

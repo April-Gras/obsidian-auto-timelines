@@ -1,5 +1,6 @@
 import { getMetadataKey, isDefinedAsString } from "~/utils";
 import { DEFAULT_METADATA_KEYS } from "~/settings";
+import { TFile } from "obsidian";
 
 import type { MarkdownCodeBlockTimelineProcessingContext } from "~/types";
 
@@ -93,7 +94,13 @@ function getImageUrlFromContextOrDocument(
 ): string | null {
 	const {
 		cachedMetadata: { frontmatter: metadata },
+		file: currentFile,
+		app,
 	} = context;
+	const {
+		vault,
+		metadataCache: { getFirstLinkpathDest },
+	} = app;
 	const override = metadata?.[DEFAULT_METADATA_KEYS.eventPictureOverride];
 
 	if (override) return override;
@@ -103,9 +110,15 @@ function getImageUrlFromContextOrDocument(
 
 	if (!matchs || !matchs.groups || !matchs.groups.src) return null;
 
-	if (internalLinkMatch)
-		return `app://local/home/mgras/book/Book/${encodeURI(
-			matchs.groups.src
-		)}`;
-	else return encodeURI(matchs.groups.src);
+	if (internalLinkMatch) {
+		// https://github.com/obsidianmd/obsidian-releases/pull/1882#issuecomment-1512952295
+		const file = getFirstLinkpathDest.bind(app.metadataCache)(
+			matchs.groups.src,
+			currentFile.path
+		);
+
+		if (file instanceof TFile) return vault.getResourcePath(file);
+		// Thanks https://github.com/joethei
+		return null;
+	} else return encodeURI(matchs.groups.src);
 }

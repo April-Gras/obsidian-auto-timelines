@@ -1,11 +1,12 @@
-import type { MetadataCache, Vault } from "obsidian";
+import type { App } from "obsidian";
 import type { MarkdownCodeBlockTimelineProcessingContext } from "~/types";
 
 export async function setupTimelineCreation(
-	vault: Vault,
-	metadataCache: MetadataCache,
-	element: HTMLElement
+	app: App,
+	element: HTMLElement,
+	timelineFile: string
 ) {
+	const { vault, metadataCache } = app;
 	const fileArray = await Promise.all(vault.getMarkdownFiles());
 	const cardListRootElement = element.createDiv();
 	const timelineRootElement = element.createDiv();
@@ -18,8 +19,10 @@ export async function setupTimelineCreation(
 
 		if (cachedMetadata)
 			accumulator.push({
-				cachedMetadata,
+				app,
+				timelineFile,
 				file,
+				cachedMetadata,
 				elements: {
 					timelineRootElement,
 					cardListRootElement,
