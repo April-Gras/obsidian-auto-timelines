@@ -11,6 +11,10 @@ import { DEFAULT_METADATA_KEYS, TimelineSettingTab } from "~/settings";
 export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	settings: AutoTimelineSettings;
 
+	/**
+	 * The default onload method of a obsidian plugin
+	 * See the official documentation for more details
+	 */
 	async onload() {
 		await this.loadSettings();
 
@@ -24,6 +28,13 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 
 	onunload() {}
 
+	/**
+	 * Main runtime function to process a single timeline.
+	 *
+	 * @param { string } source - The content found in the markdown block.
+	 * @param { HTMLElement } element - The root element of all the timeline.
+	 * @param {MarkdownPostProcessorContext} param2 - The context provided by obsidians `registerMarkdownCodeBlockProcessor()` method.
+	 */
 	async run(
 		source: string,
 		element: HTMLElement,
@@ -31,14 +42,12 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	) {
 		const runtimeTime = measureTime("Run time");
 		const { app } = this;
-		// Find what tags we need
 		const tagsToFind = source.split(" ");
 		const creationContext = await setupTimelineCreation(
 			app,
 			element,
 			sourcePath
 		);
-
 		const cardDataTime = measureTime("Data fetch");
 		const cards = (
 			await Promise.all(
@@ -77,6 +86,9 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 		runtimeTime();
 	}
 
+	/**
+	 * Loads the saved settings from the local device and sets up the setting tabs in the plugin options.
+	 */
 	async loadSettings() {
 		this.settings = Object.assign(
 			{},
@@ -87,6 +99,9 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 		this.addSettingTab(new TimelineSettingTab(this.app, this));
 	}
 
+	/**
+	 * Saves the settings in obsidian.
+	 */
 	async saveSettings() {
 		await this.saveData(this.settings);
 	}

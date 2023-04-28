@@ -2,9 +2,24 @@ import { getMetadataKey, isDefinedAsString } from "~/utils";
 import { DEFAULT_METADATA_KEYS } from "~/settings";
 import { TFile } from "obsidian";
 
-import type { MarkdownCodeBlockTimelineProcessingContext } from "~/types";
+import type {
+	MarkdownCodeBlockTimelineProcessingContext,
+	CompleteCardContext,
+	CardContent,
+} from "~/types";
 
+/**
+ * A un-changeable key used to check if a note is eligeable for render.
+ */
 const RENDER_GREENLIGHT_METADATA_KEY = ["aat-render-enabled"];
+
+/**
+ * Provides additional context for the creation cards in the DOM.
+ *
+ * @param { MarkdownCodeBlockTimelineProcessingContext } context - Timeline generic context.
+ * @param { string[] } tagsToFind - The tags to find in a note to match the current timeline.
+ * @returns { CompleteCardContext | undefined } the context or underfined if it could not build it.
+ */
 export async function getDataFromNote(
 	context: MarkdownCodeBlockTimelineProcessingContext,
 	tagsToFind: string[]
@@ -33,6 +48,12 @@ export async function getDataFromNote(
 	} as const;
 }
 
+/**
+ * Get the content of a card from a note. This function will parse the raw text content of a note and format it.
+ *
+ * @param { MarkdownCodeBlockTimelineProcessingContext } context - Timeline generic context.
+ * @returns { CardContent } The extracted data to create a card from a note.
+ */
 async function extractCardData(
 	context: MarkdownCodeBlockTimelineProcessingContext
 ) {
@@ -58,6 +79,14 @@ async function extractCardData(
 }
 export type FnExtractCardData = typeof extractCardData;
 
+/**
+ * Extract the body from the raw text of a note.
+ * @decsription After extraction most markdown tokens will be removed and links will be sanitized aswell and wrapped into bold tags for clearner display.
+ *
+ * @param rawFileText
+ * @param context
+ * @returns
+ */
 function getBodyFromContextOrDocument(
 	rawFileText: string,
 	context: MarkdownCodeBlockTimelineProcessingContext
@@ -88,6 +117,13 @@ function getBodyFromContextOrDocument(
 	return out;
 }
 
+/**
+ * Extract the first image from the raw markdown in a note.
+ *
+ * @param rawFileText
+ * @param context
+ * @returns
+ */
 function getImageUrlFromContextOrDocument(
 	rawFileText: string,
 	context: MarkdownCodeBlockTimelineProcessingContext

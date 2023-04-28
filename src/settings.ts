@@ -3,6 +3,9 @@ import { PluginSettingTab, Setting } from "obsidian";
 import type { App } from "obsidian";
 import type AprilsAutomaticTimelinesPlugin from "~/../main";
 
+/**
+ * The keys looked for when processing metadata in a single note.
+ */
 export const DEFAULT_METADATA_KEYS = {
 	eventStartDate: "aat-event-start-date",
 	eventEndDate: "aat-event-end-date",
@@ -11,6 +14,9 @@ export const DEFAULT_METADATA_KEYS = {
 	eventPictureOverride: "aat-event-picture",
 };
 
+/**
+ * Class designed to display the inputs that allow the end user to change the default keys that are looked for when processing metadata in a single note.
+ */
 export class TimelineSettingTab extends PluginSettingTab {
 	plugin: AprilsAutomaticTimelinesPlugin;
 

@@ -5,6 +5,12 @@ import type {
 
 import { isDefined, createElementShort } from "~/utils";
 
+/**
+ * Generates a card in the DOM based on given ccontext.
+ *
+ * @param { MarkdownCodeBlockTimelineProcessingContext } param0 - The context built for this timeline.
+ * @param { CardContent } param1 - The context for a single card.
+ */
 export function createCardFromBuiltContext(
 	{
 		elements: { cardListRootElement },

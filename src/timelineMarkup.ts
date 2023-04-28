@@ -1,6 +1,14 @@
 import type { App } from "obsidian";
 import type { MarkdownCodeBlockTimelineProcessingContext } from "~/types";
 
+/**
+ * A preliminary helper to fetch all the needed context to handle the timeline creation.
+ *
+ * @param { App } app - The app context provided by obsidian.
+ * @param { HTMLElement } element - The root element of this timeline.
+ * @param timelineFile - The file path of the timeline.
+ * @returns { MarkdownCodeBlockTimelineProcessingContext } the nessessary context to build a timeline.
+ */
 export async function setupTimelineCreation(
 	app: App,
 	element: HTMLElement,
