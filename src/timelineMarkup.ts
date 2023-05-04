@@ -9,13 +9,13 @@ import type { MarkdownCodeBlockTimelineProcessingContext } from "~/types";
  * @param timelineFile - The file path of the timeline.
  * @returns { MarkdownCodeBlockTimelineProcessingContext } the nessessary context to build a timeline.
  */
-export async function setupTimelineCreation(
+export function setupTimelineCreation(
 	app: App,
 	element: HTMLElement,
 	timelineFile: string
 ) {
 	const { vault, metadataCache } = app;
-	const fileArray = await Promise.all(vault.getMarkdownFiles());
+	const fileArray = vault.getMarkdownFiles();
 	const cardListRootElement = element.createDiv();
 	const timelineRootElement = element.createDiv();
 
