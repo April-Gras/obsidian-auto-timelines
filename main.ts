@@ -43,11 +43,7 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 		const runtimeTime = measureTime("Run time");
 		const { app } = this;
 		const tagsToFind = source.split(" ");
-		const creationContext = await setupTimelineCreation(
-			app,
-			element,
-			sourcePath
-		);
+		const creationContext = setupTimelineCreation(app, element, sourcePath);
 		const cardDataTime = measureTime("Data fetch");
 		const cards = (
 			await Promise.all(
