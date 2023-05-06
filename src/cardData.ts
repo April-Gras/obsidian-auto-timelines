@@ -39,7 +39,11 @@ export async function getDataFromNote(
 	const timelineTags = metaData.timelines.filter(isDefinedAsString);
 
 	// TimelineTags is not defined as an array :<
-	if (!timelineTags.length || !timelineTags.some(() => tagsToFind.includes))
+	// OR Sought after tags where not found
+	if (
+		!timelineTags.length ||
+		!timelineTags.some((tag) => tagsToFind.includes(tag))
+	)
 		return undefined;
 
 	return {
