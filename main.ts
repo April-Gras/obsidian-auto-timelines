@@ -42,7 +42,7 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	) {
 		const runtimeTime = measureTime("Run time");
 		const { app } = this;
-		const tagsToFind = source.split(" ");
+		const tagsToFind = source.split(" ").map((e) => e.replace("\n", ""));
 		const creationContext = setupTimelineCreation(app, element, sourcePath);
 		const cardDataTime = measureTime("Data fetch");
 		const cards = (
