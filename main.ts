@@ -47,7 +47,9 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 		const cardDataTime = measureTime("Data fetch");
 		const cards = (
 			await Promise.all(
-				creationContext.map((e) => getDataFromNote(e, tagsToFind))
+				creationContext.map((e) =>
+					getDataFromNote(e, tagsToFind, this.settings)
+				)
 			)
 		)
 			.filter(isDefined)

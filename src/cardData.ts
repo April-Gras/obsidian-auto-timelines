@@ -1,11 +1,11 @@
 import { getMetadataKey, isDefinedAsString } from "~/utils";
-import { DEFAULT_METADATA_KEYS } from "~/settings";
 import { TFile } from "obsidian";
 
 import type {
 	MarkdownCodeBlockTimelineProcessingContext,
 	CompleteCardContext,
 	CardContent,
+	AutoTimelineSettings,
 } from "~/types";
 
 /**
@@ -22,7 +22,8 @@ const RENDER_GREENLIGHT_METADATA_KEY = ["aat-render-enabled"];
  */
 export async function getDataFromNote(
 	context: MarkdownCodeBlockTimelineProcessingContext,
-	tagsToFind: string[]
+	tagsToFind: string[],
+	settings: AutoTimelineSettings
 ) {
 	const { cachedMetadata } = context;
 	const { frontmatter: metaData } = cachedMetadata;
@@ -47,7 +48,7 @@ export async function getDataFromNote(
 		return undefined;
 
 	return {
-		cardData: await extractCardData(context),
+		cardData: await extractCardData(context, settings),
 		context,
 	} as const;
 }
@@ -59,26 +60,26 @@ export async function getDataFromNote(
  * @returns { CardContent } The extracted data to create a card from a note.
  */
 async function extractCardData(
-	context: MarkdownCodeBlockTimelineProcessingContext
+	context: MarkdownCodeBlockTimelineProcessingContext,
+	settings: AutoTimelineSettings
 ) {
 	const { file, cachedMetadata: c } = context;
 	const rawFileContent = await file.vault.cachedRead(file);
 	const fileTitle =
-		c?.frontmatter?.[DEFAULT_METADATA_KEYS.eventTitleOverride] ||
-		file.basename;
+		c?.frontmatter?.[settings.eventTitleOverride] || file.basename;
 
 	return {
 		title: fileTitle,
 		body: getBodyFromContextOrDocument(rawFileContent, context),
-		imageURL: getImageUrlFromContextOrDocument(rawFileContent, context),
-		startDate: getMetadataKey(
-			c,
-			DEFAULT_METADATA_KEYS.eventStartDate,
-			"number"
+		imageURL: getImageUrlFromContextOrDocument(
+			rawFileContent,
+			context,
+			settings
 		),
+		startDate: getMetadataKey(c, settings.eventStartDate, "number"),
 		endDate:
-			getMetadataKey(c, DEFAULT_METADATA_KEYS.eventEndDate, "number") ??
-			getMetadataKey(c, DEFAULT_METADATA_KEYS.eventEndDate, "boolean"),
+			getMetadataKey(c, settings.eventEndDate, "number") ??
+			getMetadataKey(c, settings.eventEndDate, "boolean"),
 	} as const;
 }
 export type FnExtractCardData = typeof extractCardData;
@@ -130,7 +131,8 @@ function getBodyFromContextOrDocument(
  */
 function getImageUrlFromContextOrDocument(
 	rawFileText: string,
-	context: MarkdownCodeBlockTimelineProcessingContext
+	context: MarkdownCodeBlockTimelineProcessingContext,
+	settings: AutoTimelineSettings
 ): string | null {
 	const {
 		cachedMetadata: { frontmatter: metadata },
@@ -141,7 +143,7 @@ function getImageUrlFromContextOrDocument(
 		vault,
 		metadataCache: { getFirstLinkpathDest },
 	} = app;
-	const override = metadata?.[DEFAULT_METADATA_KEYS.eventPictureOverride];
+	const override = metadata?.[settings.eventPictureOverride];
 
 	if (override) return override;
 	const internalLinkMatch = rawFileText.match(/!\[\[(?<src>.*)\]\]/);
