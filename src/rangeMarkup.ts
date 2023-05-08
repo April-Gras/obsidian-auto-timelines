@@ -2,6 +2,7 @@ import {
 	createElementShort,
 	isDefined,
 	getChildAtIndexInHTMLElement,
+	compareAbstractDates,
 } from "~/utils";
 
 import type { Range } from "~/types";
@@ -28,7 +29,7 @@ const AVAILABLE_COLORS = [
  * @param { HTMLElement } rootElement - The root of all elements for this complete timeline.
  */
 export function renderRanges(ranges: Range[], rootElement: HTMLElement) {
-	const endDates: (number | true | undefined)[] = AVAILABLE_COLORS.map(
+	const endDates: (number[] | true | undefined)[] = AVAILABLE_COLORS.map(
 		() => undefined
 	);
 
@@ -40,7 +41,9 @@ export function renderRanges(ranges: Range[], rootElement: HTMLElement) {
 		} = range;
 
 		const offsetIndex = endDates.findIndex(
-			(date) => !isDefined(date) || (date !== true && startDate > date)
+			(date) =>
+				!isDefined(date) ||
+				(date !== true && compareAbstractDates(startDate, date) > 0)
 		);
 
 		// Over the color limit
