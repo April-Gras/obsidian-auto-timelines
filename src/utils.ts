@@ -135,3 +135,15 @@ export function createElementShort(
 	if (content !== undefined) out.innerHTML = content.toString();
 	return out;
 }
+
+export function compareAbstractDates(
+	a: number[] | undefined,
+	b: number[] | undefined
+) {
+	// Since could be numbers we can't check with `!`
+	if (!isDefined(a) && !isDefined(b)) return 0;
+	if (!isDefined(a)) return 1;
+	if (!isDefined(b)) return -1;
+
+	return a.join("").localeCompare(b.join(""), undefined, { numeric: true });
+}

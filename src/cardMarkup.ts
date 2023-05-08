@@ -17,7 +17,7 @@ export function createCardFromBuiltContext(
 		file,
 	}: MarkdownCodeBlockTimelineProcessingContext,
 	{ body, title, imageURL, startDate, endDate }: CardContent
-) {
+): void {
 	const cardBaseDiv = createElementShort(cardListRootElement, "a", [
 		"internal-link",
 		"aat-card",
@@ -51,13 +51,18 @@ export function createCardFromBuiltContext(
 		const hasEnd = isDefined(endDate);
 		const both = hasStart && hasEnd;
 
+		// TODO handle clearer display
 		createElementShort(
 			titleWrap,
 			"h4",
 			"aat-card-start-date",
-			`${both ? "From" : ""} ${startDate} ${
+			`${both ? "From" : ""} ${startDate?.join("/")} ${
 				hasEnd
-					? `to ${typeof endDate === "number" ? endDate : "now"}`
+					? `to ${
+							typeof endDate === "boolean"
+								? "now"
+								: endDate.join("/")
+					  }`
 					: ""
 			}`.trim()
 		);

@@ -1,5 +1,8 @@
 import type { App } from "obsidian";
-import type { MarkdownCodeBlockTimelineProcessingContext } from "~/types";
+import type {
+	AutoTimelineSettings,
+	MarkdownCodeBlockTimelineProcessingContext,
+} from "~/types";
 
 /**
  * A preliminary helper to fetch all the needed context to handle the timeline creation.
@@ -12,7 +15,8 @@ import type { MarkdownCodeBlockTimelineProcessingContext } from "~/types";
 export function setupTimelineCreation(
 	app: App,
 	element: HTMLElement,
-	timelineFile: string
+	timelineFile: string,
+	settings: AutoTimelineSettings
 ) {
 	const { vault, metadataCache } = app;
 	const fileArray = vault.getMarkdownFiles();
@@ -28,6 +32,7 @@ export function setupTimelineCreation(
 		if (cachedMetadata)
 			accumulator.push({
 				app,
+				settings,
 				timelineFile,
 				file,
 				cachedMetadata,

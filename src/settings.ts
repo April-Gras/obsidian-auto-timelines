@@ -7,11 +7,16 @@ import type AprilsAutomaticTimelinesPlugin from "~/../main";
  * The keys looked for when processing metadata in a single note.
  */
 export const DEFAULT_METADATA_KEYS = {
-	eventStartDate: "aat-event-start-date",
-	eventEndDate: "aat-event-end-date",
-	eventTitleOverride: "aat-event-title",
-	eventBodyOverride: "aat-event-body",
-	eventPictureOverride: "aat-event-picture",
+	metadataKey: {
+		eventStartDate: "aat-event-start-date",
+		eventEndDate: "aat-event-end-date",
+		eventTitleOverride: "aat-event-title",
+		eventBodyOverride: "aat-event-body",
+		eventPictureOverride: "aat-event-picture",
+	},
+	// eslint-disable-next-line no-useless-escape
+	dateParserRegex: "(?<year>-?[0-9]*)-(?<month>-?[0-9]*)-(?<day>-?[0-9]*)",
+	dateParserGroupPriority: "year,month,day",
 };
 
 /**
@@ -57,17 +62,17 @@ export class TimelineSettingTab extends PluginSettingTab {
 	private newKeyChangeSetting(
 		title: string,
 		desc: string,
-		key: keyof typeof DEFAULT_METADATA_KEYS
+		key: keyof (typeof DEFAULT_METADATA_KEYS)["metadataKey"]
 	) {
 		new Setting(this.containerEl)
 			.setName(title)
 			.setDesc(desc)
 			.addText((text) =>
 				text
-					.setPlaceholder(DEFAULT_METADATA_KEYS[key])
-					.setValue(this.plugin.settings[key])
+					.setPlaceholder(DEFAULT_METADATA_KEYS.metadataKey[key])
+					.setValue(this.plugin.settings.metadataKey[key])
 					.onChange(async (value) => {
-						this.plugin.settings[key] = value;
+						this.plugin.settings.metadataKey[key] = value;
 						await this.plugin.saveSettings();
 					})
 			);
