@@ -14,9 +14,9 @@ export const DEFAULT_METADATA_KEYS = {
 		eventBodyOverride: "aat-event-body",
 		eventPictureOverride: "aat-event-picture",
 	},
-	// eslint-disable-next-line no-useless-escape
 	dateParserRegex: "(?<year>-?[0-9]*)-(?<month>-?[0-9]*)-(?<day>-?[0-9]*)",
 	dateParserGroupPriority: "year,month,day",
+	dateDisplayFormat: "{year}/{month}/{day}",
 };
 
 /**

@@ -1,6 +1,8 @@
 import type {
 	MarkdownCodeBlockTimelineProcessingContext,
 	CardContent,
+	AutoTimelineSettings,
+	AbstractDate,
 } from "~/types";
 
 import { isDefined, createElementShort } from "~/utils";
@@ -15,6 +17,7 @@ export function createCardFromBuiltContext(
 	{
 		elements: { cardListRootElement },
 		file,
+		settings,
 	}: MarkdownCodeBlockTimelineProcessingContext,
 	{ body, title, imageURL, startDate, endDate }: CardContent
 ): void {
@@ -46,27 +49,12 @@ export function createCardFromBuiltContext(
 
 	createElementShort(titleWrap, "h2", "aat-card-title", title);
 
-	if (isDefined(startDate) || isDefined(endDate)) {
-		const hasStart = isDefined(startDate);
-		const hasEnd = isDefined(endDate);
-		const both = hasStart && hasEnd;
-
-		// TODO handle clearer display
-		createElementShort(
-			titleWrap,
-			"h4",
-			"aat-card-start-date",
-			`${both ? "From" : ""} ${startDate?.join("/")} ${
-				hasEnd
-					? `to ${
-							typeof endDate === "boolean"
-								? "now"
-								: endDate.join("/")
-					  }`
-					: ""
-			}`.trim()
-		);
-	}
+	createElementShort(
+		titleWrap,
+		"h4",
+		"aat-card-start-date",
+		getDateText({ startDate, endDate }, settings).trim()
+	);
 
 	createElementShort(
 		cardTextWraper,
@@ -74,4 +62,30 @@ export function createCardFromBuiltContext(
 		"aat-card-body",
 		body ? body : "No body for this note :("
 	);
+}
+
+function getDateText(
+	{ startDate, endDate }: Pick<CardContent, "startDate" | "endDate">,
+	settings: AutoTimelineSettings
+): string {
+	if (!isDefined(startDate)) return "Start date missing";
+	const formatedStart = formatAbstractDate(startDate, settings);
+	if (!isDefined(endDate)) return formatedStart;
+
+	return `From ${formatedStart} to ${formatAbstractDate(endDate, settings)}`;
+}
+
+function formatAbstractDate(
+	date: AbstractDate | boolean,
+	{ dateDisplayFormat, dateParserGroupPriority }: AutoTimelineSettings
+): string {
+	if (typeof date === "boolean") return "now";
+	const prioArray = dateParserGroupPriority.split(",");
+	let output = dateDisplayFormat.toString();
+
+	prioArray.forEach((token, index) => {
+		output = output.replace(`{${token}}`, date[index].toString());
+	});
+
+	return output;
 }
