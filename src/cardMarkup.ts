@@ -19,8 +19,9 @@ export function createCardFromBuiltContext(
 		file,
 		settings,
 	}: MarkdownCodeBlockTimelineProcessingContext,
-	{ body, title, imageURL, startDate, endDate }: CardContent
+	cardContent: CardContent
 ): void {
+	const { body, title, imageURL } = cardContent;
 	const cardBaseDiv = createElementShort(cardListRootElement, "a", [
 		"internal-link",
 		"aat-card",
@@ -53,7 +54,7 @@ export function createCardFromBuiltContext(
 		titleWrap,
 		"h4",
 		"aat-card-start-date",
-		getDateText({ startDate, endDate }, settings).trim()
+		getDateText(cardContent, settings).trim()
 	);
 
 	createElementShort(
@@ -64,8 +65,14 @@ export function createCardFromBuiltContext(
 	);
 }
 
+/**
+ *
+ * @param { CardContent } param0 - The context for a single card.
+ * @param { AutoTimelineSettings } settings - The settings of the plugin.
+ * @returns { string } a formated string representation of the dates included in the card content based off the settings.
+ */
 function getDateText(
-	{ startDate, endDate }: Pick<CardContent, "startDate" | "endDate">,
+	{ startDate, endDate }: CardContent,
 	settings: AutoTimelineSettings
 ): string {
 	if (!isDefined(startDate)) return "Start date missing";
@@ -75,6 +82,12 @@ function getDateText(
 	return `From ${formatedStart} to ${formatAbstractDate(endDate, settings)}`;
 }
 
+/**
+ *
+ * @param { AbstractDate } date - Target date to format.
+ * @param { AutoTimelineSettings } param1 - The settings of the plugin.
+ * @returns { string } the formated representation of a given date based off the plugins settings.
+ */
 function formatAbstractDate(
 	date: AbstractDate | boolean,
 	{ dateDisplayFormat, dateParserGroupPriority }: AutoTimelineSettings
