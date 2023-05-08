@@ -62,7 +62,7 @@ async function extractCardData(
 	const { file, cachedMetadata: c, settings } = context;
 	const rawFileContent = await file.vault.cachedRead(file);
 	const fileTitle =
-		c?.frontmatter?.[settings.metadataKey.eventTitleOverride] ||
+		c?.frontmatter?.[settings.metadataKeyEventTitleOverride] ||
 		file.basename;
 
 	return {
@@ -71,14 +71,13 @@ async function extractCardData(
 		imageURL: getImageUrlFromContextOrDocument(rawFileContent, context),
 		startDate: getAbstractDateFromMetadata(
 			context,
-			settings.metadataKey.eventStartDate
+			settings.metadataKeyEventStartDate
 		),
 		endDate:
 			getAbstractDateFromMetadata(
 				context,
-				settings.metadataKey.eventEndDate
-			) ??
-			getMetadataKey(c, settings.metadataKey.eventEndDate, "boolean"),
+				settings.metadataKeyEventEndDate
+			) ?? getMetadataKey(c, settings.metadataKeyEventEndDate, "boolean"),
 	} as const;
 }
 export type FnExtractCardData = typeof extractCardData;
@@ -142,7 +141,7 @@ function getImageUrlFromContextOrDocument(
 		vault,
 		metadataCache: { getFirstLinkpathDest },
 	} = app;
-	const override = metadata?.[settings.metadataKey.eventPictureOverride];
+	const override = metadata?.[settings.metadataKeyEventPictureOverride];
 
 	if (override) return override;
 	const internalLinkMatch = rawFileText.match(/!\[\[(?<src>.*)\]\]/);
