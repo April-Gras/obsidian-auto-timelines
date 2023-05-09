@@ -1,7 +1,7 @@
 import { MarkdownPostProcessorContext, Plugin } from "obsidian";
 
 import type { AutoTimelineSettings } from "~/types";
-import { isDefined, measureTime } from "~/utils";
+import { compareAbstractDates, isDefined, measureTime } from "~/utils";
 import { getDataFromNote } from "~/cardData";
 import { setupTimelineCreation } from "~/timelineMarkup";
 import { createCardFromBuiltContext } from "~/cardMarkup";
@@ -43,13 +43,16 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 		const runtimeTime = measureTime("Run time");
 		const { app } = this;
 		const tagsToFind = source.split(" ").map((e) => e.replace("\n", ""));
-		const creationContext = setupTimelineCreation(app, element, sourcePath);
+		const creationContext = setupTimelineCreation(
+			app,
+			element,
+			sourcePath,
+			this.settings
+		);
 		const cardDataTime = measureTime("Data fetch");
 		const cards = (
 			await Promise.all(
-				creationContext.map((e) =>
-					getDataFromNote(e, tagsToFind, this.settings)
-				)
+				creationContext.map((e) => getDataFromNote(e, tagsToFind))
 			)
 		)
 			.filter(isDefined)
@@ -58,11 +61,7 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 					{ cardData: { startDate: a } },
 					{ cardData: { startDate: b } }
 				) => {
-					// Since these are numbers we can't check with `!`
-					if (!isDefined(a) && !isDefined(b)) return 0;
-					if (!isDefined(a)) return 1;
-					if (!isDefined(b)) return -1;
-					return a - b;
+					return compareAbstractDates(a, b);
 				}
 			);
 		cardDataTime();

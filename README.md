@@ -24,3 +24,67 @@ Once you tagged at least one note create a new note and add a new markdow code b
 This will scan the vault for all notes flagged to render inside the `timeline` timeline
 
 Behind the scenes the plugin will parse the content and generate a card for each note. The only manual content needed to create a card in a timeline is the start date.
+
+#### Avanced date formats
+
+Sometimes good old `year-month-day` timeformat just doesn't cut it for your world and you have a more complex timesystem in use.
+The plugin exposes 3 majors settings to help achieve your desired time format.
+Before getting into too many details make sure you're familliar with RegExps and named capture groups within them. If this is not the case fireship.io has a [great video for begginers](https://www.youtube.com/watch?v=sXQxhojSdZM) to start your learning journey.
+
+##### Date Parser Regex
+
+By default the plugin will rely on this RegExp
+
+```regex
+(?<year>-?[0-9]*)-(?<month>-?[0-9]*)-(?<day>-?[0-9]*)
+```
+
+As you can see it will capture any date that follows the following format: `numbers-numbers-numbers`.
+But there's a little subtlety here. The named capture groups `<year>` `<month>` and `<day>`. These will becomme important latter down the line.
+
+##### Date Parser Group Priority
+
+This setting should be built directly off the previously created RegExp. In the case of the default regex we have 3 main tokens. `year` `month` and `day`. You can find them in the named capture groups.
+
+In this setting you should order the tokens per weights. So in our case: `year,month,day`
+Every token should follow same syntax used in the named capture groups from the previous RegExp and be separated by a single comma (`,`).
+
+##### Date Display Format
+
+The most straight forward of all three date format settings. This is the template for the actually in card display. Just wrap every token in `{}` and format it the way you like. For example to display `yyyy-MM-dd` we'll write: `{year}-{month}-{day}`.
+
+##### Example fantasy date formats.
+
+###### cycle-moon-phase-day
+
+Let's get a little wild and imagine a world where time is tracked this way
+
+-   `Cycles` are the hightest value of time, each cycle can see 3 moons come and go.
+-   `Moons` are more frequent than cycles and are comprised of phases.
+-   `Phases` are more frequent than moons per cycle and are comprised of days.
+-   `Days` are the lowest relevant time unit in this system.
+
+Let's say in our metadata we want to store the value as such
+
+```yml
+# 14 phases & 23 days on the 2'nd moon of the 687'th cycle
+aat-event-start-date: 14&23-2M-687C
+```
+
+Our regex would look something like this
+
+```regexp
+(?<phase>[0-9]*)\&(?<day>[0-9]*)-(?<moon>[0-9]*)M-(?<cycle>[0-9]*)C
+```
+
+One capture group per date token can be found.
+Now to set our date parser group priority:
+`cycle,moon,phase,day`
+
+And let's say we want a fairly minimal display format where only the cycle and the moon are displayed.
+
+```
+cycle {cycle}, {moon}
+```
+
+The end result for our initaly declared metadata would look something like: `cycle 687, 2`.

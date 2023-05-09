@@ -1,6 +1,8 @@
 import type {
 	MarkdownCodeBlockTimelineProcessingContext,
 	CardContent,
+	AutoTimelineSettings,
+	AbstractDate,
 } from "~/types";
 
 import { isDefined, createElementShort } from "~/utils";
@@ -15,9 +17,11 @@ export function createCardFromBuiltContext(
 	{
 		elements: { cardListRootElement },
 		file,
+		settings,
 	}: MarkdownCodeBlockTimelineProcessingContext,
-	{ body, title, imageURL, startDate, endDate }: CardContent
-) {
+	cardContent: CardContent
+): void {
+	const { body, title, imageURL } = cardContent;
 	const cardBaseDiv = createElementShort(cardListRootElement, "a", [
 		"internal-link",
 		"aat-card",
@@ -46,22 +50,12 @@ export function createCardFromBuiltContext(
 
 	createElementShort(titleWrap, "h2", "aat-card-title", title);
 
-	if (isDefined(startDate) || isDefined(endDate)) {
-		const hasStart = isDefined(startDate);
-		const hasEnd = isDefined(endDate);
-		const both = hasStart && hasEnd;
-
-		createElementShort(
-			titleWrap,
-			"h4",
-			"aat-card-start-date",
-			`${both ? "From" : ""} ${startDate} ${
-				hasEnd
-					? `to ${typeof endDate === "number" ? endDate : "now"}`
-					: ""
-			}`.trim()
-		);
-	}
+	createElementShort(
+		titleWrap,
+		"h4",
+		"aat-card-start-date",
+		getDateText(cardContent, settings).trim()
+	);
 
 	createElementShort(
 		cardTextWraper,
@@ -69,4 +63,42 @@ export function createCardFromBuiltContext(
 		"aat-card-body",
 		body ? body : "No body for this note :("
 	);
+}
+
+/**
+ *
+ * @param { CardContent } param0 - The context for a single card.
+ * @param { AutoTimelineSettings } settings - The settings of the plugin.
+ * @returns { string } a formated string representation of the dates included in the card content based off the settings.
+ */
+function getDateText(
+	{ startDate, endDate }: CardContent,
+	settings: AutoTimelineSettings
+): string {
+	if (!isDefined(startDate)) return "Start date missing";
+	const formatedStart = formatAbstractDate(startDate, settings);
+	if (!isDefined(endDate)) return formatedStart;
+
+	return `From ${formatedStart} to ${formatAbstractDate(endDate, settings)}`;
+}
+
+/**
+ *
+ * @param { AbstractDate } date - Target date to format.
+ * @param { AutoTimelineSettings } param1 - The settings of the plugin.
+ * @returns { string } the formated representation of a given date based off the plugins settings.
+ */
+function formatAbstractDate(
+	date: AbstractDate | boolean,
+	{ dateDisplayFormat, dateParserGroupPriority }: AutoTimelineSettings
+): string {
+	if (typeof date === "boolean") return "now";
+	const prioArray = dateParserGroupPriority.split(",");
+	let output = dateDisplayFormat.toString();
+
+	prioArray.forEach((token, index) => {
+		output = output.replace(`{${token}}`, date[index].toString());
+	});
+
+	return output;
 }

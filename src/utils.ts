@@ -1,4 +1,7 @@
-import type { MarkdownCodeBlockTimelineProcessingContext } from "~/types";
+import type {
+	AbstractDate,
+	MarkdownCodeBlockTimelineProcessingContext,
+} from "~/types";
 
 /**
  * Quick util to read obsidians metadata object with some type safety.
@@ -24,6 +27,7 @@ export function getMetadataKey<T extends "string" | "number" | "boolean">(
 }
 
 /**
+ * Typeguard to check if a value is indeed defined.
  *
  * @param { T | undefined } argument a possibly undefined argument.
  * @returns { boolean } `true` if the element is defined, `false` if not.
@@ -134,4 +138,25 @@ export function createElementShort(
 	else if (classes) out.addClass(classes);
 	if (content !== undefined) out.innerHTML = content.toString();
 	return out;
+}
+
+/**
+ * Compares two Abstract Dates
+ *
+ * @param { AbstractDate | undefined } a - first Abstract Date
+ * @param { AbstractDate | undefined } b - second Abstract Date
+ * @returns 0 if they are equal 1 if a > b and -1 if a < b
+ */
+export function compareAbstractDates(
+	a: AbstractDate | undefined,
+	b: AbstractDate | undefined
+) {
+	// Since could be numbers we can't check with `!`
+	if (!isDefined(a) && !isDefined(b)) return 0;
+	if (!isDefined(a)) return 1;
+	if (!isDefined(b)) return -1;
+
+	for (let index = 0; index < a.length; index++)
+		if (a[index] !== b[index]) return a[index] > b[index] ? 1 : -1;
+	return 0;
 }

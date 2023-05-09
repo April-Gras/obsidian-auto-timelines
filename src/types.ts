@@ -13,6 +13,10 @@ export interface MarkdownCodeBlockTimelineProcessingContext {
 	 */
 	app: App;
 	/**
+	 * The plugins settings
+	 */
+	settings: AutoTimelineSettings;
+	/**
 	 * The formatted metadata of a single note.
 	 */
 	cachedMetadata: CachedMetadata;
@@ -48,3 +52,14 @@ export type CardContent = Awaited<ReturnType<FnExtractCardData>>;
  * The needed data to compute a range in a single timeline.
  */
 export type Range = ReturnType<FnGetRangeData>[number];
+
+/**
+ * An abstract representation of a fantasy date.
+ * Given the fickle nature of story telling and how people will literally almost never stick to standard date formats
+ * We'll organise the dates in segments, let's take for example our human callendar
+ * The date will commonly be segmented in 3 parts year, month and day the abstract representation will equate to
+ * `[year, month, day]`
+ * Now if someone wants to make a more complex date system like `[cycle, moon, phase, day]` we can treat them the same when sorting and performing computing tasks on those dates.
+ * The only major limitation to this system is that all the dates must respect the same system.
+ */
+export type AbstractDate = number[];

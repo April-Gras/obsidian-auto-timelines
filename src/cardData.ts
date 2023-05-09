@@ -1,11 +1,9 @@
-import { getMetadataKey, isDefinedAsString } from "~/utils";
+import { getMetadataKey, isDefinedAsString, isDefined } from "~/utils";
 import { TFile } from "obsidian";
 
 import type {
 	MarkdownCodeBlockTimelineProcessingContext,
-	CompleteCardContext,
-	CardContent,
-	AutoTimelineSettings,
+	AbstractDate,
 } from "~/types";
 
 /**
@@ -22,8 +20,7 @@ const RENDER_GREENLIGHT_METADATA_KEY = ["aat-render-enabled"];
  */
 export async function getDataFromNote(
 	context: MarkdownCodeBlockTimelineProcessingContext,
-	tagsToFind: string[],
-	settings: AutoTimelineSettings
+	tagsToFind: string[]
 ) {
 	const { cachedMetadata } = context;
 	const { frontmatter: metaData } = cachedMetadata;
@@ -48,7 +45,7 @@ export async function getDataFromNote(
 		return undefined;
 
 	return {
-		cardData: await extractCardData(context, settings),
+		cardData: await extractCardData(context),
 		context,
 	} as const;
 }
@@ -60,26 +57,27 @@ export async function getDataFromNote(
  * @returns { CardContent } The extracted data to create a card from a note.
  */
 async function extractCardData(
-	context: MarkdownCodeBlockTimelineProcessingContext,
-	settings: AutoTimelineSettings
+	context: MarkdownCodeBlockTimelineProcessingContext
 ) {
-	const { file, cachedMetadata: c } = context;
+	const { file, cachedMetadata: c, settings } = context;
 	const rawFileContent = await file.vault.cachedRead(file);
 	const fileTitle =
-		c?.frontmatter?.[settings.eventTitleOverride] || file.basename;
+		c?.frontmatter?.[settings.metadataKeyEventTitleOverride] ||
+		file.basename;
 
 	return {
 		title: fileTitle,
 		body: getBodyFromContextOrDocument(rawFileContent, context),
-		imageURL: getImageUrlFromContextOrDocument(
-			rawFileContent,
+		imageURL: getImageUrlFromContextOrDocument(rawFileContent, context),
+		startDate: getAbstractDateFromMetadata(
 			context,
-			settings
+			settings.metadataKeyEventStartDate
 		),
-		startDate: getMetadataKey(c, settings.eventStartDate, "number"),
 		endDate:
-			getMetadataKey(c, settings.eventEndDate, "number") ??
-			getMetadataKey(c, settings.eventEndDate, "boolean"),
+			getAbstractDateFromMetadata(
+				context,
+				settings.metadataKeyEventEndDate
+			) ?? getMetadataKey(c, settings.metadataKeyEventEndDate, "boolean"),
 	} as const;
 }
 export type FnExtractCardData = typeof extractCardData;
@@ -88,9 +86,9 @@ export type FnExtractCardData = typeof extractCardData;
  * Extract the body from the raw text of a note.
  * @decsription After extraction most markdown tokens will be removed and links will be sanitized aswell and wrapped into bold tags for clearner display.
  *
- * @param rawFileText
- * @param context
- * @returns
+ * @param { string } rawFileText - The text content of a obsidian note.
+ * @param { MarkdownCodeBlockTimelineProcessingContext } context - Timeline generic context.
+ * @returns { string | null } the body of a given card or null if none was found.
  */
 function getBodyFromContextOrDocument(
 	rawFileText: string,
@@ -125,25 +123,25 @@ function getBodyFromContextOrDocument(
 /**
  * Extract the first image from the raw markdown in a note.
  *
- * @param rawFileText
- * @param context
- * @returns
+ * @param { string } rawFileText - The text content of a obsidian note.
+ * @param { MarkdownCodeBlockTimelineProcessingContext } context - Timeline generic context.
+ * @returns { string | null } the URL of the image to be displayed in a card or null if none where found.
  */
 function getImageUrlFromContextOrDocument(
 	rawFileText: string,
-	context: MarkdownCodeBlockTimelineProcessingContext,
-	settings: AutoTimelineSettings
+	context: MarkdownCodeBlockTimelineProcessingContext
 ): string | null {
 	const {
 		cachedMetadata: { frontmatter: metadata },
 		file: currentFile,
 		app,
+		settings,
 	} = context;
 	const {
 		vault,
 		metadataCache: { getFirstLinkpathDest },
 	} = app;
-	const override = metadata?.[settings.eventPictureOverride];
+	const override = metadata?.[settings.metadataKeyEventPictureOverride];
 
 	if (override) return override;
 	const internalLinkMatch = rawFileText.match(/!\[\[(?<src>.*)\]\]/);
@@ -163,4 +161,49 @@ function getImageUrlFromContextOrDocument(
 		// Thanks https://github.com/joethei
 		return null;
 	} else return encodeURI(matchs.groups.src);
+}
+
+/**
+ * Given a metadata key it'll try to parse the associated data as an `AbstractDate` and return it
+ *
+ * @param { MarkdownCodeBlockTimelineProcessingContext } param0 - Timeline generic context.
+ * @param { string } key - The target lookup key in the notes metadata object.
+ * @returns { AbstractDate | undefined } the abstract date representation or undefined.
+ */
+function getAbstractDateFromMetadata(
+	{ cachedMetadata, settings }: MarkdownCodeBlockTimelineProcessingContext,
+	key: string
+): AbstractDate | undefined {
+	const groupsToCheck = settings.dateParserGroupPriority.split(",");
+	const numberValue = getMetadataKey(cachedMetadata, key, "number");
+
+	if (isDefined(numberValue)) {
+		const additionalContentForNumberOnlydate = [
+			...Array(Math.max(0, groupsToCheck.length - 1)),
+		].map(() => 0);
+
+		return [numberValue, ...additionalContentForNumberOnlydate];
+	}
+
+	const stringValue = getMetadataKey(cachedMetadata, key, "string");
+
+	if (!stringValue) return undefined;
+	const matches = stringValue.match(settings.dateParserRegex);
+
+	if (!matches || !matches.groups) return undefined;
+
+	const { groups } = matches;
+
+	const output = groupsToCheck.reduce((accumulator, groupName) => {
+		const value = Number(groups[groupName]);
+
+		// In the case of a faulty regex given by the user in the settings
+		if (!isNaN(value)) accumulator.push(value);
+		return accumulator;
+	}, [] as AbstractDate);
+
+	// Malformed payload bail out
+	if (output.length !== groupsToCheck.length) return undefined;
+
+	return output;
 }

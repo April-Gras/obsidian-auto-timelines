@@ -4,9 +4,10 @@ import {
 	lerp,
 	inLerp,
 	getChildAtIndexInHTMLElement,
+	compareAbstractDates,
 } from "~/utils";
 
-import type { CompleteCardContext, Range } from "~/types";
+import type { CompleteCardContext, AbstractDate } from "~/types";
 
 /**
  * Will compute all the data needed to build ranges in the timeline.
@@ -73,8 +74,8 @@ export function getAllRangeData(collection: CompleteCardContext[]) {
 		[] as {
 			readonly relatedCardData: CompleteCardContext & {
 				cardData: CompleteCardContext["cardData"] & {
-					startDate: number;
-					endDate: number | true;
+					startDate: AbstractDate;
+					endDate: AbstractDate | true;
 				};
 			};
 			readonly index: number;
@@ -88,7 +89,7 @@ export type FnGetRangeData = typeof getAllRangeData;
 /**
  * Finds the end position in pixel relative to the top of the timeline root element for the give endDate of a range.
  *
- * @param { number } date - The target endDate to position on the timeline.
+ * @param { AbstractDate } date - The target endDate to position on the timeline.
  * @param { CompleteCardContext[] } collection - The collection of cards part of the same timeline.
  * @param { number } timelineLength - The length in pixel of the timeline.
  * @param { HTMLElement } rootElement - The root HTMLElement of the cardList.
@@ -96,7 +97,7 @@ export type FnGetRangeData = typeof getAllRangeData;
  * @returns { number } The expected position relative to the top of the timeline container for this date range.
  */
 function findEndPositionForDate(
-	date: number,
+	date: AbstractDate,
 	collection: CompleteCardContext[],
 	timelineLength: number,
 	rootElement: HTMLElement,
@@ -111,7 +112,14 @@ function findEndPositionForDate(
 			rootElement,
 			indexOffset
 		);
-		const t = inLerp(start.date, end.date, date);
+		// TODO find a way to normalize strings and convert them to a ranked number
+		// find what digit to compare and then use them for the in/lerps ?
+		const [inLerpStart, inLerpEnd, targetInLerpDate] = getInLerpValues(
+			start.date,
+			end.date,
+			date
+		);
+		const t = inLerp(inLerpStart, inLerpEnd, targetInLerpDate);
 
 		return lerp(start.top, end.top, t);
 	} catch (_) {
@@ -119,7 +127,27 @@ function findEndPositionForDate(
 	}
 }
 
-type Boundary = { date: number; top: number };
+/**
+ * Gets the values to compute the inlerp needed for range gutter renders.
+ *
+ * @param { AbstractDate } a - The start date
+ * @param { AbstractDate } b - The end date
+ * @param { AbstractDate } c - The date in between
+ * @returns the first non equal member of a - b when compared from left to right, also returns the same member from c.
+ */
+function getInLerpValues(
+	a: AbstractDate,
+	b: AbstractDate,
+	c: AbstractDate
+): [number, number, number] {
+	for (let index = 0; index < a.length; index++) {
+		if (a[index] === b[index]) continue;
+		return [a[index], b[index], c[index]];
+	}
+	return [0, 1, 1];
+}
+
+type Boundary = { date: AbstractDate; top: number };
 /**
  * Find the position of the last card having a lower start date and the first card with a higher start date relative to the endDate of the evaluated range.
  *
@@ -130,13 +158,13 @@ type Boundary = { date: number; top: number };
  * @returns { Boundary } The start and end boundaries of the target end date.
  */
 function findBoundaries(
-	date: number,
+	date: AbstractDate,
 	collection: CompleteCardContext[],
 	rootElement: HTMLElement,
 	indexOffset: number
 ): { start: Boundary; end: Boundary } {
 	const firstOverIndex = collection.findIndex(({ cardData: { startDate } }) =>
-		isDefined(startDate) ? startDate > date : false
+		isDefined(startDate) ? compareAbstractDates(startDate, date) > 0 : false
 	);
 
 	if (firstOverIndex === -1)
@@ -147,7 +175,9 @@ function findBoundaries(
 	const lastUnderIndex = findLastIndex(
 		collection,
 		({ cardData: { startDate } }) =>
-			isDefined(startDate) ? startDate <= date : false
+			isDefined(startDate)
+				? compareAbstractDates(startDate, date) <= 0
+				: false
 	);
 
 	if (lastUnderIndex === -1)
@@ -161,14 +191,14 @@ function findBoundaries(
 				rootElement,
 				lastUnderIndex + indexOffset
 			).offsetTop,
-			date: collection[lastUnderIndex].cardData.startDate as number,
+			date: collection[lastUnderIndex].cardData.startDate as AbstractDate,
 		},
 		end: {
 			top: getChildAtIndexInHTMLElement(
 				rootElement,
 				firstOverIndex + indexOffset
 			).offsetTop,
-			date: collection[firstOverIndex].cardData.startDate as number,
+			date: collection[firstOverIndex].cardData.startDate as AbstractDate,
 		},
 	};
 }
