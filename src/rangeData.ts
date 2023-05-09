@@ -183,14 +183,14 @@ function findBoundaries(
 				rootElement,
 				lastUnderIndex + indexOffset
 			).offsetTop,
-			date: collection[lastUnderIndex].cardData.startDate as number[],
+			date: collection[lastUnderIndex].cardData.startDate as AbstractDate,
 		},
 		end: {
 			top: getChildAtIndexInHTMLElement(
 				rootElement,
 				firstOverIndex + indexOffset
 			).offsetTop,
-			date: collection[firstOverIndex].cardData.startDate as number[],
+			date: collection[firstOverIndex].cardData.startDate as AbstractDate,
 		},
 	};
 }
