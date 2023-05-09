@@ -127,6 +127,14 @@ function findEndPositionForDate(
 	}
 }
 
+/**
+ * Gets the values to compute the inlerp needed for range gutter renders.
+ *
+ * @param { AbstractDate } a - The start date
+ * @param { AbstractDate } b - The end date
+ * @param { AbstractDate } c - The date in between
+ * @returns the first non equal member of a - b when compared from left to right, also returns the same member from c.
+ */
 function getInLerpValues(
 	a: AbstractDate,
 	b: AbstractDate,
