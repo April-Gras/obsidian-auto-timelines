@@ -145,5 +145,7 @@ export function compareAbstractDates(
 	if (!isDefined(a)) return 1;
 	if (!isDefined(b)) return -1;
 
-	return a.join("").localeCompare(b.join(""), undefined, { numeric: true });
+	for (let index = 0; index < a.length; index++)
+		if (a[index] !== b[index]) return a[index] > b[index] ? 1 : -1;
+	return 0;
 }
