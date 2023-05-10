@@ -76,7 +76,7 @@ const handleUpdateValueFantasyCalendarCheckbox = () => {
 		<hr />
 		<section class="v-grid-display">
 			<VHeader>
-				<i18n-t keypath="settings.title.slot-presets">
+				<i18n-t keypath="settings.title.slot-presets" scope="global">
 					<template #slot>
 						<a
 							href="https://github.com/fantasycalendar/obsidian-fantasy-calendar"
