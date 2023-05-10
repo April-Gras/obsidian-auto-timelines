@@ -17,12 +17,16 @@
 		"@typescript-eslint/parser": "5.29.0",
 		"builtin-modules": "3.3.0",
 		"esbuild": "0.17.3",
+		"esbuild-plugin-vue3": "^0.3.2",
 		"obsidian": "latest",
+		"sass": "^1.62.1",
 		"tslib": "2.4.0",
 		"typescript": "4.7.4"
 	},
 	"dependencies": {
 		"@types/dom-parser": "^0.1.1",
-		"dom-parser": "^0.1.6"
+		"dom-parser": "^0.1.6",
+		"vue": "^3.2.47",
+		"vue-i18n": "^9.2.2"
 	}
 }

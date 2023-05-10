@@ -1,7 +1,15 @@
-import { PluginSettingTab, Setting } from "obsidian";
+import { PluginSettingTab } from "obsidian";
 
 import type { App } from "obsidian";
 import type AprilsAutomaticTimelinesPlugin from "~/../main";
+
+import { createApp, ref } from "vue";
+import { createI18n } from "vue-i18n";
+import VSettings from "~/views/VSettings.vue";
+//@ts-expect-error
+import en from "~/locales/en.json";
+
+import type { AutoTimelineSettings } from "./types";
 
 /**
  * The keys looked for when processing metadata in a single note.
@@ -12,12 +20,12 @@ export const DEFAULT_METADATA_KEYS = {
 	metadataKeyEventTitleOverride: "aat-event-title",
 	metadataKeyEventBodyOverride: "aat-event-body",
 	metadataKeyEventPictureOverride: "aat-event-picture",
-	// presetDateFormat: DATE_FORMATS[0] as (typeof DATE_FORMATS)[number],
 	dateParserRegex: "(?<year>-?[0-9]*)-(?<month>-?[0-9]*)-(?<day>-?[0-9]*)",
 	dateParserGroupPriority: "year,month,day",
 	dateDisplayFormat: "{year}/{month}/{day}",
 };
 
+export const __VUE_PROD_DEVTOOLS__ = true;
 /**
  * Class designed to display the inputs that allow the end user to change the default keys that are looked for when processing metadata in a single note.
  */
@@ -31,109 +39,37 @@ export class TimelineSettingTab extends PluginSettingTab {
 
 	display(): void {
 		this.containerEl.empty();
-		this.newKeyChangeSetting(
-			"Event start key",
-			"The key that determines the start of an event in a note",
-			"metadataKeyEventStartDate"
-		);
-		this.newKeyChangeSetting(
-			"Event end key",
-			"The key that determines the end of an event in a note",
-			"metadataKeyEventEndDate"
-		);
-		this.newKeyChangeSetting(
-			"Event title override",
-			"The key for the title override in each notes metadata",
-			"metadataKeyEventTitleOverride"
-		);
-		this.newKeyChangeSetting(
-			"Event image override",
-			"The key for the image override in each notes metadata",
-			"metadataKeyEventPictureOverride"
-		);
-		this.newKeyChangeSetting(
-			"Event body override",
-			"The key for the body override in each notes metadata",
-			"metadataKeyEventBodyOverride"
-		);
 
-		this.newKeyChangeSetting(
-			"Date parser regex",
-			"The regex used to parse your date. It needs to include the same amount of capture group as the next setting input. If you're unfamilliar with regexes and / or capture groups I would recommend to stick to the preset.",
-			"dateParserRegex"
-		);
-		this.newKeyChangeSetting(
-			"Date parser group priority",
-			'No spaces and make sure to separate every entry with a ",". This value is used to order the parsed tokens. For example if your custom regex pulls the year month and day out of a date, the natural order should be "year,month,day". Note that you should have as many entries as your regex has capture groups. See presets for inspiration.',
-			"dateParserGroupPriority"
-		);
-		this.newKeyChangeSetting(
-			"Date display format",
-			'This is the end format the date should be displayed as in the actual timeline cards. You don\'t actually need to include every parsed member here. Following are previous examples "{year}" is a perfectly acceptable format',
-			"dateDisplayFormat"
-		);
-	}
+		// TODO Read locale off obsidian.
+		const i18n = createI18n({
+			locale: "en",
+			fallbackLocale: "en",
+			messages: {
+				en,
+			},
+			allowComposition: true,
+		});
 
-	private newKeyChangeSetting(
-		title: string,
-		desc: string,
-		key: keyof typeof DEFAULT_METADATA_KEYS
-	) {
-		return new Setting(this.containerEl)
-			.setName(title)
-			.setDesc(desc)
-			.addText((text) =>
-				text
-					.setPlaceholder(DEFAULT_METADATA_KEYS[key])
-					.setValue(this.plugin.settings[key])
-					.onChange(async (value) => {
-						this.plugin.settings[key] = value;
+		createApp({
+			components: { VSettings },
+			template: "<VSettings :value='value' @update:value='save' />",
+			setup: () => {
+				const value = ref(this.plugin.settings);
+				return {
+					value,
+					save: async (payload: Partial<AutoTimelineSettings>) => {
+						this.plugin.settings = {
+							...this.plugin.settings,
+							...payload,
+						};
+						value.value = this.plugin.settings;
 						await this.plugin.saveSettings();
-					})
-			);
+					},
+				};
+			},
+			methods: {},
+		})
+			.use(i18n)
+			.mount(this.containerEl);
 	}
 }
-
-// Unused for now
-// const DATE_FORMATS = [
-// 	"year-month-day",
-// 	"year/month/day",
-// 	"year-day-month",
-// 	"year/day/month",
-// 	"custom",
-// ] as const;
-
-// Un-used for now ?
-// const DATE_FORMAT_PRESET_VALUES: Record<
-// 	Exclude<(typeof DATE_FORMATS)[number], "custom">,
-// 	{
-// 		dateParserRegex: string;
-// 		dateParserGroupPriority: string;
-// 		dateDisplayFormat: string;
-// 	}
-// > = {
-// 	"year-month-day": {
-// 		dateParserRegex:
-// 			"(?<year>-?[0-9]*)-(?<month>-?[0-9]*)-(?<day>-?[0-9]*)",
-// 		dateParserGroupPriority: "year,month,day",
-// 		dateDisplayFormat: "{year}/{month}/{day}",
-// 	},
-// 	"year-day-month": {
-// 		dateParserRegex:
-// 			"(?<year>-?[0-9]*)-(?<day>-?[0-9]*)-(?<month>-?[0-9]*)",
-// 		dateParserGroupPriority: "year,month,day",
-// 		dateDisplayFormat: "{year}/{month}/{day}",
-// 	},
-// 	"year/day/month": {
-// 		dateParserRegex:
-// 			"(?<year>-?[0-9]*)/(?<day>-?[0-9]*)/(?<month>-?[0-9]*)",
-// 		dateParserGroupPriority: "year,month,day",
-// 		dateDisplayFormat: "{year}/{month}/{day}",
-// 	},
-// 	"year/month/day": {
-// 		dateParserRegex:
-// 			"(?<year>-?[0-9]*)/(?<month>-?[0-9]*)/(?<day>-?[0-9]*)",
-// 		dateParserGroupPriority: "year,month,day",
-// 		dateDisplayFormat: "{year}/{month}/{day}",
-// 	},
-// };

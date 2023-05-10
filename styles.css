@@ -123,3 +123,22 @@ div.aat-range-element {
 div.aat-range-element:hover {
 	opacity: 1;
 }
+
+/** VUE COMPONENTS **/
+.v-grid-display {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 24px;
+}
+
+.v-input-wrap {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: 8px;
+}
+
+.v-input-wrap.v-checkbox {
+	/* 40 being the width of those little switch checkboxes */
+	grid-template-columns: auto 40px;
+	gap: 24px;
+}
