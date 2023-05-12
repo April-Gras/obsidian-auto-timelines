@@ -76,6 +76,10 @@ a.internal-link.aat-card:hover {
 h2.aat-card-title {
 	margin: 0 !important;
 	color: var(--color-accent);
+	overflow: hidden;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	display: -webkit-box;
 }
 
 header.aat-card-head-wrap {
@@ -96,7 +100,7 @@ img.aat-card-image {
 	transform: scale(1.1);
 }
 
-p.aat-card-body {
+div.aat-card-body {
 	overflow: hidden;
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
@@ -109,6 +113,7 @@ h4.aat-card-start-date {
 	margin: 0 !important;
 	color: var(--color-muted);
 	font-size: smaller;
+	flex-shrink: 0;
 }
 
 div.aat-range-element {

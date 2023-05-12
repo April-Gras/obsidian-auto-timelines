@@ -112,14 +112,12 @@ function getBodyFromContextOrDocument(
 	const finalString = processedArray.join("\n").trim();
 
 	const out = finalString
-		// Remove vanilla internal links
-		.replace(/\[\[([a-z0-9 ]*)\]\]/gi, "<b>$1</b>")
-		// Remove named internal links
-		.replace(/\[\[[a-z0-9 ]*\|([a-z0-9 ]*)\]\]/gi, "<b>$1</b>")
 		// Remove external image links
 		.replace(/!\[.*\]\(.*\)/gi, "")
-		// Remove markdown clutter
-		.replace(/#|!\[\[.*\]\]/gi, "")
+		// Remove tags
+		.replace(/#[a-zA-Z\d]*/gi, "")
+		// Remove internal images ![[Pasted image 20230418232101.png]]
+		.replace(/!\[\[.*\]\]/gi, "")
 		// Trim the text
 		.trim();
 	return out;

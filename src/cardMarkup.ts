@@ -1,11 +1,12 @@
+import { MarkdownRenderChild, MarkdownRenderer } from "obsidian";
+import { isDefined, createElementShort } from "~/utils";
+
 import type {
 	MarkdownCodeBlockTimelineProcessingContext,
 	CardContent,
 	AutoTimelineSettings,
 	AbstractDate,
 } from "~/types";
-
-import { isDefined, createElementShort } from "~/utils";
 
 /**
  * Generates a card in the DOM based on given ccontext.
@@ -57,11 +58,19 @@ export function createCardFromBuiltContext(
 		getDateText(cardContent, settings).trim()
 	);
 
-	createElementShort(
+	const markdownTextWrapper = createElementShort(
 		cardTextWraper,
-		"p",
-		"aat-card-body",
-		body ? body : "No body for this note :("
+		"div",
+		"aat-card-body"
+	);
+	const rendered = new MarkdownRenderChild(markdownTextWrapper);
+
+	rendered.containerEl = markdownTextWrapper;
+	MarkdownRenderer.renderMarkdown(
+		body ? body : "No body for this note :(",
+		markdownTextWrapper,
+		file.path,
+		rendered
 	);
 }
 
