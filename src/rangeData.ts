@@ -170,8 +170,7 @@ function findBoundaries(
 			"No first over found - Can't draw range since there are no other two start date to referrence it's position"
 		);
 
-	// TODO find a way to loop back to last equal memeber.
-	const lastUnderIndex = findLastIndex(
+	const firstLastUnderIndex = findLastIndex(
 		collection,
 		({ cardData: { startDate } }) =>
 			isDefined(startDate)
@@ -179,7 +178,19 @@ function findBoundaries(
 				: false
 	);
 
-	if (lastUnderIndex === -1)
+	const lastUnderIndex = collection.findIndex(
+		({ cardData: { startDate } }, index) => {
+			return (
+				compareAbstractDates(
+					startDate,
+					collection[firstLastUnderIndex].cardData.startDate
+				) === 0 && !!index
+				// The !!index makes sure the returned element is not the card itself.
+			);
+		}
+	);
+
+	if (lastUnderIndex === -1 || firstLastUnderIndex === -1)
 		throw new Error(
 			"No last under found - Can't draw range since there are no other two start date to referrence it's position"
 		);
