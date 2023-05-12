@@ -27,13 +27,13 @@ export function getAllRangeData(collection: CompleteCardContext[]) {
 				cardData: { startDate, endDate },
 			} = relatedCardData;
 
+			if (!isDefined(startDate) || !isDefined(endDate))
+				return accumulator;
 			if (
-				!isDefined(startDate) ||
-				!isDefined(endDate) ||
-				endDate === false
+				endDate !== true &&
+				compareAbstractDates(endDate, startDate) < 0
 			)
 				return accumulator;
-			if (endDate !== true && endDate < startDate) return accumulator;
 
 			const timelineLength = timelineRootElement.offsetHeight;
 			const targetCard = cardListRootElement.children.item(
@@ -112,8 +112,6 @@ function findEndPositionForDate(
 			rootElement,
 			indexOffset
 		);
-		// TODO find a way to normalize strings and convert them to a ranked number
-		// find what digit to compare and then use them for the in/lerps ?
 		const [inLerpStart, inLerpEnd, targetInLerpDate] = getInLerpValues(
 			start.date,
 			end.date,
@@ -172,6 +170,7 @@ function findBoundaries(
 			"No first over found - Can't draw range since there are no other two start date to referrence it's position"
 		);
 
+	// TODO find a way to loop back to last equal memeber.
 	const lastUnderIndex = findLastIndex(
 		collection,
 		({ cardData: { startDate } }) =>
@@ -185,13 +184,25 @@ function findBoundaries(
 			"No last under found - Can't draw range since there are no other two start date to referrence it's position"
 		);
 
+	const startElement = getChildAtIndexInHTMLElement(
+		rootElement,
+		lastUnderIndex + indexOffset
+	);
+	const startDate = collection[lastUnderIndex].cardData
+		.startDate as AbstractDate;
+	const startIsMoreThanOneCardAway = lastUnderIndex > 1;
+	const shouldOffsetStartToBottomOfCard =
+		startIsMoreThanOneCardAway &&
+		compareAbstractDates(startDate, date) !== 0;
+
 	return {
 		start: {
-			top: getChildAtIndexInHTMLElement(
-				rootElement,
-				lastUnderIndex + indexOffset
-			).offsetTop,
-			date: collection[lastUnderIndex].cardData.startDate as AbstractDate,
+			top:
+				startElement.offsetTop +
+				(shouldOffsetStartToBottomOfCard
+					? startElement.innerHeight
+					: 0),
+			date: startDate,
 		},
 		end: {
 			top: getChildAtIndexInHTMLElement(

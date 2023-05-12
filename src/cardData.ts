@@ -77,7 +77,12 @@ async function extractCardData(
 			getAbstractDateFromMetadata(
 				context,
 				settings.metadataKeyEventEndDate
-			) ?? getMetadataKey(c, settings.metadataKeyEventEndDate, "boolean"),
+			) ??
+			(isDefined(
+				getMetadataKey(c, settings.metadataKeyEventEndDate, "boolean")
+			)
+				? true
+				: undefined),
 	} as const;
 }
 export type FnExtractCardData = typeof extractCardData;

@@ -58,10 +58,13 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 			.filter(isDefined)
 			.sort(
 				(
-					{ cardData: { startDate: a } },
-					{ cardData: { startDate: b } }
+					{ cardData: { startDate: a, endDate: aE } },
+					{ cardData: { startDate: b, endDate: bE } }
 				) => {
-					return compareAbstractDates(a, b);
+					const score = compareAbstractDates(a, b);
+
+					if (score) return score;
+					return compareAbstractDates(aE, bE);
 				}
 			);
 		cardDataTime();
