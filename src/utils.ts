@@ -55,9 +55,7 @@ export function findLastIndex<T extends unknown[]>(
 	predicate: (arg: T[number]) => boolean
 ): number {
 	const length = arr ? arr.length : 0;
-	if (!length) {
-		return -1;
-	}
+	if (!length) return -1;
 	let index = length - 1;
 
 	while (index--) if (predicate(arr[index])) return index;
@@ -148,15 +146,19 @@ export function createElementShort(
  * @returns 0 if they are equal 1 if a > b and -1 if a < b
  */
 export function compareAbstractDates(
-	a: AbstractDate | undefined,
-	b: AbstractDate | undefined
+	a: AbstractDate | undefined | true,
+	b: AbstractDate | undefined | true
 ) {
 	// Since could be numbers we can't check with `!`
 	if (!isDefined(a) && !isDefined(b)) return 0;
 	if (!isDefined(a)) return 1;
 	if (!isDefined(b)) return -1;
 
-	for (let index = 0; index < a.length; index++)
-		if (a[index] !== b[index]) return a[index] > b[index] ? 1 : -1;
+	if (a === true && b !== true) return 1;
+	if (b === true && a !== true) return -1;
+	if (a === true && b === true) return 0;
+	if (a !== true && b !== true)
+		for (let index = 0; index < a.length; index++)
+			if (a[index] !== b[index]) return a[index] > b[index] ? 1 : -1;
 	return 0;
 }
