@@ -20,10 +20,12 @@ export function setupTimelineCreation(
 ) {
 	const { vault, metadataCache } = app;
 	const fileArray = vault.getMarkdownFiles();
-	const cardListRootElement = element.createDiv();
-	const timelineRootElement = element.createDiv();
+	const root = element.createDiv();
+	const cardListRootElement = root.createDiv();
+	const timelineRootElement = root.createDiv();
 
-	element.classList.add("aat-vertical-timeline");
+	element.classList.add("aat-root-container");
+	root.classList.add("aat-vertical-timeline");
 	cardListRootElement.classList.add("aat-card-list-root");
 	timelineRootElement.classList.add("aat-timeline-root");
 	const dataBundleArray = fileArray.reduce((accumulator, file) => {

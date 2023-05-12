@@ -7,6 +7,11 @@ If your plugin does not need CSS, delete this file.
 
 */
 
+.aat-root-container {
+	container-type: inline-size;
+	container-name: root;
+}
+
 .aat-vertical-timeline {
 	--timelineCursorWidth: 96px;
 
@@ -26,6 +31,8 @@ If your plugin does not need CSS, delete this file.
 	gap: 24px;
 	grid-template-columns: 1fr;
 	position: relative;
+	container-type: inline-size;
+	container-name: cardList;
 }
 
 .aat-card-text-wraper,
@@ -127,6 +134,32 @@ div.aat-range-element {
 
 div.aat-range-element:hover {
 	opacity: 1;
+}
+
+@container cardList (max-width: 480px) {
+	a.internal-link.aat-card.aat-card-has-image {
+		grid-template-columns: 1fr !important;
+	}
+
+	img.aat-card-image {
+		transform: none !important;
+		width: 100% !important;
+	}
+
+	header.aat-card-head-wrap {
+		display: grid !important;
+		grid-template-columns: 1fr !important;
+	}
+}
+
+@container root (max-width: 320px) {
+	.aat-vertical-timeline {
+		grid-template-columns: 1fr !important;
+	}
+
+	.aat-timeline-root {
+		display: none;
+	}
 }
 
 /** VUE COMPONENTS **/
