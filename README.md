@@ -25,6 +25,16 @@ This will scan the vault for all notes flagged to render inside the `timeline` t
 
 Behind the scenes the plugin will parse the content and generate a card for each note. The only manual content needed to create a card in a timeline is the start date.
 
+#### Aditional metadata keys
+
+Sometimes the content of a note is not exacly what you want to appear in the card.
+To remedy that, the plugin exposes three keys that are by default:
+```yml
+aat-event-title: New title # Used to override the title of a generated card.
+aat-event-body: New card body # Used to override the text content of a generated card.
+aat-event-picture: https://f4.bcbits.com/img/a1344871335_65 #Some external link, support for internal links is missing for now
+```
+
 #### Avanced date formats
 
 Sometimes good old `year-month-day` timeformat just doesn't cut it for your world and you have a more complex timesystem in use.
