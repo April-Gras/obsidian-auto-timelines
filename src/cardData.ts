@@ -101,10 +101,11 @@ function getBodyFromContextOrDocument(
 ): string | null {
 	const {
 		cachedMetadata: { frontmatter: metadata },
+		settings: { metadataKeyEventBodyOverride },
 	} = context;
-	const overrideBody = metadata?.["aat-body"] ?? null;
+	const overrideBody = metadata?.[metadataKeyEventBodyOverride] ?? null;
 
-	if (!rawFileText) return overrideBody;
+	if (!rawFileText || overrideBody) return overrideBody;
 
 	const rawTextArray = rawFileText.split("\n");
 	rawTextArray.shift();
@@ -138,13 +139,13 @@ function getImageUrlFromContextOrDocument(
 		cachedMetadata: { frontmatter: metadata },
 		file: currentFile,
 		app,
-		settings,
+		settings: { metadataKeyEventPictureOverride },
 	} = context;
 	const {
 		vault,
 		metadataCache: { getFirstLinkpathDest },
 	} = app;
-	const override = metadata?.[settings.metadataKeyEventPictureOverride];
+	const override = metadata?.[metadataKeyEventPictureOverride];
 
 	if (override) return override;
 	const internalLinkMatch = rawFileText.match(/!\[\[(?<src>.*)\]\]/);
