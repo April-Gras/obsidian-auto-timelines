@@ -31,7 +31,7 @@ const fantasyCalendarPreset: Record<
 	string
 > = {
 	metadataKeyEventEndDate: "fc-end",
-	metadataKeyEventStartDate: "fc-start",
+	metadataKeyEventStartDate: "fc-date",
 	metadataKeyEventTitleOverride: "fc-display-name",
 };
 const fantasyCalendarKeys = Object.keys(
