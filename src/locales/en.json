@@ -1,7 +1,14 @@
 {
+	"nav": {
+		"title": {
+			"index": "Generic settings",
+			"date-formats": "Date format settings"
+		}
+	},
 	"settings": {
 		"title": {
 			"generic-settings": "Generic settings",
+			"date-formats": "Date formating",
 			"slot-presets": "Enable presets for {slot}"
 		},
 		"label": {

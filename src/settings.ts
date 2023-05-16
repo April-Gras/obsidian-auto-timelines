@@ -5,7 +5,7 @@ import type AprilsAutomaticTimelinesPlugin from "~/../main";
 
 import { createApp, ref } from "vue";
 import { createI18n } from "vue-i18n";
-import VSettings from "~/views/VSettings.vue";
+import VApp from "~/views/App.vue";
 //@ts-expect-error
 import en from "~/locales/en.json";
 
@@ -51,8 +51,8 @@ export class TimelineSettingTab extends PluginSettingTab {
 		});
 
 		createApp({
-			components: { VSettings },
-			template: "<VSettings :value='value' @update:value='save' />",
+			components: { VApp },
+			template: "<VApp :value='value' @update:value='save' />",
 			setup: () => {
 				const value = ref(this.plugin.settings);
 				return {

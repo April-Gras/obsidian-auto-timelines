@@ -1,13 +1,16 @@
 <script lang="ts" setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 
 import VHeader from "~/components/VHeader.vue";
 import VInput from "~/components/VInput.vue";
 import VCheckbox from "~/components/VCheckbox.vue";
 
+import { useGenericProps } from "~/composables/useGenericProps";
+
 import { DEFAULT_METADATA_KEYS } from "~/settings";
 
 import type { AutoTimelineSettings } from "~/types";
+import type { NavigationTarget } from "~/components/VNav.vue";
 
 const props = defineProps<{
 	value: AutoTimelineSettings;
@@ -17,8 +20,8 @@ const emit = defineEmits<{
 	(e: "update:value", payload: Partial<AutoTimelineSettings>): void;
 }>();
 
-const settingKeys = Object.keys(
-	DEFAULT_METADATA_KEYS
+const generalSettingKeys = Object.keys(DEFAULT_METADATA_KEYS).filter((e) =>
+	e.startsWith("metadataKey")
 ) as (keyof AutoTimelineSettings)[];
 
 const fantasyCalendarPreset: Record<
@@ -60,9 +63,9 @@ const handleUpdateValueFantasyCalendarCheckbox = () => {
 <template>
 	<div class="v-grid-display">
 		<section class="v-grid-display">
-			<VHeader>{{ $t('settings.title["generic-settings"]') }}</VHeader>
+			<VHeader>{{ $t("settings.title.generic-settings") }}</VHeader>
 			<VInput
-				v-for="key in settingKeys"
+				v-for="key in generalSettingKeys"
 				:value="props.value[key]"
 				@update:value="emit('update:value', { [key]: $event })"
 				:input-id="key"
@@ -97,6 +100,10 @@ const handleUpdateValueFantasyCalendarCheckbox = () => {
 					$t("settings.description.fantasyCalendarCheckbox")
 				}}</template>
 			</VCheckbox>
+		</section>
+		<hr />
+		<section class="v-grid-display">
+			<VHeader>{{ $t("settings.title.date-formats") }}</VHeader>
 		</section>
 	</div>
 </template>
