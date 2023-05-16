@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import VHeader from "~/components/VHeader.vue";
+
 import type { AutoTimelineSettings } from "~/types";
 
 const props = defineProps<{
@@ -6,10 +8,12 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(e: "update:value", payload: Partial<AutoTimelineSettings>): void;
+	"update:value": [payload: Partial<AutoTimelineSettings>];
 }>();
 </script>
 
 <template>
-	<div>hehe</div>
+	<section class="v-grid-display">
+		<VHeader>{{ $t("") }}</VHeader>
+	</section>
 </template>

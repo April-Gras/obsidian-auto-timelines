@@ -1,15 +1,15 @@
 import { PluginSettingTab } from "obsidian";
 
-import type { App } from "obsidian";
-import type AprilsAutomaticTimelinesPlugin from "~/../main";
-
 import { createApp, ref } from "vue";
 import { createI18n } from "vue-i18n";
 import VApp from "~/views/App.vue";
 //@ts-expect-error
 import en from "~/locales/en.json";
 
+import type { App as ObsidianApp } from "obsidian";
+import type AprilsAutomaticTimelinesPlugin from "~/../main";
 import type { AutoTimelineSettings } from "./types";
+import type { App as VueApp } from "vue";
 
 /**
  * The keys looked for when processing metadata in a single note.
@@ -31,10 +31,12 @@ export const __VUE_PROD_DEVTOOLS__ = true;
  */
 export class TimelineSettingTab extends PluginSettingTab {
 	plugin: AprilsAutomaticTimelinesPlugin;
+	vueApp: VueApp<Element> | null;
 
-	constructor(app: App, plugin: AprilsAutomaticTimelinesPlugin) {
+	constructor(app: ObsidianApp, plugin: AprilsAutomaticTimelinesPlugin) {
 		super(app, plugin);
 		this.plugin = plugin;
+		this.vueApp = null;
 	}
 
 	display(): void {
@@ -50,7 +52,7 @@ export class TimelineSettingTab extends PluginSettingTab {
 			allowComposition: true,
 		});
 
-		createApp({
+		this.vueApp = createApp({
 			components: { VApp },
 			template: "<VApp :value='value' @update:value='save' />",
 			setup: () => {
@@ -68,8 +70,14 @@ export class TimelineSettingTab extends PluginSettingTab {
 				};
 			},
 			methods: {},
-		})
-			.use(i18n)
-			.mount(this.containerEl);
+		});
+
+		this.vueApp.use(i18n).mount(this.containerEl);
+	}
+
+	hide() {
+		if (!this.vueApp) return;
+		this.vueApp.unmount();
+		this.vueApp = null;
 	}
 }

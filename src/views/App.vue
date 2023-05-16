@@ -12,7 +12,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(e: "update:value", payload: Partial<AutoTimelineSettings>): void;
+	"update:value": [payload: Partial<AutoTimelineSettings>];
 }>();
 
 const currentRoute = ref("index" as NavigationTarget);

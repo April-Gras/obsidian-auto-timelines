@@ -5,19 +5,16 @@ import VHeader from "~/components/VHeader.vue";
 import VInput from "~/components/VInput.vue";
 import VCheckbox from "~/components/VCheckbox.vue";
 
-import { useGenericProps } from "~/composables/useGenericProps";
-
 import { DEFAULT_METADATA_KEYS } from "~/settings";
 
 import type { AutoTimelineSettings } from "~/types";
-import type { NavigationTarget } from "~/components/VNav.vue";
 
 const props = defineProps<{
 	value: AutoTimelineSettings;
 }>();
 
 const emit = defineEmits<{
-	(e: "update:value", payload: Partial<AutoTimelineSettings>): void;
+	"update:value": [payload: Partial<AutoTimelineSettings>];
 }>();
 
 const generalSettingKeys = Object.keys(DEFAULT_METADATA_KEYS).filter((e) =>
