@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { computed, ref } from "vue";
+import { computed } from "vue";
 
 import VHeader from "~/components/VHeader.vue";
 import VInput from "~/components/VInput.vue";
@@ -97,10 +97,6 @@ const handleUpdateValueFantasyCalendarCheckbox = () => {
 					$t("settings.description.fantasyCalendarCheckbox")
 				}}</template>
 			</VCheckbox>
-		</section>
-		<hr />
-		<section class="v-grid-display">
-			<VHeader>{{ $t("settings.title.date-formats") }}</VHeader>
 		</section>
 	</div>
 </template>

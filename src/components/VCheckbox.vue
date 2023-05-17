@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { value } = defineProps<{
+const props = defineProps<{
 	value: boolean;
 	inputId: string;
 }>();
@@ -9,7 +9,7 @@ const emit = defineEmits<{
 }>();
 
 function handleInputEvent() {
-	emit("update:value", !value);
+	emit("update:value", !props.value);
 }
 </script>
 

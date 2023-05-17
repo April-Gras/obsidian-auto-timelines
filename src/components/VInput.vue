@@ -16,7 +16,7 @@ function handleInputEvent(event: Event) {
 
 <template>
 	<div class="v-input-wrap">
-		<div>
+		<div v-if="$slots['label'] || $slots['description']">
 			<label
 				:for="inputId"
 				v-if="$slots['label']"
@@ -24,7 +24,10 @@ function handleInputEvent(event: Event) {
 			>
 				<slot name="label" />
 			</label>
-			<summary class="setting-item-description">
+			<summary
+				class="setting-item-description"
+				v-if="$slots['description']"
+			>
 				<slot name="description" />
 			</summary>
 		</div>

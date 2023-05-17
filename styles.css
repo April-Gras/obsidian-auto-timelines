@@ -163,10 +163,22 @@ div.aat-range-element:hover {
 }
 
 /** VUE COMPONENTS **/
-.v-grid-display {
+.v-grid-display,
+.v-grid-display-2 {
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: 24px;
+}
+
+.v-grid-display-2 {
+	grid-template-columns: 1fr 1fr;
+}
+
+.v-inline-flex-display {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	justify-content: justify-start;
 }
 
 .v-input-wrap {

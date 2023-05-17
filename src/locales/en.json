@@ -1,4 +1,10 @@
 {
+	"common": {
+		"previous": "Previous",
+		"next": "Next",
+		"start": "Start",
+		"add": "Add"
+	},
 	"nav": {
 		"title": {
 			"index": "Generic settings",
@@ -20,7 +26,11 @@
 			"dateParserRegex": "Date parser regex",
 			"dateParserGroupPriority": "Date parser group priority",
 			"dateDisplayFormat": "Date display format",
-			"fantasyCalendarCheckbox": "Enable fantasy calendar integration"
+			"fantasyCalendarCheckbox": "Enable fantasy calendar integration",
+			"useAdvancedMode": "Use advanced mode / edit regexes"
+		},
+		"button": {
+			"resetToDefault": "Reset to default"
 		},
 		"description": {
 			"metadataKeyEventStartDate": "The key that determines the start of an event in a note",
@@ -31,7 +41,8 @@
 			"dateParserRegex": "The regex used to parse your date. It needs to include the same amount of capture group as the next setting input. If you're unfamilliar with regexes and / or capture groups I would recommend to stick to the preset.",
 			"dateParserGroupPriority": "No spaces and make sure to separate every entry with a \",\". This value is used to order the parsed tokens. For example if your custom regex pulls the year month and day out of a date, the natural order should be \"year,month,day\". Note that you should have as many entries as your regex has capture groups. See presets for inspiration.",
 			"dateDisplayFormat": "This is the end format the date should be displayed as in the actual timeline cards. You don't actually need to include every parsed member here. Following are previous examples \"{year}\" is a perfectly acceptable format",
-			"fantasyCalendarCheckbox": "This will preset all relevant keys in the settings to watch fantasy calendar uses. Namely the title override, the start date and end date keys"
+			"fantasyCalendarCheckbox": "This will preset all relevant keys in the settings to watch fantasy calendar uses. Namely the title override, the start date and end date keys",
+			"dateFormatFlowOnboarding": "For this plugin to work it needs to be fed a couple of informations regarding dates and how to sort them.Right now token priority is as follow {dateParserGroupPriority} and output is formated using {dateDisplayFormat}. To customize this you can either use the more user friendly flow by pressing start or just edit the values yourself by hand. Worst case scenario you can also reset to default in the advanced section."
 		}
 	}
 }

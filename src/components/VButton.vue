@@ -2,11 +2,18 @@
 defineProps({
 	hasAccent: {
 		type: Boolean,
-		required: true,
+		required: false,
+		default: false,
+	},
+	disabled: {
+		type: Boolean,
+		required: false,
 		default: false,
 	},
 });
 </script>
 <template>
-	<button :class="{ 'mod-cta': hasAccent }"><slot /></button>
+	<button :disabled="disabled" :class="{ 'mod-cta': hasAccent }">
+		<slot />
+	</button>
 </template>

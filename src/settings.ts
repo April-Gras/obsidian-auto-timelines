@@ -22,7 +22,7 @@ export const DEFAULT_METADATA_KEYS = {
 	metadataKeyEventPictureOverride: "aat-event-picture",
 	dateParserRegex: "(?<year>-?[0-9]*)-(?<month>-?[0-9]*)-(?<day>-?[0-9]*)",
 	dateParserGroupPriority: "year,month,day",
-	dateDisplayFormat: "{year}/{month}/{day}",
+	dateDisplayFormat: "{day}/{month}/{year}",
 };
 
 export const __VUE_PROD_DEVTOOLS__ = true;
