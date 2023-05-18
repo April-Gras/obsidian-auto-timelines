@@ -28,16 +28,18 @@ const useAdvancedMode = ref(false);
 			}}</template>
 		</VCheckbox>
 		<Transition mode="out-in">
-			<VAdvancedDateFormats
-				:value="value"
-				@update:value="emit('update:value', $event)"
-				v-if="useAdvancedMode"
-			/>
-			<VCreateDateFormatFlow
-				v-else
-				:value="value"
-				@update:value="emit('update:value', $event)"
-			/>
+			<KeepAlive>
+				<VAdvancedDateFormats
+					:value="value"
+					@update:value="emit('update:value', $event)"
+					v-if="useAdvancedMode"
+				/>
+				<VCreateDateFormatFlow
+					v-else
+					:value="value"
+					@update:value="emit('update:value', $event)"
+				/>
+			</KeepAlive>
 		</Transition>
 	</article>
 </template>

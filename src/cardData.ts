@@ -192,7 +192,19 @@ function getAbstractDateFromMetadata(
 	const stringValue = getMetadataKey(cachedMetadata, key, "string");
 
 	if (!stringValue) return undefined;
-	const matches = stringValue.match(settings.dateParserRegex);
+	return getAbstractDateFromData(
+		groupsToCheck,
+		stringValue,
+		settings.dateParserRegex
+	);
+}
+
+export function getAbstractDateFromData(
+	groupsToCheck: string[],
+	metadataString: string,
+	reg: RegExp | string
+): AbstractDate | undefined {
+	const matches = metadataString.match(reg);
 
 	if (!matches || !matches.groups) return undefined;
 

@@ -62,6 +62,7 @@ const handleUpdateValueFantasyCalendarCheckbox = () => {
 		<section class="v-grid-display">
 			<VHeader>{{ $t("settings.title.generic-settings") }}</VHeader>
 			<VInput
+				type="text"
 				v-for="key in generalSettingKeys"
 				:value="props.value[key]"
 				@update:value="emit('update:value', { [key]: $event })"

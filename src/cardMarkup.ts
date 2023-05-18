@@ -97,10 +97,17 @@ function getDateText(
  * @param { AutoTimelineSettings } param1 - The settings of the plugin.
  * @returns { string } the formated representation of a given date based off the plugins settings.
  */
-function formatAbstractDate(
+export function formatAbstractDate(
 	date: AbstractDate | boolean,
-	{ dateDisplayFormat, dateParserGroupPriority }: AutoTimelineSettings
+	{
+		dateDisplayFormat,
+		dateParserGroupPriority,
+	}: Pick<
+		AutoTimelineSettings,
+		"dateDisplayFormat" | "dateParserGroupPriority"
+	>
 ): string {
+	console.log({ date, dateDisplayFormat, dateParserGroupPriority });
 	if (typeof date === "boolean") return "now";
 	const prioArray = dateParserGroupPriority.split(",");
 	let output = dateDisplayFormat.toString();

@@ -10,6 +10,7 @@ const emit = defineEmits<{
 }>();
 
 function handleAddAtEnd() {
+	if (!props.modelValue[props.modelValue.length - 1].length) return;
 	emit("update:modelValue", [...props.modelValue, ""]);
 }
 
@@ -23,16 +24,18 @@ function handleRemoveAtIndex(index: number) {
 function editTokenAtIndex(index: number, value: string) {
 	const output = [...props.modelValue];
 
-	output[index] = value;
+	output[index] = value.trim();
 	emit("update:modelValue", output);
 }
 </script>
 
 <template>
 	<div class="v-grid-display">
+		<details>{{ $t("settings.details.createDateToken") }}</details>
 		<div v-for="(value, index) in modelValue" class="v-inline-flex-display">
 			<VButton @click="handleRemoveAtIndex(index)">-</VButton>
 			<VInput
+				type="text"
 				:value="value"
 				:input-id="`create-date-token-${index}`"
 				@update:value="editTokenAtIndex(index, $event)"

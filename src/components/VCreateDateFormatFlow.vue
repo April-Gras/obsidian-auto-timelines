@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { ref } from "vue";
 
-import VCreateDateTokens from "./VCreateDateTokens.vue";
 import VButton from "./VButton.vue";
+import VCreateDateTokens from "./VCreateDateTokens.vue";
+import VCreateInputFormat from "./VCreateInputFormat.vue";
+import VCreateOutputFormat from "./VCreateOutputFormat.vue";
 
 import type { AutoTimelineSettings } from "~/types";
 
-const props = defineProps<{
+defineProps<{
 	value: AutoTimelineSettings;
 }>();
 
-const emit = defineEmits<{
+defineEmits<{
 	"update:value": [payload: Partial<AutoTimelineSettings>];
 }>();
 
@@ -23,6 +25,8 @@ enum FlowState {
 const flowProgress = ref(FlowState["not-started"] as FlowState);
 
 const tokens = ref(["year", "month", "day"] as string[]);
+const inputRegex = ref("");
+const outputTemplate = ref("");
 
 function handlePreviousClick() {
 	switch (flowProgress.value) {
@@ -62,6 +66,7 @@ function handleNextClick() {
 			<i18n-t
 				keypath="settings.description.dateFormatFlowOnboarding"
 				tag="div"
+				scope="global"
 			>
 				<template v-for="(propValue, key) in value" #[key]>
 					<b>{{ propValue }}</b>
@@ -70,23 +75,36 @@ function handleNextClick() {
 			<VButton
 				@click="flowProgress = FlowState['token-creation']"
 				has-accent
-				>{{ $t("common.start") }}</VButton
 			>
+				{{ $t("common.start") }}
+			</VButton>
 		</section>
 		<section class="v-grid-display" v-else>
 			<Transition mode="out-in">
-				<VCreateDateTokens
-					v-if="flowProgress === FlowState['token-creation']"
-					v-model="tokens"
-				/>
+				<KeepAlive>
+					<VCreateDateTokens
+						v-if="flowProgress === FlowState['token-creation']"
+						v-model="tokens"
+					/>
+					<VCreateInputFormat
+						v-model:value="inputRegex"
+						:tokens="tokens"
+						v-else-if="flowProgress === FlowState['input-format']"
+					/>
+					<VCreateOutputFormat
+						v-model:value="outputTemplate"
+						:tokens="tokens"
+						v-else-if="flowProgress === FlowState['output-format']"
+					/>
+				</KeepAlive>
 			</Transition>
 			<div class="v-grid-display-2">
-				<VButton @click="handlePreviousClick">{{
-					$t("common.previous")
-				}}</VButton>
-				<VButton @click="handleNextClick" has-accent>{{
-					$t("common.next")
-				}}</VButton>
+				<VButton @click="handlePreviousClick">
+					{{ $t("common.previous") }}
+				</VButton>
+				<VButton @click="handleNextClick" has-accent>
+					{{ $t("common.next") }}
+				</VButton>
 			</div>
 		</section>
 	</Transition>

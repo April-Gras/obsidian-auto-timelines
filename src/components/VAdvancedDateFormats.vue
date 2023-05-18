@@ -35,6 +35,7 @@ function handleResetToDefault(): void {
 			$t("settings.button.resetToDefault")
 		}}</VButton>
 		<VInput
+			type="text"
 			v-for="key in targetKeys"
 			:value="props.value[key]"
 			@update:value="emit('update:value', { [key]: $event })"
