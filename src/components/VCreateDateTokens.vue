@@ -31,7 +31,7 @@ function editTokenAtIndex(index: number, value: string) {
 
 <template>
 	<div class="v-grid-display">
-		<details>{{ $t("settings.details.createDateToken") }}</details>
+		<p>{{ $t("settings.details.createDateToken") }}</p>
 		<div v-for="(value, index) in modelValue" class="v-inline-flex-display">
 			<VButton @click="handleRemoveAtIndex(index)">-</VButton>
 			<VInput

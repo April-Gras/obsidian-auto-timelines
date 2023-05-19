@@ -8,7 +8,7 @@ import VHeader from "~/components/VHeader.vue";
 
 import type { AutoTimelineSettings } from "~/types";
 
-const props = defineProps<{
+defineProps<{
 	value: AutoTimelineSettings;
 }>();
 

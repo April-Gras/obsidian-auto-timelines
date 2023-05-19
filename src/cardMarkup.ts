@@ -107,7 +107,6 @@ export function formatAbstractDate(
 		"dateDisplayFormat" | "dateParserGroupPriority"
 	>
 ): string {
-	console.log({ date, dateDisplayFormat, dateParserGroupPriority });
 	if (typeof date === "boolean") return "now";
 	const prioArray = dateParserGroupPriority.split(",");
 	let output = dateDisplayFormat.toString();

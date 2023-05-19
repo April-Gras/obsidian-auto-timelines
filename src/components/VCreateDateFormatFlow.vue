@@ -5,6 +5,7 @@ import VButton from "./VButton.vue";
 import VCreateDateTokens from "./VCreateDateTokens.vue";
 import VCreateInputFormat from "./VCreateInputFormat.vue";
 import VCreateOutputFormat from "./VCreateOutputFormat.vue";
+import VDateFormatCreationConfirmation from "./VDateFormatCreationConfirmation.vue";
 
 import type { AutoTimelineSettings } from "~/types";
 
@@ -12,7 +13,7 @@ defineProps<{
 	value: AutoTimelineSettings;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
 	"update:value": [payload: Partial<AutoTimelineSettings>];
 }>();
 
@@ -21,12 +22,13 @@ enum FlowState {
 	"token-creation",
 	"input-format",
 	"output-format",
+	"final",
 }
 const flowProgress = ref(FlowState["not-started"] as FlowState);
 
 const tokens = ref(["year", "month", "day"] as string[]);
 const inputRegex = ref("");
-const outputTemplate = ref("");
+const outputFormat = ref("");
 
 function handlePreviousClick() {
 	switch (flowProgress.value) {
@@ -50,10 +52,19 @@ function handleNextClick() {
 		case FlowState["input-format"]:
 			return (flowProgress.value = FlowState["output-format"]);
 		case FlowState["output-format"]:
-			return (flowProgress.value = FlowState["not-started"]);
+			return (flowProgress.value = FlowState["final"]);
 		default:
 			return (flowProgress.value = FlowState["not-started"]);
 	}
+}
+
+function handleSave() {
+	emit("update:value", {
+		dateDisplayFormat: outputFormat.value,
+		dateParserGroupPriority: tokens.value.join(","),
+		dateParserRegex: inputRegex.value,
+	});
+	flowProgress.value = FlowState["not-started"];
 }
 </script>
 
@@ -79,7 +90,10 @@ function handleNextClick() {
 				{{ $t("common.start") }}
 			</VButton>
 		</section>
-		<section class="v-grid-display" v-else>
+		<section
+			class="v-grid-display"
+			v-else-if="flowProgress !== FlowState['final']"
+		>
 			<Transition mode="out-in">
 				<KeepAlive>
 					<VCreateDateTokens
@@ -92,7 +106,7 @@ function handleNextClick() {
 						v-else-if="flowProgress === FlowState['input-format']"
 					/>
 					<VCreateOutputFormat
-						v-model:value="outputTemplate"
+						v-model:value="outputFormat"
 						:tokens="tokens"
 						v-else-if="flowProgress === FlowState['output-format']"
 					/>
@@ -106,6 +120,14 @@ function handleNextClick() {
 					{{ $t("common.next") }}
 				</VButton>
 			</div>
+		</section>
+		<section v-else>
+			<VDateFormatCreationConfirmation
+				:tokens="tokens"
+				:input-regex="inputRegex"
+				:output-format="outputFormat"
+				@save="handleSave"
+			/>
 		</section>
 	</Transition>
 </template>
