@@ -163,10 +163,22 @@ div.aat-range-element:hover {
 }
 
 /** VUE COMPONENTS **/
-.v-grid-display {
+.v-grid-display,
+.v-grid-display-2 {
 	display: grid;
 	grid-template-columns: 1fr;
 	gap: 24px;
+}
+
+.v-grid-display-2 {
+	grid-template-columns: 1fr 1fr;
+}
+
+.v-inline-flex-display {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	justify-content: justify-start;
 }
 
 .v-input-wrap {
@@ -179,4 +191,46 @@ div.aat-range-element:hover {
 	/* 40 being the width of those little switch checkboxes */
 	grid-template-columns: auto 40px;
 	gap: 24px;
+}
+
+.v-nav > ol {
+	display: flex;
+	gap: 24px;
+	width: 100%;
+}
+
+.v-nav > ol {
+	padding: 0;
+}
+
+.v-nav > ol > li {
+	list-style-type: none;
+	padding: 8px 16px;
+	padding-left: 0;
+	font-size: 20px;
+	font-weight: 600;
+	cursor: pointer;
+	border-bottom: 1px solid var(--color-base-30);
+	opacity: 0.8;
+	text-align: center;
+	transition: 150ms ease-in-out;
+}
+
+.v-nav > ol > li:hover:not(.v-nav-selected-route) {
+	opacity: 0.9;
+}
+
+.v-nav > ol > li.v-nav-selected-route {
+	opacity: 1;
+	color: var(--color-accent);
+}
+
+.v-enter-active,
+.v-leave-active {
+	transition: opacity 0.15s ease-in-out;
+}
+
+.v-enter-from,
+.v-leave-to {
+	opacity: 0;
 }

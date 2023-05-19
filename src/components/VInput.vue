@@ -1,22 +1,42 @@
-<script setup lang="ts">
-defineProps<{
-	value: string;
+<script setup lang="ts" generic="T extends 'text' | 'number'">
+import { computed } from "vue";
+
+type V = T extends "number" ? number : string;
+
+const props = defineProps<{
+	value: V;
 	inputId: string;
+	type: T;
 }>();
 
 const emit = defineEmits<{
-	(e: "update:value", payload: string): void;
+	(e: "update:value", payload: V): void;
 }>();
 
 function handleInputEvent(event: Event) {
 	if (!event.target) return;
-	emit("update:value", (event.target as HTMLInputElement).value);
+	switch (props.type) {
+		case "number":
+			return emit(
+				"update:value",
+				// @ts-expect-error
+				Number((event.target as HTMLInputElement).value)
+			);
+		case "text":
+			return emit(
+				"update:value",
+				// @ts-expect-error
+				(event.target as HTMLInputElement).value
+			);
+	}
 }
+
+const typedType = computed(() => props.type.toString());
 </script>
 
 <template>
 	<div class="v-input-wrap">
-		<div>
+		<div v-if="$slots['label'] || $slots['description']">
 			<label
 				:for="inputId"
 				v-if="$slots['label']"
@@ -24,7 +44,10 @@ function handleInputEvent(event: Event) {
 			>
 				<slot name="label" />
 			</label>
-			<summary class="setting-item-description">
+			<summary
+				class="setting-item-description"
+				v-if="$slots['description']"
+			>
 				<slot name="description" />
 			</summary>
 		</div>
@@ -32,7 +55,7 @@ function handleInputEvent(event: Event) {
 		<input
 			:id="inputId"
 			:value="value"
-			type="text"
+			:type="typedType"
 			@input="handleInputEvent"
 		/>
 	</div>
