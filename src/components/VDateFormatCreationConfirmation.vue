@@ -7,7 +7,7 @@ defineProps<{
 	outputFormat: string;
 }>();
 
-defineEmits<{
+const emit = defineEmits<{
 	save: [void];
 }>();
 </script>
@@ -35,6 +35,8 @@ defineEmits<{
 			}}</b>
 		</p>
 		<p>{{ outputFormat }}</p>
-		<VButton has-accent>{{ $t("common.confirm") }}</VButton>
+		<VButton @click="emit('save')" has-accent>{{
+			$t("common.confirm")
+		}}</VButton>
 	</section>
 </template>

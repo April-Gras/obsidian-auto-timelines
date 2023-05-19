@@ -95,22 +95,20 @@ function handleSave() {
 			v-else-if="flowProgress !== FlowState['final']"
 		>
 			<Transition mode="out-in">
-				<KeepAlive>
-					<VCreateDateTokens
-						v-if="flowProgress === FlowState['token-creation']"
-						v-model="tokens"
-					/>
-					<VCreateInputFormat
-						v-model:value="inputRegex"
-						:tokens="tokens"
-						v-else-if="flowProgress === FlowState['input-format']"
-					/>
-					<VCreateOutputFormat
-						v-model:value="outputFormat"
-						:tokens="tokens"
-						v-else-if="flowProgress === FlowState['output-format']"
-					/>
-				</KeepAlive>
+				<VCreateDateTokens
+					v-if="flowProgress === FlowState['token-creation']"
+					v-model="tokens"
+				/>
+				<VCreateInputFormat
+					v-model:value="inputRegex"
+					:tokens="tokens"
+					v-else-if="flowProgress === FlowState['input-format']"
+				/>
+				<VCreateOutputFormat
+					v-model:value="outputFormat"
+					:tokens="tokens"
+					v-else-if="flowProgress === FlowState['output-format']"
+				/>
 			</Transition>
 			<div class="v-grid-display-2">
 				<VButton @click="handlePreviousClick">

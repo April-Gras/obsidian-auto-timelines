@@ -14,9 +14,7 @@ const emit = defineEmits<{
 	"update:value": [payload: string];
 }>();
 
-let abstractDate = ref(props.tokens.map(() => 25));
-
-onActivated(() => (abstractDate = ref(props.tokens.map(() => 25))));
+const abstractDate = ref(props.tokens.map(() => 25));
 
 onMounted(() =>
 	emit("update:value", props.tokens.map((token) => `{${token}}`).join("/"))
