@@ -174,7 +174,7 @@ function getImageUrlFromContextOrDocument(
  * @param { string } key - The target lookup key in the notes metadata object.
  * @returns { AbstractDate | undefined } the abstract date representation or undefined.
  */
-function getAbstractDateFromMetadata(
+export function getAbstractDateFromMetadata(
 	{ cachedMetadata, settings }: MarkdownCodeBlockTimelineProcessingContext,
 	key: string
 ): AbstractDate | undefined {

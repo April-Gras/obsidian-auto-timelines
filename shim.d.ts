@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/// <reference types="vite/client" />
+
 declare module "*.vue" {
-	import { ComponentOptions, DefineComponent } from "vue";
-	// const componentOptions: ComponentOptions;
-	// export default componentOptions;
-	const defineComponent: DefineComponent;
-	export default defineComponent;
+	import type { DefineComponent } from "vue";
+	const component: DefineComponent<{}, {}, any>;
+	export default component;
 }
