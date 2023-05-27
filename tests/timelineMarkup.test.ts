@@ -4,7 +4,7 @@ import { DEFAULT_METADATA_KEYS } from "~/settings";
 import { setupTimelineCreation } from "~/timelineMarkup";
 import { mockObsidianApp, mockHTMLElement } from "./obsidianMocks";
 
-describe("Timeline Markup", () => {
+describe.concurrent("Timeline Markup", () => {
 	test("[setupTimelineCreation] - ok", () => {
 		const ObsidianAppMock = mockObsidianApp();
 		const HTMLElementMock = mockHTMLElement();

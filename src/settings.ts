@@ -3,11 +3,10 @@ import { PluginSettingTab } from "obsidian";
 import { createApp, ref } from "vue";
 import { createI18n } from "vue-i18n";
 import VApp from "~/views/App.vue";
-//@ts-expect-error
 import en from "~/locales/en.json";
 
 import type { App as ObsidianApp } from "obsidian";
-import type AprilsAutomaticTimelinesPlugin from "~/../main";
+import type AprilsAutomaticTimelinesPlugin from "~/main";
 import type { AutoTimelineSettings } from "./types";
 import type { App as VueApp } from "vue";
 

@@ -12,6 +12,7 @@
 		"isolatedModules": true,
 		"strictNullChecks": true,
 		"resolveJsonModule": true,
+		"allowSyntheticDefaultImports": true,
 		"paths": {
 			"~/*": ["./src/*"]
 		},

@@ -151,14 +151,15 @@ export function compareAbstractDates(
 ) {
 	// Since could be numbers we can't check with `!`
 	if (!isDefined(a) && !isDefined(b)) return 0;
-	if (!isDefined(a)) return 1;
-	if (!isDefined(b)) return -1;
+	if (!isDefined(a)) return -1;
+	if (!isDefined(b)) return 1;
 
 	if (a === true && b !== true) return 1;
 	if (b === true && a !== true) return -1;
 	if (a === true && b === true) return 0;
-	if (a !== true && b !== true)
-		for (let index = 0; index < a.length; index++)
-			if (a[index] !== b[index]) return a[index] > b[index] ? 1 : -1;
+	a = a as AbstractDate;
+	b = b as AbstractDate;
+	for (let index = 0; index < a.length; index++)
+		if (a[index] !== b[index]) return a[index] > b[index] ? 1 : -1;
 	return 0;
 }

@@ -80,8 +80,8 @@ export function createCardFromBuiltContext(
  * @param { AutoTimelineSettings } settings - The settings of the plugin.
  * @returns { string } a formated string representation of the dates included in the card content based off the settings.
  */
-function getDateText(
-	{ startDate, endDate }: CardContent,
+export function getDateText(
+	{ startDate, endDate }: Pick<CardContent, "startDate" | "endDate">,
 	settings: AutoTimelineSettings
 ): string {
 	if (!isDefined(startDate)) return "Start date missing";

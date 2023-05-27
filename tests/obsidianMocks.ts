@@ -1,6 +1,10 @@
 import { mock } from "vitest-mock-extended";
 import { DEFAULT_METADATA_KEYS } from "~/settings";
-import { TFile as TFileClass } from "obsidian";
+import {
+	TFile as TFileClass,
+	Component as ObsidianComponent,
+	App as ObsidianApp,
+} from "obsidian";
 
 import type {
 	App,
@@ -11,7 +15,13 @@ import type {
 	CachedMetadata,
 	FrontMatterCache,
 } from "obsidian";
-import type { MarkdownCodeBlockTimelineProcessingContext } from "~/types";
+import type { DeepPartial } from "ts-essentials";
+import type {
+	CardContent,
+	CompleteCardContext,
+	MarkdownCodeBlockTimelineProcessingContext,
+	Range,
+} from "~/types";
 
 vi.mock("obsidian", () => {
 	class TFile {
@@ -33,42 +43,91 @@ vi.mock("obsidian", () => {
 		}
 	}
 
+	class Plugin {
+		containerEl: HTMLElement;
+
+		constructor(app: ObsidianApp, manifest: Record<string, unknown>) {
+			this.containerEl = mock<HTMLElement>();
+			return;
+		}
+
+		saveData() {
+			return;
+		}
+	}
+
+	class MarkdownRenderChild {
+		containerEl: HTMLElement;
+
+		constructor(containerEl: HTMLElement) {
+			this.containerEl = containerEl;
+			return;
+		}
+	}
+
 	return {
-		PluginSettingTab: null,
+		PluginSettingTab: Plugin,
 		TFile: TFile,
+		MarkdownRenderer: {
+			async renderMarkdown(
+				markdown: string,
+				el: HTMLElement,
+				sourcePath: string,
+				component: ObsidianComponent
+			): Promise<void> {
+				return;
+			},
+		},
+		MarkdownRenderChild,
+		Plugin,
 	};
 });
 
 export function mockHTMLElement(): HTMLElement {
-	return {
-		...mock<HTMLElement>(),
+	// @ts-expect-error
+	return mock<HTMLElement>({
+		children: {
+			item: vi
+				.fn((_: number) => null as Element | null)
+				.mockImplementationOnce(mockHTMLElement),
+		},
 		createDiv: vi.fn(() => {
 			return mockHTMLElement() as HTMLDivElement;
 		}),
+		offsetTop: 0,
+		innerHeight: 0,
+		// @ts-expect-error
+		createEl: vi.fn(
+			<K extends keyof HTMLElementTagNameMap>(
+				_: K,
+				__?: DomElementInfo | string,
+				___?: (el: HTMLElementTagNameMap[K]) => void
+			): HTMLElementTagNameMap[K] => {
+				return mockHTMLElement() as HTMLElementTagNameMap[K];
+			}
+		),
+		addClass: vi.fn(() => {
+			return;
+		}),
 		classList: {
-			...mock<HTMLElement["classList"]>(),
 			add: vi.fn(() => {
 				return;
 			}),
 		},
-	};
+	});
 }
 
 export function mockObsidianApp(): App {
-	return {
-		...mock<App>(),
+	return mock<App>({
 		vault: {
-			...mock<App["vault"]>(),
 			getMarkdownFiles: vi.fn(() => {
 				return [mock<TFile>(), mock<TFile>()];
 			}),
 		},
 		metadataCache: {
-			...mock<App["metadataCache"]>(),
 			getFileCache: vi
 				.fn<[], CachedMetadata | null>(() => {
 					return {
-						...mock<CachedMetadata>(),
 						frontmatter: {
 							...mock<FrontMatterCache>(),
 							[DEFAULT_METADATA_KEYS.metadataKeyEventStartDate]:
@@ -80,7 +139,7 @@ export function mockObsidianApp(): App {
 				})
 				.mockReturnValueOnce(null),
 		},
-	};
+	});
 }
 
 export function mockVault(): Vault {
@@ -100,17 +159,20 @@ export function mockMarkdownCodeBlockTimelineProcessingContext(): MarkdownCodeBl
 		app: {
 			vault,
 			metadataCache: {
-				getFirstLinkpathDest(
-					linkpath: string,
-					sourcePath: string
-				): TFile | null {
-					return new TFileClass();
-				},
+				getFirstLinkpathDest: vi.fn(
+					(linkpath: string, sourcePath: string): TFile | null => {
+						return new TFileClass();
+					}
+				),
 			},
 		},
 		file: {
 			basename: "basename",
 			vault,
+		},
+		elements: {
+			cardListRootElement: mockHTMLElement(),
+			timelineRootElement: mockHTMLElement(),
 		},
 		settings: DEFAULT_METADATA_KEYS,
 		cachedMetadata: {
@@ -126,4 +188,24 @@ export function mockMarkdownCodeBlockTimelineProcessingContext(): MarkdownCodeBl
 			},
 		},
 	});
+}
+
+export function mockCardContext() {
+	return mock<CardContent>({
+		startDate: [1000, 0, 0],
+		endDate: true,
+		body: "Sample body",
+		imageURL: "https://sampleURL.png",
+		title: "Sample title",
+	});
+}
+
+export function mockRange(): Range {
+	return mock<Range>();
+}
+
+export function mockCompleteCardContext(
+	defaultVal: DeepPartial<CompleteCardContext> = {}
+): CompleteCardContext {
+	return mock<CompleteCardContext>(defaultVal);
 }
