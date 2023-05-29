@@ -42,7 +42,10 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	) {
 		const runtimeTime = measureTime("Run time");
 		const { app } = this;
-		const tagsToFind = source.split(" ").map((e) => e.replace("\n", ""));
+		const tagsToFind = source
+			.split(DEFAULT_METADATA_KEYS.markdownBlockTagsToFindSeparator)
+			.map((e) => e.replace("\n", ""));
+
 		const creationContext = setupTimelineCreation(
 			app,
 			element,

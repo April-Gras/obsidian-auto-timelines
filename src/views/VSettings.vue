@@ -20,6 +20,7 @@ const emit = defineEmits<{
 const generalSettingKeys = Object.keys(DEFAULT_METADATA_KEYS).filter((e) =>
 	e.startsWith("metadataKey")
 ) as (keyof AutoTimelineSettings)[];
+generalSettingKeys.push("markdownBlockTagsToFindSeparator");
 
 const fantasyCalendarPreset: Record<
 	Extract<
