@@ -20,6 +20,7 @@ const emit = defineEmits<{
 const generalSettingKeys = Object.keys(DEFAULT_METADATA_KEYS).filter((e) =>
 	e.startsWith("metadataKey")
 ) as (keyof AutoTimelineSettings)[];
+generalSettingKeys.push("markdownBlockTagsToFindSeparator");
 
 const fantasyCalendarPreset: Record<
 	Extract<
@@ -65,7 +66,7 @@ const handleUpdateValueFantasyCalendarCheckbox = () => {
 				type="text"
 				v-for="key in generalSettingKeys"
 				:value="props.value[key]"
-				@update:value="emit('update:value', { [key]: $event })"
+				@update:value="emit('update:value', { [key]: $event.trim() })"
 				:input-id="key"
 			>
 				<template #label>{{ $t(`settings.label.${key}`) }}</template>

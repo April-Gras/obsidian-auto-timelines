@@ -38,6 +38,7 @@
       "metadataKeyEventPictureOverride": "Event image override",
       "metadataKeyEventStartDate": "Event start key",
       "metadataKeyEventTitleOverride": "Event title override",
+      "markdownBlockTagsToFindSeparator": "Markdown Code Block \"Tags To Find\" Separator",
       "tryYourInputFormat": "Try your input format out",
       "useAdvancedMode": "Use advanced mode / edit regexes"
     },
@@ -55,6 +56,7 @@
       "metadataKeyEventPictureOverride": "The key for the image override in each notes metadata",
       "metadataKeyEventStartDate": "The key that determines the start of an event in a note",
       "metadataKeyEventTitleOverride": "The key for the title override in each notes metadata",
+      "markdownBlockTagsToFindSeparator": "The character or string used to split the different tags to find in a markdown code block. The split values will be looked for in notes.",
       "tryYourInputFormat": "Just type out the date like you would in a notes metadata block. Bellow, every field should corespond to the correct token and be sorted in the correct order."
     },
     "details": {
