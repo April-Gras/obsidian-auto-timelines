@@ -17,9 +17,10 @@ aat-render-enabled: true # Enables this note to be rendered in a timeline
 timelines: [timeline, event] # This note should be rendered in the timeline with the name "timeline" or "event"
 ```
 
-Once you tagged at least one note create a new note and add a new markdow code block using three backquotes and flagging it as `aat-vertical` and adding the name of the timeline as it's content
+Once you tagged at least one note create a new note and add a new markdow code block using three backquotes and flagging it as `aat-vertical` and adding the name of the timeline as it's content.
+You can also give multiple names to your timeline by seperating the values with a `,` (This value can be changed in the settings)
 
-![image](https://user-images.githubusercontent.com/1866440/232321979-f450c212-f03c-491d-a992-a12f0c5e2420.png)
+![image](https://github.com/April-Gras/obsidian-auto-timelines/assets/1866440/78de88e6-7048-47a6-b943-fe7bbae58c69)
 
 This will scan the vault for all notes flagged to render inside the `timeline` timeline
 
