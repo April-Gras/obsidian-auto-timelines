@@ -66,7 +66,7 @@ const handleUpdateValueFantasyCalendarCheckbox = () => {
 				type="text"
 				v-for="key in generalSettingKeys"
 				:value="props.value[key]"
-				@update:value="emit('update:value', { [key]: $event })"
+				@update:value="emit('update:value', { [key]: $event.trim() })"
 				:input-id="key"
 			>
 				<template #label>{{ $t(`settings.label.${key}`) }}</template>

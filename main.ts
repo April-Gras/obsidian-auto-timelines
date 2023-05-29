@@ -44,7 +44,7 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 		const { app } = this;
 		const tagsToFind = source
 			.split(DEFAULT_METADATA_KEYS.markdownBlockTagsToFindSeparator)
-			.map((e) => e.replace("\n", ""));
+			.map((e) => e.replace("\n", "").trim());
 
 		const creationContext = setupTimelineCreation(
 			app,
