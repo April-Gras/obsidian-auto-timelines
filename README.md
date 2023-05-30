@@ -30,6 +30,7 @@ Behind the scenes the plugin will parse the content and generate a card for each
 
 Sometimes the content of a note is not exacly what you want to appear in the card.
 To remedy that, the plugin exposes three keys that are by default:
+
 ```yml
 aat-event-title: New title # Used to override the title of a generated card.
 aat-event-body: New card body # Used to override the text content of a generated card.
@@ -99,3 +100,20 @@ cycle {cycle}, {moon}
 ```
 
 The end result for our initaly declared metadata would look something like: `cycle 687, 2`.
+
+---
+
+## Developement
+
+As per obsidians [unofficial documentation](https://marcus.se.net/obsidian-plugin-docs/getting-started):
+
+-   clone the repository in a test vault
+-   `npm install` to install dependencies
+-   `npm run dev` to launch dev watcher
+
+## Testing
+
+Before launching the unit tests, make sure to install the dependencies with `npm run install` and use `npm run prepare-vitest` to setup some changes for vitests to work correctly with obsidians package.
+
+Once that's out of the way use `npm run test` to just launch the tests.
+`npm run test-ui` to run the UI and see coverage in your browser.
