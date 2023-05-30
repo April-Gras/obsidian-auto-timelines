@@ -38,7 +38,7 @@ vi.mock("vue-i18n", () => {
 	};
 });
 
-describe.concurrent("settings", () => {
+describe.concurrent("Settings", () => {
 	test("Can spawn setting tab", () => {
 		const app = mockObsidianApp();
 		const plugin = new AprilsAutomaticTimelinesPlugin(app, manifest);

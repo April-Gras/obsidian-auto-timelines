@@ -45,15 +45,19 @@ vi.mock("obsidian", () => {
 
 	class Plugin {
 		containerEl: HTMLElement;
+		app: ObsidianApp;
 
 		constructor(app: ObsidianApp, manifest: Record<string, unknown>) {
 			this.containerEl = mock<HTMLElement>();
+			this.app = app;
 			return;
 		}
 
-		saveData() {
-			return;
-		}
+		saveData = vi.fn();
+
+		loadData = vi.fn(async () => ({ someKey: "someValue" }));
+		addSettingTab = vi.fn();
+		registerMarkdownCodeBlockProcessor = vi.fn();
 	}
 
 	class MarkdownRenderChild {
@@ -117,39 +121,51 @@ export function mockHTMLElement(): HTMLElement {
 	});
 }
 
+export function mockGetFileCache() {
+	return vi.fn<[], CachedMetadata | null>(() => {
+		return {
+			frontmatter: {
+				...mock<FrontMatterCache>(),
+				timelines: ["timeline"],
+				"aat-render-enabled": true,
+				[DEFAULT_METADATA_KEYS.metadataKeyEventStartDate]:
+					mock<number>(),
+				[DEFAULT_METADATA_KEYS.metadataKeyEventEndDate]: mock<number>(),
+			},
+		};
+	});
+}
+
 export function mockObsidianApp(): App {
 	return mock<App>({
-		vault: {
-			getMarkdownFiles: vi.fn(() => {
-				return [mock<TFile>(), mock<TFile>()];
-			}),
-		},
+		vault: mockVault(),
 		metadataCache: {
-			getFileCache: vi
-				.fn<[], CachedMetadata | null>(() => {
-					return {
-						frontmatter: {
-							...mock<FrontMatterCache>(),
-							[DEFAULT_METADATA_KEYS.metadataKeyEventStartDate]:
-								mock<number>(),
-							[DEFAULT_METADATA_KEYS.metadataKeyEventEndDate]:
-								mock<number>(),
-						},
-					};
-				})
-				.mockReturnValueOnce(null),
+			getFileCache: mockGetFileCache().mockReturnValueOnce(null),
+		},
+	});
+}
+
+export function mockTFile() {
+	return mock<TFile>({
+		vault: {
+			cachedRead: vi.fn(async (file: TFile) => {
+				return "---\n---\n---\nSample file data";
+			}),
 		},
 	});
 }
 
 export function mockVault(): Vault {
 	return mock<Vault>({
-		getResourcePath: (file: TFile) => {
+		getResourcePath: vi.fn((file: TFile) => {
 			return "sample";
-		},
-		cachedRead: async (file: TFile) => {
+		}),
+		cachedRead: vi.fn(async (file: TFile) => {
 			return "---\n---\n---\nSample file data";
-		},
+		}),
+		getMarkdownFiles: vi.fn(() => {
+			return [mockTFile(), mockTFile()];
+		}),
 	});
 }
 
@@ -200,8 +216,8 @@ export function mockCardContext() {
 	});
 }
 
-export function mockRange(): Range {
-	return mock<Range>();
+export function mockRange(defaultVal: DeepPartial<Range> = {}): Range {
+	return mock<Range>(defaultVal);
 }
 
 export function mockCompleteCardContext(
