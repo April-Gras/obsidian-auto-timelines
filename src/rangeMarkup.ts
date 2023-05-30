@@ -61,7 +61,7 @@ export function renderRanges(ranges: Range[], rootElement: HTMLElement) {
  * @param { number } offset - The left offet index for this range.
  * @param { HTMLElement } rootElelement
  */
-function renderSingleRange(
+export function renderSingleRange(
 	{
 		relatedCardData: {
 			context: {
@@ -120,4 +120,6 @@ function renderSingleRange(
 			behavior: "smooth",
 		});
 	};
+
+	return el;
 }
