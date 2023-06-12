@@ -8,7 +8,7 @@ export default defineConfig({
 	plugins: [Vue(), TsConfigPath()],
 	test: {
 		globals: true,
-		environment: "jsdom",
+		environment: "happy-dom",
 		coverage: {
 			provider: "istanbul",
 			reporter: ["html"],

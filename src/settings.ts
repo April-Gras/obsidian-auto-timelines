@@ -1,9 +1,9 @@
 import { PluginSettingTab } from "obsidian";
 
 import { createApp, ref } from "vue";
-import { createI18n } from "vue-i18n";
+import createVueI18nConfig from "~/i18n.config";
+
 import VApp from "~/views/App.vue";
-import en from "~/locales/en.json";
 
 import type { App as ObsidianApp } from "obsidian";
 import type AprilsAutomaticTimelinesPlugin from "~/main";
@@ -43,14 +43,7 @@ export class TimelineSettingTab extends PluginSettingTab {
 		this.containerEl.empty();
 
 		// TODO Read locale off obsidian.
-		const i18n = createI18n({
-			locale: "en",
-			fallbackLocale: "en",
-			messages: {
-				en,
-			},
-			allowComposition: true,
-		});
+		const i18n = createVueI18nConfig();
 
 		this.vueApp = createApp({
 			components: { VApp },

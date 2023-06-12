@@ -14,7 +14,6 @@ const emit = defineEmits<{
 }>();
 
 function handleInputEvent(event: Event) {
-	if (!event.target) return;
 	switch (props.type) {
 		case "number":
 			return emit(

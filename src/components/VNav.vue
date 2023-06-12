@@ -2,7 +2,7 @@
 const navigationTargets = ["index", "date-formats"] as const;
 export type NavigationTarget = (typeof navigationTargets)[number];
 
-const props = defineProps<{
+defineProps<{
 	value: NavigationTarget;
 }>();
 const emit = defineEmits<{

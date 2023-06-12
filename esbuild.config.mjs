@@ -16,7 +16,7 @@ const context = await esbuild.context({
 		js: banner,
 	},
 	entryPoints: ["./src/main.ts"],
-	plugins: [Vue({ isProd: true })],
+	plugins: [Vue({ isProd: prod })],
 	bundle: true,
 	external: [
 		"obsidian",
@@ -43,6 +43,14 @@ const context = await esbuild.context({
 	alias: {
 		vue: "vue/dist/vue.esm-bundler.js",
 	},
+});
+
+await esbuild.build({
+	entryPoints: ["./src/main.css"],
+	outfile: "styles.css",
+	bundle: true,
+	allowOverwrite: true,
+	minify: false,
 });
 
 if (prod) {

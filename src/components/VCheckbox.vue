@@ -18,12 +18,15 @@ function handleInputEvent() {
 		<div>
 			<label
 				:for="inputId"
-				v-if="$slots['label']"
+				v-if="!!$slots.label"
 				class="setting-item-name"
 			>
 				<slot name="label" />
 			</label>
-			<summary class="setting-item-description">
+			<summary
+				class="setting-item-description"
+				v-if="!!$slots.description"
+			>
 				<slot name="description" />
 			</summary>
 		</div>
