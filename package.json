@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-auto-timelines",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"description": "This Obsidian (https://obsidian.md) plugin aims to simplify creating and maintaining timelines in different a project",
 	"main": "main.js",
 	"scripts": {
