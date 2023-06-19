@@ -117,3 +117,9 @@ Before launching the unit tests, make sure to install the dependencies with `npm
 
 Once that's out of the way use `npm run test` to just launch the tests.
 `npm run test-ui` to run the UI and see coverage in your browser.
+
+## Sample vault with basic examples
+[TimelineSampleVault.zip](https://github.com/April-Gras/obsidian-auto-timelines/files/11790506/TimelineSampleVault.zip)
+
+Here's a zip file of a obsidian vault with various basic examples to help you build timelines.
+Alternatively [Josh Plunkett](https://www.youtube.com/@JoshPlunkett) did [a tutorial video](https://www.youtube.com/watch?v=992o1j8zRSk) covering the basics
