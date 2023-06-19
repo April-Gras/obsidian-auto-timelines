@@ -194,6 +194,20 @@ describe.concurrent("Card Data", () => {
 		expect(body).toBe(bodyMock);
 	});
 
+	test("[getBodyFromContextOrDocument]- ok has other timeline", () => {
+		const context = mockMarkdownCodeBlockTimelineProcessingContext();
+		const bodyMock = "Some sample body data";
+		const timelineTextMock = "\n```aat-vertical\nother timeline\n```";
+
+		const body = getBodyFromContextOrDocument(
+			// Add fake note metadata block
+			"---\n---\n" + bodyMock + timelineTextMock,
+			context
+		);
+
+		expect(body).toBe(bodyMock);
+	});
+
 	test("[extractCardData] - ok no title override", async () => {
 		const data = await extractCardData(
 			mockMarkdownCodeBlockTimelineProcessingContext()

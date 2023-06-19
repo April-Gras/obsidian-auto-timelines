@@ -119,6 +119,8 @@ export function getBodyFromContextOrDocument(
 		.replace(/#[a-zA-Z\d]*/gi, "")
 		// Remove internal images ![[Pasted image 20230418232101.png]]
 		.replace(/!\[\[.*\]\]/gi, "")
+		// Remove other timelines to avoid circular dependencies!
+		.replace(/```aat-vertical\n.*\n```/gi, "")
 		// Trim the text
 		.trim();
 	return out;
