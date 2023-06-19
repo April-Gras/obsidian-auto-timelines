@@ -14,6 +14,6 @@ defineProps({
 </script>
 <template>
 	<button :disabled="disabled" :class="{ 'mod-cta': hasAccent }">
-		<slot />
+		<slot v-if="!!$slots.default" />
 	</button>
 </template>

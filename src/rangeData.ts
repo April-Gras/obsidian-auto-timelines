@@ -96,7 +96,7 @@ export type FnGetRangeData = typeof getAllRangeData;
  * @param { number } indexOffset  - Since the date is already sorted by date we can save a little time by skipping all the elements before.
  * @returns { number } The expected position relative to the top of the timeline container for this date range.
  */
-function findEndPositionForDate(
+export function findEndPositionForDate(
 	date: AbstractDate,
 	collection: CompleteCardContext[],
 	timelineLength: number,
@@ -133,7 +133,7 @@ function findEndPositionForDate(
  * @param { AbstractDate } c - The date in between
  * @returns the first non equal member of a - b when compared from left to right, also returns the same member from c.
  */
-function getInLerpValues(
+export function getInLerpValues(
 	a: AbstractDate,
 	b: AbstractDate,
 	c: AbstractDate
@@ -155,7 +155,7 @@ type Boundary = { date: AbstractDate; top: number };
  * @param { number } indexOffset  - Since the date is already sorted by date we can save a little time by skipping all the elements before.
  * @returns { Boundary } The start and end boundaries of the target end date.
  */
-function findBoundaries(
+export function findBoundaries(
 	date: AbstractDate,
 	collection: CompleteCardContext[],
 	rootElement: HTMLElement,
@@ -178,6 +178,11 @@ function findBoundaries(
 				: false
 	);
 
+	if (firstLastUnderIndex === -1)
+		throw new Error(
+			"Could not find a firstLastUnderIndex, this means this function was called with un rangeable members"
+		);
+
 	const lastUnderIndex = collection.findIndex(
 		({ cardData: { startDate } }, index) => {
 			return (
@@ -190,7 +195,7 @@ function findBoundaries(
 		}
 	);
 
-	if (lastUnderIndex === -1 || firstLastUnderIndex === -1)
+	if (lastUnderIndex === -1)
 		throw new Error(
 			"No last under found - Can't draw range since there are no other two start date to referrence it's position"
 		);

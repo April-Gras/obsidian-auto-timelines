@@ -56,13 +56,13 @@ export async function getDataFromNote(
  * @param { MarkdownCodeBlockTimelineProcessingContext } context - Timeline generic context.
  * @returns { CardContent } The extracted data to create a card from a note.
  */
-async function extractCardData(
+export async function extractCardData(
 	context: MarkdownCodeBlockTimelineProcessingContext
 ) {
 	const { file, cachedMetadata: c, settings } = context;
 	const rawFileContent = await file.vault.cachedRead(file);
 	const fileTitle =
-		c?.frontmatter?.[settings.metadataKeyEventTitleOverride] ||
+		c.frontmatter?.[settings.metadataKeyEventTitleOverride] ||
 		file.basename;
 
 	return {
@@ -95,7 +95,7 @@ export type FnExtractCardData = typeof extractCardData;
  * @param { MarkdownCodeBlockTimelineProcessingContext } context - Timeline generic context.
  * @returns { string | null } the body of a given card or null if none was found.
  */
-function getBodyFromContextOrDocument(
+export function getBodyFromContextOrDocument(
 	rawFileText: string,
 	context: MarkdownCodeBlockTimelineProcessingContext
 ): string | null {
@@ -105,7 +105,7 @@ function getBodyFromContextOrDocument(
 	} = context;
 	const overrideBody = metadata?.[metadataKeyEventBodyOverride] ?? null;
 
-	if (!rawFileText || overrideBody) return overrideBody;
+	if (!rawFileText.length || overrideBody) return overrideBody;
 
 	const rawTextArray = rawFileText.split("\n");
 	rawTextArray.shift();
@@ -131,7 +131,7 @@ function getBodyFromContextOrDocument(
  * @param { MarkdownCodeBlockTimelineProcessingContext } context - Timeline generic context.
  * @returns { string | null } the URL of the image to be displayed in a card or null if none where found.
  */
-function getImageUrlFromContextOrDocument(
+export function getImageUrlFromContextOrDocument(
 	rawFileText: string,
 	context: MarkdownCodeBlockTimelineProcessingContext
 ): string | null {
@@ -159,7 +159,7 @@ function getImageUrlFromContextOrDocument(
 		const file = getFirstLinkpathDest.bind(app.metadataCache)(
 			matchs.groups.src,
 			currentFile.path
-		);
+		) as TFile | null;
 
 		if (file instanceof TFile) return vault.getResourcePath(file);
 		// Thanks https://github.com/joethei
@@ -174,7 +174,7 @@ function getImageUrlFromContextOrDocument(
  * @param { string } key - The target lookup key in the notes metadata object.
  * @returns { AbstractDate | undefined } the abstract date representation or undefined.
  */
-function getAbstractDateFromMetadata(
+export function getAbstractDateFromMetadata(
 	{ cachedMetadata, settings }: MarkdownCodeBlockTimelineProcessingContext,
 	key: string
 ): AbstractDate | undefined {
