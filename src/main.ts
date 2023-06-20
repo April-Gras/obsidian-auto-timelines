@@ -8,6 +8,7 @@ import { createCardFromBuiltContext } from "~/cardMarkup";
 import { getAllRangeData } from "~/rangeData";
 import { renderRanges } from "~/rangeMarkup";
 import { DEFAULT_METADATA_KEYS, TimelineSettingTab } from "~/settings";
+
 export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	settings: AutoTimelineSettings;
 

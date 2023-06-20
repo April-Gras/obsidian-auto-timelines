@@ -7,6 +7,8 @@ If your plugin does not need CSS, delete this file.
 
 */
 
+@import "../main.css";
+
 .aat-root-container {
 	container-type: inline-size;
 	container-name: root;

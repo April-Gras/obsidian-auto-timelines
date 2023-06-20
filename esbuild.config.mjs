@@ -45,7 +45,7 @@ const context = await esbuild.context({
 	},
 });
 
-await esbuild.build({
+const css = await esbuild.context({
 	entryPoints: ["./src/main.css"],
 	outfile: "styles.css",
 	bundle: true,
@@ -55,7 +55,8 @@ await esbuild.build({
 
 if (prod) {
 	await context.rebuild();
+	await css.rebuild();
 	process.exit(0);
 } else {
-	await context.watch();
+	await Promise.all([context.watch(), css.watch()]);
 }
