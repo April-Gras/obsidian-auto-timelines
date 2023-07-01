@@ -1,6 +1,6 @@
 import "./obsidianMocks";
 
-import { DEFAULT_METADATA_KEYS } from "~/settings";
+import { SETTINGS_DEFAULT } from "~/settings";
 import {
 	mockMarkdownCodeBlockTimelineProcessingContext,
 	mockCardContext,
@@ -14,17 +14,14 @@ import {
 describe.concurrent("Card Markup", () => {
 	test("[formatAbstractDate] - boolean date", () => {
 		const absctractDateMock = true;
-		const output = formatAbstractDate(
-			absctractDateMock,
-			DEFAULT_METADATA_KEYS
-		);
+		const output = formatAbstractDate(absctractDateMock, SETTINGS_DEFAULT);
 
 		expect(output).toBe("now");
 	});
 
 	test("[formatAbstractDate] - abstract date", () => {
 		const absctractDateMock = [1000, 0, 0];
-		const settings = { ...DEFAULT_METADATA_KEYS };
+		const settings = { ...SETTINGS_DEFAULT };
 
 		expect(formatAbstractDate(absctractDateMock, settings)).toBe(
 			"0/0/1000"
@@ -47,7 +44,7 @@ describe.concurrent("Card Markup", () => {
 		expect(
 			getDateText(
 				{ startDate: undefined, endDate: undefined },
-				DEFAULT_METADATA_KEYS
+				SETTINGS_DEFAULT
 			)
 		).toBe("Start date missing");
 	});
@@ -56,7 +53,7 @@ describe.concurrent("Card Markup", () => {
 		expect(
 			getDateText(
 				{ startDate: [1000, 0, 0], endDate: undefined },
-				DEFAULT_METADATA_KEYS
+				SETTINGS_DEFAULT
 			)
 		).toBe("0/0/1000");
 	});
@@ -65,7 +62,7 @@ describe.concurrent("Card Markup", () => {
 		expect(
 			getDateText(
 				{ startDate: [1000, 0, 0], endDate: true },
-				DEFAULT_METADATA_KEYS
+				SETTINGS_DEFAULT
 			)
 		).toBe("From 0/0/1000 to now");
 	});

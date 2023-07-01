@@ -1,9 +1,9 @@
-import { DEFAULT_METADATA_KEYS } from "~/settings";
+import { SETTINGS_DEFAULT } from "~/settings";
 import { FnGetRangeData } from "./rangeData";
 import { FnExtractCardData, getDataFromNote } from "~/cardData";
 
 import type { App, CachedMetadata, TFile } from "obsidian";
-export type AutoTimelineSettings = typeof DEFAULT_METADATA_KEYS;
+export type AutoTimelineSettings = typeof SETTINGS_DEFAULT;
 /**
  * The main bundle of data needed to build a timeline.
  */

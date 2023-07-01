@@ -1,6 +1,6 @@
 import "./obsidianMocks";
 
-import { DEFAULT_METADATA_KEYS } from "~/settings";
+import { SETTINGS_DEFAULT } from "~/settings";
 import { setupTimelineCreation } from "~/timelineMarkup";
 import { mockObsidianApp, mockHTMLElement } from "./obsidianMocks";
 
@@ -12,17 +12,17 @@ describe.concurrent("Timeline Markup", () => {
 			ObsidianAppMock,
 			HTMLElementMock,
 			"sample",
-			DEFAULT_METADATA_KEYS
+			SETTINGS_DEFAULT
 		);
 
 		expect(data.length).toBe(1);
 		expect(ObsidianAppMock.metadataCache.getFileCache).toBeCalledTimes(2);
 		expect(ObsidianAppMock.vault.getMarkdownFiles).toBeCalledTimes(1);
-		expect(data[0].settings).toBe(DEFAULT_METADATA_KEYS);
+		expect(data[0].settings).toBe(SETTINGS_DEFAULT);
 		expectTypeOf(
 			// @ts-expect-error
 			data[0].cachedMetadata.frontmatter[
-				DEFAULT_METADATA_KEYS.metadataKeyEventStartDate
+				SETTINGS_DEFAULT.metadataKeyEventStartDate
 			]
 		).toMatchTypeOf<number>();
 	});

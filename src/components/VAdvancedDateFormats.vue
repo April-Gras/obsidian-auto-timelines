@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import VInput from "./VInput.vue";
 import VButton from "./VButton.vue";
-import { DEFAULT_METADATA_KEYS } from "~/settings";
+import { SETTINGS_DEFAULT } from "~/settings";
 
 import type { AutoTimelineSettings } from "~/types";
 
@@ -23,7 +23,7 @@ function handleResetToDefault(): void {
 	emit(
 		"update:value",
 		targetKeys.reduce((accumulator, key) => {
-			accumulator[key] = DEFAULT_METADATA_KEYS[key];
+			accumulator[key] = SETTINGS_DEFAULT[key];
 			return accumulator;
 		}, {} as Partial<AutoTimelineSettings>)
 	);

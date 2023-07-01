@@ -7,7 +7,7 @@ import {
 	getBodyFromContextOrDocument,
 	extractCardData,
 } from "~/cardData";
-import { DEFAULT_METADATA_KEYS } from "~/settings";
+import { SETTINGS_DEFAULT } from "~/settings";
 import { mockMarkdownCodeBlockTimelineProcessingContext } from "./obsidianMocks";
 import { vi } from "vitest";
 
@@ -18,7 +18,7 @@ describe.concurrent("Card Data", () => {
 		const date = getAbstractDateFromData(
 			["year", "month", "day"],
 			"1000-1000-1000",
-			DEFAULT_METADATA_KEYS.dateParserRegex
+			SETTINGS_DEFAULT.dateParserRegex
 		);
 
 		expect(date).toStrictEqual([1000, 1000, 1000]);
@@ -47,7 +47,7 @@ describe.concurrent("Card Data", () => {
 	test("[getAbstractDateFromMetadata] - ok", () => {
 		const date = getAbstractDateFromMetadata(
 			mockMarkdownCodeBlockTimelineProcessingContext(),
-			DEFAULT_METADATA_KEYS["metadataKeyEventStartDate"]
+			SETTINGS_DEFAULT["metadataKeyEventStartDate"]
 		);
 		expect(date).toStrictEqual([1000, 1000, 1000]);
 	});
@@ -58,12 +58,12 @@ describe.concurrent("Card Data", () => {
 		if (!context.cachedMetadata.frontmatter)
 			throw new Error("Missing frontmatter in mock");
 		context.cachedMetadata.frontmatter[
-			DEFAULT_METADATA_KEYS.metadataKeyEventStartDate
+			SETTINGS_DEFAULT.metadataKeyEventStartDate
 		] = undefined;
 
 		const date = getAbstractDateFromMetadata(
 			context,
-			DEFAULT_METADATA_KEYS["metadataKeyEventStartDate"]
+			SETTINGS_DEFAULT["metadataKeyEventStartDate"]
 		);
 
 		expect(date).toBeUndefined();
@@ -75,12 +75,12 @@ describe.concurrent("Card Data", () => {
 		if (!context.cachedMetadata.frontmatter)
 			throw new Error("Missing frontmatter in mock");
 		context.cachedMetadata.frontmatter[
-			DEFAULT_METADATA_KEYS.metadataKeyEventStartDate
+			SETTINGS_DEFAULT.metadataKeyEventStartDate
 		] = 1000;
 
 		const date = getAbstractDateFromMetadata(
 			context,
-			DEFAULT_METADATA_KEYS["metadataKeyEventStartDate"]
+			SETTINGS_DEFAULT["metadataKeyEventStartDate"]
 		);
 
 		expect(date).toStrictEqual([1000, 0, 0]);
@@ -119,7 +119,7 @@ describe.concurrent("Card Data", () => {
 		if (!context.cachedMetadata.frontmatter)
 			throw new Error("Missing frontmatter in mock");
 		context.cachedMetadata.frontmatter[
-			DEFAULT_METADATA_KEYS.metadataKeyEventPictureOverride
+			SETTINGS_DEFAULT.metadataKeyEventPictureOverride
 		] = "picture.png";
 		const imageURL = getImageUrlFromContextOrDocument(
 			"no pictures to be found in here",
@@ -159,7 +159,7 @@ describe.concurrent("Card Data", () => {
 		if (!context.cachedMetadata.frontmatter)
 			throw new Error("Missing frontmatter in mock");
 		context.cachedMetadata.frontmatter[
-			DEFAULT_METADATA_KEYS["metadataKeyEventBodyOverride"]
+			SETTINGS_DEFAULT["metadataKeyEventBodyOverride"]
 		] = bodyMock;
 		const body = getBodyFromContextOrDocument("", context);
 
@@ -173,7 +173,7 @@ describe.concurrent("Card Data", () => {
 		if (!context.cachedMetadata.frontmatter)
 			throw new Error("Missing frontmatter in mock");
 		context.cachedMetadata.frontmatter[
-			DEFAULT_METADATA_KEYS["metadataKeyEventBodyOverride"]
+			SETTINGS_DEFAULT["metadataKeyEventBodyOverride"]
 		] = bodyMock;
 		const body = getBodyFromContextOrDocument(bodyMock + "body", context);
 

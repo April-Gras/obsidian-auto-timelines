@@ -11,9 +11,9 @@ import type { AutoTimelineSettings } from "./types";
 import type { App as VueApp } from "vue";
 
 /**
- * The keys looked for when processing metadata in a single note.
+ * Default key value relation for obsidian settings object
  */
-export const DEFAULT_METADATA_KEYS = {
+export const SETTINGS_DEFAULT = {
 	metadataKeyEventStartDate: "aat-event-start-date",
 	metadataKeyEventEndDate: "aat-event-end-date",
 	metadataKeyEventTitleOverride: "aat-event-title",

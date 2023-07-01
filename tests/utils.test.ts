@@ -17,7 +17,7 @@ import {
 	getMetadataKey,
 	createDefaultDateConfiguration,
 } from "~/utils";
-import { DEFAULT_METADATA_KEYS } from "~/settings";
+import { SETTINGS_DEFAULT } from "~/settings";
 import { DateTokenConfiguration, DateTokenType } from "~/types";
 
 describe.concurrent("Utils", () => {
@@ -198,7 +198,7 @@ describe.concurrent("Utils", () => {
 		expect(
 			getMetadataKey(
 				cachedMetadata,
-				DEFAULT_METADATA_KEYS.metadataKeyEventStartDate,
+				SETTINGS_DEFAULT.metadataKeyEventStartDate,
 				"number"
 			)
 		).toBe(undefined);
@@ -206,7 +206,7 @@ describe.concurrent("Utils", () => {
 		expect(
 			getMetadataKey(
 				cachedMetadata,
-				DEFAULT_METADATA_KEYS.metadataKeyEventStartDate,
+				SETTINGS_DEFAULT.metadataKeyEventStartDate,
 				"string"
 			)
 		).toBe("1000-1000-1000");
@@ -220,7 +220,7 @@ describe.concurrent("Utils", () => {
 		expect(
 			getMetadataKey(
 				cachedMetadata,
-				DEFAULT_METADATA_KEYS.metadataKeyEventStartDate,
+				SETTINGS_DEFAULT.metadataKeyEventStartDate,
 				"string"
 			)
 		).toBeUndefined();
