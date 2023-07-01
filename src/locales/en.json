@@ -1,71 +1,77 @@
 {
-  "common": {
-    "previous": "Previous",
-    "next": "Next",
-    "start": "Start",
-    "add": "Add",
-    "confirm": "Confirm my changes!"
-  },
-  "nav": {
-    "title": {
-      "index": "Generic settings",
-      "date-formats": "Date format settings"
-    }
-  },
-  "settings": {
-    "text": {
-      "tryoutDoesNotResolve": "Optional: Tryout does not resolve, try typing the date as you would in the metadata of a note",
-      "outputTryoutResult": "The final date display base on your tokens and the above input values should resolve to: {formatedDate}",
-      "dateFormatCreationConfirmation": {
-        "tokens": "Here's a recap of all your tokens ordered from highest to lowest value",
-        "inputRegex": "Here's the regex that will be used to parse your input date.",
-        "outputFormat": "And last but not least, the template used to format the dates when displayed in a timeline card"
-      },
-      "outputTryoutDoesNotResolve": "Your format does not resolves to anything"
-    },
-    "title": {
-      "generic-settings": "Generic settings",
-      "date-formats": "Date formating",
-      "slot-presets": "Enable presets for {slot}",
-      "lookForTagsForTimeline": "Look into note tags"
-    },
-    "label": {
-      "dateDisplayFormat": "Date display format",
-      "dateParserGroupPriority": "Date parser group priority",
-      "dateParserRegex": "Date parser regex",
-      "fantasyCalendarCheckbox": "Enable fantasy calendar integration",
-      "metadataKeyEventBodyOverride": "Event body override",
-      "metadataKeyEventTimelineTag": "Event timelines tags",
-      "metadataKeyEventEndDate": "Event end key",
-      "metadataKeyEventPictureOverride": "Event image override",
-      "metadataKeyEventStartDate": "Event start key",
-      "metadataKeyEventTitleOverride": "Event title override",
-      "markdownBlockTagsToFindSeparator": "Markdown Code Block \"Tags To Find\" Separator",
-      "tryYourInputFormat": "Try your input format out",
-      "useAdvancedMode": "Use advanced mode / edit regexes",
-      "lookForTagsForTimeline": "Check to include a notes tags into the values used to assign notes to a timeline"
-    },
-    "button": {
-      "resetToDefault": "Reset to default"
-    },
-    "description": {
-      "dateDisplayFormat": "This is the end format the date should be displayed as in the actual timeline cards. You don't actually need to include every parsed member here.",
-      "dateFormatFlowOnboarding": "For this plugin to work it needs to be fed a couple of informations regarding dates and how to sort them.Right now token priority is as follow {dateParserGroupPriority} and output is formated using {dateDisplayFormat}. To customize this you can either use the more user friendly flow by pressing start or just edit the values yourself by hand. Worst case scenario you can also reset to default in the advanced section.",
-      "dateParserGroupPriority": "No spaces and make sure to separate every entry with a \",\". This value is used to order the parsed tokens. For example if your custom regex pulls the year month and day out of a date, the natural order should be \"year,month,day\". Note that you should have as many entries as your regex has capture groups. See presets for inspiration.",
-      "dateParserRegex": "The regex used to parse your date. It needs to include the same amount of capture group as the next setting input. If you're unfamilliar with regexes and / or capture groups I would recommend to stick to the preset.",
-      "fantasyCalendarCheckbox": "This will preset all relevant keys in the settings to watch fantasy calendar uses. Namely the title override, the start date and end date keys",
-      "metadataKeyEventBodyOverride": "The key for the body override in each notes metadata",
-      "metadataKeyEventTimelineTag": "The key looked for when assigning timelines to an event",
-      "metadataKeyEventEndDate": "The key that determines the end of an event in a note",
-      "metadataKeyEventPictureOverride": "The key for the image override in each notes metadata",
-      "metadataKeyEventStartDate": "The key that determines the start of an event in a note",
-      "metadataKeyEventTitleOverride": "The key for the title override in each notes metadata",
-      "markdownBlockTagsToFindSeparator": "The character or string used to split the different tags to find in a markdown code block. The split values will be looked for in notes.",
-      "tryYourInputFormat": "Just type out the date like you would in a notes metadata block. Bellow, every field should corespond to the correct token and be sorted in the correct order.",
-      "lookForTagsForTimeline": "This means if you tag you note with a string and include that string in the timeline definition this note will be included in the timeline computing"
-    },
-    "details": {
-      "createDateToken": "Write your date system tokens ordered from top to bottom. Make sure not to leave any cluter, these token will be used to capture your date and sort them in the expeted order."
-    }
-  }
+	"common": {
+		"previous": "Previous",
+		"next": "Next",
+		"start": "Start",
+		"add": "Add",
+		"confirm": "Confirm my changes!"
+	},
+	"nav": {
+		"title": {
+			"index": "Generic settings",
+			"date-formats": "Date format settings"
+		}
+	},
+	"settings": {
+		"text": {
+			"tryoutDoesNotResolve": "Optional: Tryout does not resolve, try typing the date as you would in the metadata of a note",
+			"outputTryoutResult": "The final date display base on your tokens and the above input values should resolve to: {formatedDate}",
+			"dateFormatCreationConfirmation": {
+				"tokens": "Here's a recap of all your tokens ordered from highest to lowest value",
+				"inputRegex": "Here's the regex that will be used to parse your input date.",
+				"outputFormat": "And last but not least, the template used to format the dates when displayed in a timeline card"
+			},
+			"outputTryoutDoesNotResolve": "Your format does not resolves to anything"
+		},
+		"title": {
+			"generic-settings": "Generic settings",
+			"date-formats": "Date formating",
+			"slot-presets": "Enable presets for {slot}",
+			"lookForTagsForTimeline": "Look into note tags"
+		},
+		"label": {
+			"dateDisplayFormat": "Date display format",
+			"dateParserGroupPriority": "Date parser group priority",
+			"dateParserRegex": "Date parser regex",
+			"fantasyCalendarCheckbox": "Enable fantasy calendar integration",
+			"metadataKeyEventBodyOverride": "Event body override",
+			"metadataKeyEventTimelineTag": "Event timelines tags",
+			"metadataKeyEventEndDate": "Event end key",
+			"metadataKeyEventPictureOverride": "Event image override",
+			"metadataKeyEventStartDate": "Event start key",
+			"metadataKeyEventTitleOverride": "Event title override",
+			"markdownBlockTagsToFindSeparator": "Markdown Code Block \"Tags To Find\" Separator",
+			"tryYourInputFormat": "Try your input format out",
+			"useAdvancedMode": "Use advanced mode / edit regexes",
+			"lookForTagsForTimeline": "Check to include a notes tags into the values used to assign notes to a timeline"
+		},
+		"button": {
+			"resetToDefault": "Reset to default"
+		},
+		"description": {
+			"dateDisplayFormat": "This is the end format the date should be displayed as in the actual timeline cards. You don't actually need to include every parsed member here.",
+			"dateFormatFlowOnboarding": "For this plugin to work it needs to be fed a couple of informations regarding dates and how to sort them.Right now token priority is as follow {dateParserGroupPriority} and output is formated using {dateDisplayFormat}. To customize this you can either use the more user friendly flow by pressing start or just edit the values yourself by hand. Worst case scenario you can also reset to default in the advanced section.",
+			"dateParserGroupPriority": "No spaces and make sure to separate every entry with a \",\". This value is used to order the parsed tokens. For example if your custom regex pulls the year month and day out of a date, the natural order should be \"year,month,day\". Note that you should have as many entries as your regex has capture groups. See presets for inspiration.",
+			"dateParserRegex": "The regex used to parse your date. It needs to include the same amount of capture group as the next setting input. If you're unfamilliar with regexes and / or capture groups I would recommend to stick to the preset.",
+			"fantasyCalendarCheckbox": "This will preset all relevant keys in the settings to watch fantasy calendar uses. Namely the title override, the start date and end date keys",
+			"metadataKeyEventBodyOverride": "The key for the body override in each notes metadata",
+			"metadataKeyEventTimelineTag": "The key looked for when assigning timelines to an event",
+			"metadataKeyEventEndDate": "The key that determines the end of an event in a note",
+			"metadataKeyEventPictureOverride": "The key for the image override in each notes metadata",
+			"metadataKeyEventStartDate": "The key that determines the start of an event in a note",
+			"metadataKeyEventTitleOverride": "The key for the title override in each notes metadata",
+			"markdownBlockTagsToFindSeparator": "The character or string used to split the different tags to find in a markdown code block. The split values will be looked for in notes.",
+			"tryYourInputFormat": "Just type out the date like you would in a notes metadata block. Bellow, every field should corespond to the correct token and be sorted in the correct order.",
+			"lookForTagsForTimeline": "This means if you tag you note with a string and include that string in the timeline definition this note will be included in the timeline computing"
+		},
+		"details": {
+			"createDateToken": "Write your date system tokens ordered from top to bottom. Make sure not to leave any cluter, these token will be used to capture your date and sort them in the expeted order."
+		}
+	},
+	"dateTokens": {
+		"configure": {
+			"STRING": "String",
+			"NUMBER": "Numerical"
+		}
+	}
 }

@@ -1,6 +1,8 @@
-import type {
+import {
 	AbstractDate,
+	DateTokenConfiguration,
 	MarkdownCodeBlockTimelineProcessingContext,
+	DateTokenType,
 } from "~/types";
 
 /**
@@ -172,4 +174,16 @@ export function compareAbstractDates(
  */
 export function isDefinedAsArray(value: unknown): value is unknown[] {
 	return isDefined(value) && value instanceof Array;
+}
+
+export function createDefaultDateConfiguration(
+	defaultValue: Partial<DateTokenConfiguration<DateTokenType.number>> = {}
+): DateTokenConfiguration<DateTokenType.number> {
+	return {
+		minLeght: 2,
+		name: "",
+		type: DateTokenType.number,
+		dictionary: undefined,
+		...defaultValue,
+	};
 }

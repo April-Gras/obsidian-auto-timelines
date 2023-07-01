@@ -2,16 +2,27 @@
 import VButton from "./VButton.vue";
 import VInput from "./VInput.vue";
 
+import { DateTokenType } from "~/types";
+
+import type { DateTokenConfiguration } from "~/types";
+
 const props = defineProps<{
-	modelValue: string[];
+	modelValue: DateTokenConfiguration[];
 }>();
 const emit = defineEmits<{
-	"update:modelValue": [tokens: string[]];
+	"update:modelValue": [tokens: DateTokenConfiguration[]];
 }>();
 
 function handleAddAtEnd() {
-	if (!props.modelValue[props.modelValue.length - 1].length) return;
-	emit("update:modelValue", [...props.modelValue, ""]);
+	if (!props.modelValue.length) return;
+	emit("update:modelValue", [
+		...props.modelValue,
+		{
+			type: DateTokenType.number,
+			minLeght: 2,
+			name: "",
+		} as DateTokenConfiguration,
+	]);
 }
 
 function handleRemoveAtIndex(index: number) {
@@ -24,7 +35,7 @@ function handleRemoveAtIndex(index: number) {
 function editTokenAtIndex(index: number, value: string) {
 	const output = [...props.modelValue];
 
-	output[index] = value.trim();
+	output[index].name = value.trim();
 	emit("update:modelValue", output);
 }
 </script>
@@ -32,11 +43,11 @@ function editTokenAtIndex(index: number, value: string) {
 <template>
 	<div class="v-grid-display">
 		<p>{{ $t("settings.details.createDateToken") }}</p>
-		<div v-for="(value, index) in modelValue" class="v-inline-flex-display">
+		<div v-for="(token, index) in modelValue" class="v-inline-flex-display">
 			<VButton @click="handleRemoveAtIndex(index)">-</VButton>
 			<VInput
 				type="text"
-				:value="value"
+				:value="token.name"
 				:input-id="`create-date-token-${index}`"
 				@update:value="editTokenAtIndex(index, $event)"
 			/>

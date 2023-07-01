@@ -1,29 +1,36 @@
 <script setup lang="ts">
-import { computed, ref, onActivated, onBeforeMount, onMounted } from "vue";
+import { computed, ref, onMounted } from "vue";
 
 import VInput from "./VInput.vue";
 
 import { formatAbstractDate } from "~/cardMarkup";
 
+import type { DateTokenConfiguration } from "~/types";
+
 const props = defineProps<{
 	value: string;
-	tokens: string[];
+	tokenConfigurations: DateTokenConfiguration[];
 }>();
 
 const emit = defineEmits<{
 	"update:value": [payload: string];
 }>();
 
-const abstractDate = ref(props.tokens.map(() => 25));
+const abstractDate = ref(props.tokenConfigurations.map(() => 25));
 
 onMounted(() =>
-	emit("update:value", props.tokens.map((token) => `{${token}}`).join("/"))
+	emit(
+		"update:value",
+		props.tokenConfigurations.map(({ name }) => `{${name}}`).join("/")
+	)
 );
 
 const outputTryout = computed(() => {
 	return formatAbstractDate(abstractDate.value, {
 		dateDisplayFormat: props.value,
-		dateParserGroupPriority: props.tokens.join(","),
+		dateParserGroupPriority: props.tokenConfigurations
+			.map(({ name }) => name)
+			.join(","),
 	});
 });
 
@@ -56,7 +63,9 @@ function handleAbstractDateMemberUpdate(index: number, $event: number) {
 				@update:value="handleAbstractDateMemberUpdate(index, $event)"
 				:input-id="`tryout-output-${index}`"
 			>
-				<template #label>{{ tokens[index] }}</template>
+				<template #label>{{
+					tokenConfigurations[index].name
+				}}</template>
 			</VInput>
 		</section>
 		<i18n-t

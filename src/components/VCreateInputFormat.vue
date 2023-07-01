@@ -4,12 +4,16 @@ import VInput from "./VInput.vue";
 
 import { getAbstractDateFromData } from "~/cardData";
 
+import type { DateTokenConfiguration } from "~/types";
+
 const props = defineProps<{
 	value: string;
-	tokens: string[];
+	tokenConfigurations: DateTokenConfiguration[];
 }>();
 
-const template = ref(props.tokens.map((e) => `{${e}}`).join("-"));
+const template = ref(
+	props.tokenConfigurations.map((e) => `{${e.name}}`).join("-")
+);
 const tryoutInput = ref("");
 
 function generateInputRegex() {
@@ -30,7 +34,7 @@ function generateInputRegex() {
 const tryOutResults = computed(() => {
 	try {
 		return getAbstractDateFromData(
-			props.tokens,
+			props.tokenConfigurations.map((e) => e.name),
 			tryoutInput.value,
 			generateInputRegex()
 		);
@@ -73,7 +77,7 @@ const emit = defineEmits<{
 		<Transition mode="out-in">
 			<ul v-if="tryOutResults">
 				<li v-for="(value, index) in tryOutResults">
-					<b>{{ tokens[index] }}</b>
+					<b>{{ tokenConfigurations[index].name }}</b>
 					<span>-></span>
 					<span>{{ value }}</span>
 				</li>

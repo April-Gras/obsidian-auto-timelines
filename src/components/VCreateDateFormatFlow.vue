@@ -7,7 +7,8 @@ import VCreateInputFormat from "./VCreateInputFormat.vue";
 import VCreateOutputFormat from "./VCreateOutputFormat.vue";
 import VDateFormatCreationConfirmation from "./VDateFormatCreationConfirmation.vue";
 
-import type { AutoTimelineSettings } from "~/types";
+import type { AutoTimelineSettings, DateTokenConfiguration } from "~/types";
+import { createDefaultDateConfiguration } from "~/utils";
 
 defineProps<{
 	value: AutoTimelineSettings;
@@ -26,7 +27,11 @@ enum FlowState {
 }
 const flowProgress = ref(FlowState["not-started"] as FlowState);
 
-const tokens = ref(["year", "month", "day"] as string[]);
+const tokenConfigurations = ref([
+	createDefaultDateConfiguration({ name: "year" }),
+	createDefaultDateConfiguration({ name: "month" }),
+	createDefaultDateConfiguration({ name: "day" }),
+] as DateTokenConfiguration[]);
 const inputRegex = ref("");
 const outputFormat = ref("");
 
@@ -61,7 +66,9 @@ function handleNextClick() {
 function handleSave() {
 	emit("update:value", {
 		dateDisplayFormat: outputFormat.value,
-		dateParserGroupPriority: tokens.value.join(","),
+		dateParserGroupPriority: tokenConfigurations.value
+			.map(({ name }) => name)
+			.join(","),
 		dateParserRegex: inputRegex.value,
 	});
 	flowProgress.value = FlowState["not-started"];
@@ -97,16 +104,16 @@ function handleSave() {
 			<Transition mode="out-in">
 				<VCreateDateTokens
 					v-if="flowProgress === FlowState['token-creation']"
-					v-model="tokens"
+					v-model="tokenConfigurations"
 				/>
 				<VCreateInputFormat
 					v-model:value="inputRegex"
-					:tokens="tokens"
+					:token-configurations="tokenConfigurations"
 					v-else-if="flowProgress === FlowState['input-format']"
 				/>
 				<VCreateOutputFormat
 					v-model:value="outputFormat"
-					:tokens="tokens"
+					:token-configurations="tokenConfigurations"
 					v-else-if="flowProgress === FlowState['output-format']"
 				/>
 			</Transition>
@@ -121,7 +128,7 @@ function handleSave() {
 		</section>
 		<section v-else>
 			<VDateFormatCreationConfirmation
-				:tokens="tokens"
+				:token-configurations="tokenConfigurations"
 				:input-regex="inputRegex"
 				:output-format="outputFormat"
 				@save="handleSave"
