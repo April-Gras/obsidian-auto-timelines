@@ -26,7 +26,8 @@
     "title": {
       "generic-settings": "Generic settings",
       "date-formats": "Date formating",
-      "slot-presets": "Enable presets for {slot}"
+      "slot-presets": "Enable presets for {slot}",
+      "lookForTagsForTimeline": "Look into note tags"
     },
     "label": {
       "dateDisplayFormat": "Date display format",
@@ -34,13 +35,15 @@
       "dateParserRegex": "Date parser regex",
       "fantasyCalendarCheckbox": "Enable fantasy calendar integration",
       "metadataKeyEventBodyOverride": "Event body override",
+      "metadataKeyEventTimelineTag": "Event timelines tags",
       "metadataKeyEventEndDate": "Event end key",
       "metadataKeyEventPictureOverride": "Event image override",
       "metadataKeyEventStartDate": "Event start key",
       "metadataKeyEventTitleOverride": "Event title override",
       "markdownBlockTagsToFindSeparator": "Markdown Code Block \"Tags To Find\" Separator",
       "tryYourInputFormat": "Try your input format out",
-      "useAdvancedMode": "Use advanced mode / edit regexes"
+      "useAdvancedMode": "Use advanced mode / edit regexes",
+      "lookForTagsForTimeline": "Check to include a notes tags into the values used to assign notes to a timeline"
     },
     "button": {
       "resetToDefault": "Reset to default"
@@ -52,12 +55,14 @@
       "dateParserRegex": "The regex used to parse your date. It needs to include the same amount of capture group as the next setting input. If you're unfamilliar with regexes and / or capture groups I would recommend to stick to the preset.",
       "fantasyCalendarCheckbox": "This will preset all relevant keys in the settings to watch fantasy calendar uses. Namely the title override, the start date and end date keys",
       "metadataKeyEventBodyOverride": "The key for the body override in each notes metadata",
+      "metadataKeyEventTimelineTag": "The key looked for when assigning timelines to an event",
       "metadataKeyEventEndDate": "The key that determines the end of an event in a note",
       "metadataKeyEventPictureOverride": "The key for the image override in each notes metadata",
       "metadataKeyEventStartDate": "The key that determines the start of an event in a note",
       "metadataKeyEventTitleOverride": "The key for the title override in each notes metadata",
       "markdownBlockTagsToFindSeparator": "The character or string used to split the different tags to find in a markdown code block. The split values will be looked for in notes.",
-      "tryYourInputFormat": "Just type out the date like you would in a notes metadata block. Bellow, every field should corespond to the correct token and be sorted in the correct order."
+      "tryYourInputFormat": "Just type out the date like you would in a notes metadata block. Bellow, every field should corespond to the correct token and be sorted in the correct order.",
+      "lookForTagsForTimeline": "This means if you tag you note with a string and include that string in the timeline definition this note will be included in the timeline computing"
     },
     "details": {
       "createDateToken": "Write your date system tokens ordered from top to bottom. Make sure not to leave any cluter, these token will be used to capture your date and sort them in the expeted order."

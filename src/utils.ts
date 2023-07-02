@@ -163,3 +163,13 @@ export function compareAbstractDates(
 		if (a[index] !== b[index]) return a[index] > b[index] ? 1 : -1;
 	return 0;
 }
+
+/**
+ * Typeguard to check if a value is an array of unknowed sub type.
+ *
+ * @param { unknown } value unknowed value.
+ * @returns { boolean } `true` if the element is defined as an array, `false` if not.
+ */
+export function isArray(value: unknown): value is unknown[] {
+	return isDefined(value) && value instanceof Array;
+}

@@ -7,6 +7,7 @@ import {
 	getBodyFromContextOrDocument,
 	extractCardData,
 	getDataFromNote,
+	getNoteTags,
 } from "~/cardData";
 import { DEFAULT_METADATA_KEYS } from "~/settings";
 import { mockMarkdownCodeBlockTimelineProcessingContext } from "./obsidianMocks";
@@ -268,7 +269,7 @@ describe.concurrent("Card Data", () => {
 		expect(await getDataFromNote(context, ["timline"])).toBeUndefined();
 	});
 
-	test("[getDataFromNote - ok", async () => {
+	test("[getDataFromNote] - ok", async () => {
 		const context = mockMarkdownCodeBlockTimelineProcessingContext();
 
 		if (!context.cachedMetadata.frontmatter)
@@ -276,5 +277,64 @@ describe.concurrent("Card Data", () => {
 		context.cachedMetadata.frontmatter.timelines = ["timline"];
 
 		expect(await getDataFromNote(context, ["timline"])).not.toBeUndefined();
+	});
+
+	test("[getNoteTags] - ko empty args", () => {
+		const context = mockMarkdownCodeBlockTimelineProcessingContext();
+
+		if (!context.cachedMetadata.frontmatter)
+			throw new Error("Missing frontmatter in mock");
+		expect(
+			getNoteTags(
+				context.settings,
+				context.cachedMetadata.frontmatter,
+				undefined
+			)
+		).toStrictEqual([]);
+	});
+
+	test("[getNoteTags] - ok frontmater", () => {
+		const context = mockMarkdownCodeBlockTimelineProcessingContext();
+
+		if (!context.cachedMetadata.frontmatter)
+			throw new Error("Missing frontmatter in mock");
+
+		context.cachedMetadata.frontmatter.timelines = ["sample"];
+		expect(
+			getNoteTags(
+				context.settings,
+				context.cachedMetadata.frontmatter,
+				undefined
+			)
+		).toStrictEqual(["sample"]);
+	});
+
+	test("[getNoteTags] - ok frontmater", () => {
+		const context = mockMarkdownCodeBlockTimelineProcessingContext();
+		if (!context.cachedMetadata.frontmatter)
+			throw new Error("Missing frontmatter in mock");
+		const tags = [
+			{
+				tag: "#sample 2",
+				position: context.cachedMetadata.frontmatter.position,
+			},
+		];
+
+		context.cachedMetadata.frontmatter.timelines = ["sample"];
+		expect(
+			getNoteTags(
+				context.settings,
+				context.cachedMetadata.frontmatter,
+				tags
+			)
+		).toStrictEqual(["sample"]);
+		context.settings.lookForTagsForTimeline = true;
+		expect(
+			getNoteTags(
+				context.settings,
+				context.cachedMetadata.frontmatter,
+				tags
+			)
+		).toStrictEqual(["sample", "sample 2"]);
 	});
 });
