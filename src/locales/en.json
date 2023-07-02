@@ -43,7 +43,8 @@
 			"markdownBlockTagsToFindSeparator": "Markdown Code Block \"Tags To Find\" Separator",
 			"tryYourInputFormat": "Try your input format out",
 			"useAdvancedMode": "Use advanced mode / edit regexes",
-			"lookForTagsForTimeline": "Check to include a notes tags into the values used to assign notes to a timeline"
+			"lookForTagsForTimeline": "Check to include a notes tags into the values used to assign notes to a timeline",
+			"configureSingleDateToken": "The type of the token"
 		},
 		"button": {
 			"resetToDefault": "Reset to default"
@@ -62,7 +63,11 @@
 			"metadataKeyEventTitleOverride": "The key for the title override in each notes metadata",
 			"markdownBlockTagsToFindSeparator": "The character or string used to split the different tags to find in a markdown code block. The split values will be looked for in notes.",
 			"tryYourInputFormat": "Just type out the date like you would in a notes metadata block. Bellow, every field should corespond to the correct token and be sorted in the correct order.",
-			"lookForTagsForTimeline": "This means if you tag you note with a string and include that string in the timeline definition this note will be included in the timeline computing"
+			"lookForTagsForTimeline": "This means if you tag you note with a string and include that string in the timeline definition this note will be included in the timeline computing",
+			"configureSingleDateToken": {
+				"STRING": "A string typed date token represents something akin to our months. tl;dr, they are written using letter and not numbers",
+				"NUMBER": "A numerical typed date token is your stardard number representing a date. Just make sure to configure it's mininal lengh. For example a minimal length set to 2 will result in the 6th day being written as \"06\""
+			}
 		},
 		"details": {
 			"createDateToken": "Write your date system tokens ordered from top to bottom. Make sure not to leave any cluter, these token will be used to capture your date and sort them in the expeted order."

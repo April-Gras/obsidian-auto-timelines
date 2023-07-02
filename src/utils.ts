@@ -187,3 +187,15 @@ export function createDefaultDateConfiguration(
 		...defaultValue,
 	};
 }
+
+export function dateTokenConfigurationIsTypeString(
+	value: DateTokenConfiguration
+): value is DateTokenConfiguration<DateTokenType.string> {
+	return value.type === DateTokenType.string;
+}
+
+export function dateTokenConfigurationIsTypeNumber(
+	value: DateTokenConfiguration
+): value is DateTokenConfiguration<DateTokenType.number> {
+	return value.type === DateTokenType.number;
+}

@@ -1,11 +1,7 @@
-<script
-	setup
-	lang="ts"
-	generic="T extends string | number | { _vSelectKey: string | number }"
->
+<script setup lang="ts" generic="T extends string">
 import VLabel from "~/components/VLabel.vue";
 
-const { options } = defineProps<{
+const props = defineProps<{
 	options: T[];
 	modelValue: T;
 	inputId: string;
@@ -20,21 +16,25 @@ defineSlots<{
 	label(props: {}): any;
 	description(props: {}): any;
 }>();
+
+function handleSelectInput({ target }: Event) {
+	if (!target) return;
+	const value = (target as HTMLInputElement).value;
+
+	return emit("update:modelValue", value as T);
+}
 </script>
 
 <template>
-	<div role="select">
+	<div role="select" class="v-input-wrap">
 		<VLabel :input-id="inputId">
 			<template #label><slot name="label" /></template>
 			<template #description><slot name="description" /></template>
 		</VLabel>
-		<select
-			:value="modelValue"
-			@input="emit('update:modelValue', $event.target.value)"
-		>
-			<options v-for="option in options" :value="option">{{
-				$t(`${translationKey}.${option}`)
-			}}</options>
+		<select :value="modelValue" @input="handleSelectInput">
+			<option v-for="option in options" :value="option">
+				{{ $t(`${translationKey}.${option}`) }}
+			</option>
 		</select>
 	</div>
 </template>

@@ -2,6 +2,7 @@
 import { computed } from "vue";
 
 import VLabel from "./VLabel.vue";
+import { isDefined } from "~/utils";
 
 type V = T extends "number" ? number : string;
 
@@ -9,6 +10,8 @@ const props = defineProps<{
 	value: V;
 	inputId: string;
 	type: T;
+	min?: number;
+	max?: number;
 }>();
 
 const emit = defineEmits<{
@@ -22,12 +25,13 @@ defineSlots<{
 
 function handleInputEvent(event: Event) {
 	switch (props.type) {
-		case "number":
+		case "number": {
 			return emit(
 				"update:value",
 				// @ts-expect-error
 				Number((event.target as HTMLInputElement).value)
 			);
+		}
 		case "text":
 			return emit(
 				"update:value",
@@ -48,6 +52,8 @@ const typedType = computed(() => props.type.toString());
 		</VLabel>
 		<input
 			:id="inputId"
+			:min="min"
+			:max="max"
 			:value="value"
 			:type="typedType"
 			@input="handleInputEvent"

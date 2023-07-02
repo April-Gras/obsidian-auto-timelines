@@ -9,6 +9,7 @@ import type { App as ObsidianApp } from "obsidian";
 import type AprilsAutomaticTimelinesPlugin from "~/main";
 import type { AutoTimelineSettings } from "./types";
 import type { App as VueApp } from "vue";
+import { createDefaultDateConfiguration } from "./utils";
 
 /**
  * Default key value relation for obsidian settings object
@@ -25,6 +26,11 @@ export const SETTINGS_DEFAULT = {
 	dateParserGroupPriority: "year,month,day",
 	dateDisplayFormat: "{day}/{month}/{year}",
 	lookForTagsForTimeline: false,
+	dateTokenConfiguration: [
+		createDefaultDateConfiguration({ name: "year" }),
+		createDefaultDateConfiguration({ name: "month" }),
+		createDefaultDateConfiguration({ name: "day" }),
+	],
 };
 
 export const __VUE_PROD_DEVTOOLS__ = true;

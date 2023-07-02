@@ -19,7 +19,10 @@ const emit = defineEmits<{
 
 const generalSettingKeys = Object.keys(SETTINGS_DEFAULT).filter((e) =>
 	e.startsWith("metadataKey")
-) as Exclude<keyof AutoTimelineSettings, "lookForTagsForTimeline">[];
+) as Exclude<
+	keyof AutoTimelineSettings,
+	"lookForTagsForTimeline" | "dateTokenConfiguration"
+>[];
 generalSettingKeys.push("markdownBlockTagsToFindSeparator");
 
 const fantasyCalendarPreset: Record<

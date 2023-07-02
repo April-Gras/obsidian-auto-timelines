@@ -9,6 +9,7 @@ import VDateFormatCreationConfirmation from "./VDateFormatCreationConfirmation.v
 
 import type { AutoTimelineSettings, DateTokenConfiguration } from "~/types";
 import { createDefaultDateConfiguration } from "~/utils";
+import VConfigureDateTokenArray from "./VConfigureDateTokenArray.vue";
 
 defineProps<{
 	value: AutoTimelineSettings;
@@ -21,6 +22,7 @@ const emit = defineEmits<{
 enum FlowState {
 	"not-started",
 	"token-creation",
+	"token-configuration",
 	"input-format",
 	"output-format",
 	"final",
@@ -39,8 +41,10 @@ function handlePreviousClick() {
 	switch (flowProgress.value) {
 		case FlowState["token-creation"]:
 			return (flowProgress.value = FlowState["not-started"]);
-		case FlowState["input-format"]:
+		case FlowState["token-configuration"]:
 			return (flowProgress.value = FlowState["token-creation"]);
+		case FlowState["input-format"]:
+			return (flowProgress.value = FlowState["token-configuration"]);
 		case FlowState["output-format"]:
 			return (flowProgress.value = FlowState["input-format"]);
 		default:
@@ -53,6 +57,8 @@ function handleNextClick() {
 		case FlowState["not-started"]:
 			return (flowProgress.value = FlowState["token-creation"]);
 		case FlowState["token-creation"]:
+			return (flowProgress.value = FlowState["token-configuration"]);
+		case FlowState["token-configuration"]:
 			return (flowProgress.value = FlowState["input-format"]);
 		case FlowState["input-format"]:
 			return (flowProgress.value = FlowState["output-format"]);
@@ -105,6 +111,10 @@ function handleSave() {
 				<VCreateDateTokens
 					v-if="flowProgress === FlowState['token-creation']"
 					v-model="tokenConfigurations"
+				/>
+				<VConfigureDateTokenArray
+					v-model="tokenConfigurations"
+					v-else-if="flowProgress == FlowState['token-configuration']"
 				/>
 				<VCreateInputFormat
 					v-model:value="inputRegex"
