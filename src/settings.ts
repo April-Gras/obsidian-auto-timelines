@@ -19,10 +19,12 @@ export const DEFAULT_METADATA_KEYS = {
 	metadataKeyEventTitleOverride: "aat-event-title",
 	metadataKeyEventBodyOverride: "aat-event-body",
 	metadataKeyEventPictureOverride: "aat-event-picture",
+	metadataKeyEventTimelineTag: "timelines",
 	markdownBlockTagsToFindSeparator: ",",
 	dateParserRegex: "(?<year>-?[0-9]*)-(?<month>-?[0-9]*)-(?<day>-?[0-9]*)",
 	dateParserGroupPriority: "year,month,day",
 	dateDisplayFormat: "{day}/{month}/{year}",
+	lookForTagsForTimeline: false,
 };
 
 export const __VUE_PROD_DEVTOOLS__ = true;

@@ -1,9 +1,10 @@
-import { getMetadataKey, isDefinedAsString, isDefined } from "~/utils";
-import { TFile } from "obsidian";
+import { getMetadataKey, isDefinedAsString, isDefined, isArray } from "~/utils";
+import { FrontMatterCache, TagCache, TFile } from "obsidian";
 
 import type {
 	MarkdownCodeBlockTimelineProcessingContext,
 	AbstractDate,
+	AutoTimelineSettings,
 } from "~/types";
 
 /**
@@ -22,19 +23,14 @@ export async function getDataFromNote(
 	context: MarkdownCodeBlockTimelineProcessingContext,
 	tagsToFind: string[]
 ) {
-	const { cachedMetadata } = context;
-	const { frontmatter: metaData } = cachedMetadata;
+	const { cachedMetadata, settings } = context;
+	const { frontmatter: metaData, tags } = cachedMetadata;
 
 	if (!metaData) return undefined;
 	if (!RENDER_GREENLIGHT_METADATA_KEY.some((key) => metaData[key] === true))
 		return undefined;
-	if (
-		!metaData.timelines ||
-		!(metaData.timelines instanceof Array) ||
-		!metaData.timelines.length
-	)
-		return undefined;
-	const timelineTags = metaData.timelines.filter(isDefinedAsString);
+
+	const timelineTags = getNoteTags(settings, metaData, tags);
 
 	// TimelineTags is not defined as an array :<
 	// OR Sought after tags where not found
@@ -224,4 +220,21 @@ export function getAbstractDateFromData(
 	if (output.length !== groupsToCheck.length) return undefined;
 
 	return output;
+}
+
+export function getNoteTags(
+	settings: AutoTimelineSettings,
+	metaData: FrontMatterCache,
+	tags?: TagCache[]
+): string[] {
+	let output = [] as string[];
+	const timelineArray = metaData[settings.metadataKeyEventTimelineTag];
+
+	if (isArray(timelineArray))
+		output = timelineArray.filter(isDefinedAsString);
+	// Breakout earlier if we don't check the tags
+	if (!settings.lookForTagsForTimeline || !isDefined(tags)) return output;
+
+	// .substring called to remove the initial `#` in the notes tags
+	return [...output, ...tags.map(({ tag }) => tag.substring(1))];
 }

@@ -19,7 +19,7 @@ const emit = defineEmits<{
 
 const generalSettingKeys = Object.keys(DEFAULT_METADATA_KEYS).filter((e) =>
 	e.startsWith("metadataKey")
-) as (keyof AutoTimelineSettings)[];
+) as Exclude<keyof AutoTimelineSettings, "lookForTagsForTimeline">[];
 generalSettingKeys.push("markdownBlockTagsToFindSeparator");
 
 const fantasyCalendarPreset: Record<
@@ -65,7 +65,7 @@ const handleUpdateValueFantasyCalendarCheckbox = () => {
 			<VInput
 				type="text"
 				v-for="key in generalSettingKeys"
-				:value="props.value[key]"
+				:value="value[key]"
 				@update:value="emit('update:value', { [key]: $event.trim() })"
 				:input-id="key"
 			>
@@ -74,6 +74,24 @@ const handleUpdateValueFantasyCalendarCheckbox = () => {
 					$t(`settings.description.${key}`)
 				}}</template>
 			</VInput>
+		</section>
+		<hr />
+		<section class="v-grid-display">
+			<VHeader>{{ $t("settings.title.lookForTagsForTimeline") }}</VHeader>
+			<VCheckbox
+				:value="value.lookForTagsForTimeline"
+				input-id="look-for-tags-for-timeline"
+				@update:value="
+					emit('update:value', { lookForTagsForTimeline: $event })
+				"
+			>
+				<template #label>{{
+					$t("settings.label.lookForTagsForTimeline")
+				}}</template>
+				<template #description>{{
+					$t("settings.description.lookForTagsForTimeline")
+				}}</template>
+			</VCheckbox>
 		</section>
 		<hr />
 		<section class="v-grid-display">
