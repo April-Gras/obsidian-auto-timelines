@@ -1,0 +1,27 @@
+name: Unit tests
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - master
+
+
+jobs:
+  front:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Prepare vitests
+        run: npm run prepare-vitest
+
+      - name: Run tests
+        run: npm run test
