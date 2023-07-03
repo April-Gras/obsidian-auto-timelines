@@ -1,5 +1,5 @@
 import "./obsidianMocks";
-import { SpyInstance, vi } from "vitest";
+import { vi } from "vitest";
 
 import { mockCompleteCardContext, mockHTMLElement } from "./obsidianMocks";
 
