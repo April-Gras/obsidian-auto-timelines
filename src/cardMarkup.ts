@@ -1,11 +1,18 @@
 import { MarkdownRenderChild, MarkdownRenderer } from "obsidian";
-import { isDefined, createElementShort } from "~/utils";
+import {
+	isDefined,
+	createElementShort,
+	dateTokenConfigurationIsTypeNumber,
+	dateTokenConfigurationIsTypeString,
+} from "~/utils";
 
 import type {
 	MarkdownCodeBlockTimelineProcessingContext,
 	CardContent,
 	AutoTimelineSettings,
 	AbstractDate,
+	DateTokenConfiguration,
+	DateTokenType,
 } from "~/types";
 
 /**
@@ -102,9 +109,12 @@ export function formatAbstractDate(
 	{
 		dateDisplayFormat,
 		dateParserGroupPriority,
+		dateTokenConfiguration,
 	}: Pick<
 		AutoTimelineSettings,
-		"dateDisplayFormat" | "dateParserGroupPriority"
+		| "dateDisplayFormat"
+		| "dateParserGroupPriority"
+		| "dateTokenConfiguration"
 	>
 ): string {
 	if (typeof date === "boolean") return "now";
@@ -112,8 +122,73 @@ export function formatAbstractDate(
 	let output = dateDisplayFormat.toString();
 
 	prioArray.forEach((token, index) => {
-		output = output.replace(`{${token}}`, date[index].toString());
+		const configuration = dateTokenConfiguration.find(
+			({ name }) => name === token
+		);
+
+		if (!configuration)
+			throw new Error(
+				`[April's not so automatic timelines] - No date token configuration found for ${token}, please setup your date tokens correctly`
+			);
+
+		output = output.replace(
+			`{${token}}`,
+			formatDateToken(date[index], configuration)
+		);
 	});
 
 	return output;
+}
+
+/**
+ * Shorthand to format a part of an abstract date.
+ *
+ * @param { number } datePart - fragment of an abstract date.
+ * @param { DateTokenConfiguration<DateTokenType.number> } param1 - A numerical date token configuration to apply.
+ * @returns {string} the formated token.
+ */
+export function formatDateToken(
+	datePart: number,
+	configuration: DateTokenConfiguration
+): string {
+	if (dateTokenConfigurationIsTypeNumber(configuration))
+		return formatNumberDateToken(datePart, configuration);
+	if (dateTokenConfigurationIsTypeString(configuration))
+		return formatStringDateToken(datePart, configuration);
+	throw new Error(
+		`[April's not so automatic timelines] - Corrupted date token configuration, please reset settings`
+	);
+}
+
+/**
+ * Used to quickly format a fragment of an abstract date based off a number typed date token configuration.
+ *
+ * @param { number } datePart - fragment of an abstract date.
+ * @param { DateTokenConfiguration<DateTokenType.number> } param1 - A numerical date token configuration to apply.
+ * @returns {string} the formated token.
+ */
+function formatNumberDateToken(
+	datePart: number,
+	{ minLeght }: DateTokenConfiguration<DateTokenType.number>
+): string {
+	let stringifiedToken = datePart.toString();
+
+	if (minLeght < 0) return stringifiedToken;
+	while (stringifiedToken.length < minLeght)
+		stringifiedToken = "0" + stringifiedToken;
+	return stringifiedToken;
+}
+
+/**
+ * Used to quickly format a fragment of an abstract date based off a string typed date token configuration.
+ *
+ * @param { number } datePart - fragment of an abstract date.
+ * @param { DateTokenConfiguration<DateTokenType.string> } param1 - A string typed date token configuration to apply.
+ * @returns {string} the formated token.
+ */
+function formatStringDateToken(
+	datePart: number,
+	{ dictionary }: DateTokenConfiguration<DateTokenType.string>
+): string {
+	return dictionary[datePart];
 }
