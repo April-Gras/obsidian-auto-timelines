@@ -27,7 +27,8 @@
 			"generic-settings": "Generic settings",
 			"date-formats": "Date formating",
 			"slot-presets": "Enable presets for {slot}",
-			"lookForTagsForTimeline": "Look into note tags"
+			"lookForTagsForTimeline": "Look into note tags",
+			"advancedDateFormatsTokenConfiguration": "Configure the tokens"
 		},
 		"label": {
 			"dateDisplayFormat": "Date display format",

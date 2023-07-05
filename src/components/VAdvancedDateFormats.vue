@@ -4,8 +4,11 @@ import VButton from "./VButton.vue";
 import { SETTINGS_DEFAULT } from "~/settings";
 
 import type { AutoTimelineSettings } from "~/types";
+import { createDefaultDateConfiguration } from "~/utils";
+import VConfigureDateTokenArray from "./VConfigureDateTokenArray.vue";
+import VHeader from "./VHeader.vue";
 
-const props = defineProps<{
+defineProps<{
 	value: AutoTimelineSettings;
 }>();
 
@@ -13,20 +16,23 @@ const emit = defineEmits<{
 	"update:value": [payload: Partial<AutoTimelineSettings>];
 }>();
 
-const targetKeys: (keyof AutoTimelineSettings)[] = [
-	"dateParserRegex",
-	"dateParserGroupPriority",
-	"dateDisplayFormat",
-];
+const targetKeys: Exclude<
+	keyof AutoTimelineSettings,
+	"dateTokenConfiguration" | "lookForTagsForTimeline"
+>[] = ["dateParserRegex", "dateParserGroupPriority", "dateDisplayFormat"];
 
 function handleResetToDefault(): void {
-	emit(
-		"update:value",
-		targetKeys.reduce((accumulator, key) => {
+	emit("update:value", {
+		...targetKeys.reduce((accumulator, key) => {
 			accumulator[key] = SETTINGS_DEFAULT[key];
 			return accumulator;
-		}, {} as Partial<AutoTimelineSettings>)
-	);
+		}, {} as Partial<AutoTimelineSettings>),
+		dateTokenConfiguration: [
+			createDefaultDateConfiguration({ name: "year" }),
+			createDefaultDateConfiguration({ name: "month" }),
+			createDefaultDateConfiguration({ name: "day" }),
+		],
+	});
 }
 </script>
 <template>
@@ -37,7 +43,7 @@ function handleResetToDefault(): void {
 		<VInput
 			type="text"
 			v-for="key in targetKeys"
-			:value="props.value[key]"
+			:value="value[key]"
 			@update:value="emit('update:value', { [key]: $event })"
 			:input-id="key"
 		>
@@ -46,5 +52,14 @@ function handleResetToDefault(): void {
 				$t(`settings.description.${key}`)
 			}}</template>
 		</VInput>
+		<VHeader>{{
+			$t("settings.title.advancedDateFormatsTokenConfiguration")
+		}}</VHeader>
+		<VConfigureDateTokenArray
+			:model-value="value.dateTokenConfiguration"
+			@update:model-value="
+				emit('update:value', { dateTokenConfiguration: $event })
+			"
+		/>
 	</section>
 </template>

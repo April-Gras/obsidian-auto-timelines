@@ -51,6 +51,12 @@ const emit = defineEmits<{
 					<VInput
 						:input-id="`configure-single-date-token-min-length-edit-${modelValue.name}`"
 						:value="modelValue.minLeght"
+						@update:value="
+							emit('update:modelValue', {
+								...modelValue,
+								minLeght: $event,
+							})
+						"
 						type="number"
 						:min="0"
 						:max="10"
