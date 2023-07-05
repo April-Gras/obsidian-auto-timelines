@@ -236,3 +236,15 @@ div.aat-range-element:hover {
 .v-leave-to {
 	opacity: 0;
 }
+
+.v-warning-block {
+	background-color: rgba(var(--color-yellow-rgb), 0.15);
+	border-radius: 8px;
+	margin: 0px;
+	padding: 16px 24px;
+}
+
+.v-warning-block > figcaption {
+	font-size: 20px;
+	font-weight: 600;
+}

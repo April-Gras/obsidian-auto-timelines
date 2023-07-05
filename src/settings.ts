@@ -27,7 +27,7 @@ export const SETTINGS_DEFAULT = {
 	dateDisplayFormat: "{day}/{month}/{year}",
 	lookForTagsForTimeline: false,
 	dateTokenConfiguration: [
-		createDefaultDateConfiguration({ name: "year" }),
+		createDefaultDateConfiguration({ name: "year", minLeght: 4 }),
 		createDefaultDateConfiguration({ name: "month" }),
 		createDefaultDateConfiguration({ name: "day" }),
 	] as DateTokenConfiguration[],
