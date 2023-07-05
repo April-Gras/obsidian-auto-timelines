@@ -170,6 +170,6 @@ export function compareAbstractDates(
  * @param { unknown } value unknowed value.
  * @returns { boolean } `true` if the element is defined as an array, `false` if not.
  */
-export function isArray(value: unknown): value is unknown[] {
+export function isDefinedAsArray(value: unknown): value is unknown[] {
 	return isDefined(value) && value instanceof Array;
 }
