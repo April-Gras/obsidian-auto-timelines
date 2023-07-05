@@ -1,7 +1,7 @@
 import "./obsidianMocks";
 
 import { extractCardData, getDataFromNote, getNoteTags } from "~/cardData";
-import { DEFAULT_METADATA_KEYS } from "~/settings";
+import { SETTINGS_DEFAULT } from "~/settings";
 import { mockMarkdownCodeBlockTimelineProcessingContext } from "./obsidianMocks";
 
 describe.concurrent("Card Data", () => {
@@ -12,7 +12,7 @@ describe.concurrent("Card Data", () => {
 			throw new Error("Missing frontmatter in mock");
 
 		context.cachedMetadata.frontmatter[
-			DEFAULT_METADATA_KEYS.metadataKeyEventEndDate
+			SETTINGS_DEFAULT.metadataKeyEventEndDate
 		] = false;
 		const data = await extractCardData(context);
 
