@@ -247,7 +247,7 @@ export function getNoteTags(
 		output = timelineArray.filter(isDefinedAsString);
 	// Breakout earlier if we don't check the tags
 	if (!settings.lookForTagsForTimeline) return output;
-	if (isDefined(tags))
+	if (isDefinedAsArray(tags))
 		output = output.concat(tags.map(({ tag }) => tag.substring(1)));
 
 	// Tags in the frontmatter

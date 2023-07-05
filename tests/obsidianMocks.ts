@@ -175,6 +175,7 @@ export function mockMarkdownCodeBlockTimelineProcessingContext(): MarkdownCodeBl
 		app: {
 			vault,
 			metadataCache: {
+				tags: undefined,
 				getFirstLinkpathDest: vi.fn(
 					(linkpath: string, sourcePath: string): TFile | null => {
 						return new TFileClass();
