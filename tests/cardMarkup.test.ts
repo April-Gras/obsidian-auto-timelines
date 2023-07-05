@@ -74,6 +74,16 @@ describe.concurrent("Card Markup", () => {
 		const context = mockMarkdownCodeBlockTimelineProcessingContext();
 		const cardContent = mockCardContext();
 
-		createCardFromBuiltContext(context, cardContent);
+		expect(() =>
+			createCardFromBuiltContext(context, cardContent)
+		).not.toThrowError();
+
+		// @ts-expect-error
+		cardContent.body = undefined;
+		// @ts-expect-error
+		cardContent.imageURL = undefined;
+		expect(() =>
+			createCardFromBuiltContext(context, cardContent)
+		).not.toThrowError();
 	});
 });

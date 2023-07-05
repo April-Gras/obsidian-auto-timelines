@@ -1,4 +1,9 @@
-import { getMetadataKey, isDefinedAsString, isDefined, isArray } from "~/utils";
+import {
+	getMetadataKey,
+	isDefinedAsString,
+	isDefined,
+	isDefinedAsArray,
+} from "~/utils";
 import { FrontMatterCache, TagCache, TFile } from "obsidian";
 
 import type {
@@ -112,7 +117,7 @@ export function getBodyFromContextOrDocument(
 		// Remove external image links
 		.replace(/!\[.*\]\(.*\)/gi, "")
 		// Remove tags
-		.replace(/#[a-zA-Z\d]*/gi, "")
+		.replace(/#[a-zA-Z\d-_]*/gi, "")
 		// Remove internal images ![[Pasted image 20230418232101.png]]
 		.replace(/!\[\[.*\]\]/gi, "")
 		// Remove other timelines to avoid circular dependencies!
@@ -222,6 +227,14 @@ export function getAbstractDateFromData(
 	return output;
 }
 
+/**
+ * Returns a list of tags to for in a note based of plugin settings, note frontmatter and note tags.
+ *
+ * @param { AutoTimelineSettings } settings - The plugins settings.
+ * @param { FrontMatterCache } metaData - The frontematter cache.
+ * @param { TagCache[] | undefined } tags - Potencial tags.
+ * @returns A list of tags to look for in a note.
+ */
 export function getNoteTags(
 	settings: AutoTimelineSettings,
 	metaData: FrontMatterCache,
@@ -230,11 +243,22 @@ export function getNoteTags(
 	let output = [] as string[];
 	const timelineArray = metaData[settings.metadataKeyEventTimelineTag];
 
-	if (isArray(timelineArray))
+	if (isDefinedAsArray(timelineArray))
 		output = timelineArray.filter(isDefinedAsString);
 	// Breakout earlier if we don't check the tags
-	if (!settings.lookForTagsForTimeline || !isDefined(tags)) return output;
+	if (!settings.lookForTagsForTimeline) return output;
+	if (isDefinedAsArray(tags))
+		output = output.concat(tags.map(({ tag }) => tag.substring(1)));
 
+	// Tags in the frontmatter
+	const metadataInlineTags = metaData.tags;
+	if (!isDefined(metadataInlineTags)) return output;
+	if (isDefinedAsString(metadataInlineTags))
+		output = output.concat(
+			metadataInlineTags.split(",").map((e) => e.trim())
+		);
+	if (isDefinedAsArray(metadataInlineTags))
+		output = output.concat(metadataInlineTags.filter(isDefinedAsString));
 	// .substring called to remove the initial `#` in the notes tags
-	return [...output, ...tags.map(({ tag }) => tag.substring(1))];
+	return output;
 }
