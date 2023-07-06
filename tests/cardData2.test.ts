@@ -148,5 +148,13 @@ describe.concurrent("Card Data", () => {
 				tags
 			)
 		).toStrictEqual(["sample", "sample 2"]);
+		context.settings.lookForTagsForTimeline = false;
+		expect(
+			getNoteTags(
+				context.settings,
+				context.cachedMetadata.frontmatter,
+				tags
+			)
+		).toStrictEqual(["sample"]);
 	});
 });
