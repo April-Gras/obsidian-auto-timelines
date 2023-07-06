@@ -29,8 +29,9 @@ const outputTryout = computed(() => {
 	return formatAbstractDate(abstractDate.value, {
 		dateDisplayFormat: props.value,
 		dateParserGroupPriority: props.tokenConfigurations
-			.map(({ name }) => name)
+			.map((e) => e.name)
 			.join(","),
+		dateTokenConfiguration: props.tokenConfigurations,
 	});
 });
 
