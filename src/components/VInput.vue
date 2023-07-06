@@ -3,6 +3,7 @@ import { computed } from "vue";
 
 import VLabel from "./VLabel.vue";
 import { isDefined } from "~/utils";
+import type { TranslateResult } from "vue-i18n";
 
 type V = T extends "number" ? number : string;
 
@@ -10,6 +11,7 @@ const props = defineProps<{
 	value: V;
 	inputId: string;
 	type: T;
+	placeholder?: string | TranslateResult;
 	min?: number;
 	max?: number;
 }>();
@@ -54,6 +56,7 @@ const typedType = computed(() => props.type.toString());
 			:id="inputId"
 			:min="min"
 			:max="max"
+			:placeholder="placeholder"
 			:value="value"
 			:type="typedType"
 			@input="handleInputEvent"

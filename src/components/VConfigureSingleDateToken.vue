@@ -1,22 +1,54 @@
 <script setup lang="ts">
+import clonedeep from "lodash.clonedeep";
 import { availableDateTokenTypeArray, DateTokenType } from "~/types";
 import {
 	dateTokenConfigurationIsTypeNumber,
 	dateTokenConfigurationIsTypeString,
+	isDefined,
 } from "~/utils";
 
 import VSelect from "~/components/VSelect.vue";
 import VInput from "./VInput.vue";
+import VButton from "./VButton.vue";
 
 import type { DateTokenConfiguration } from "~/types";
 
-const { modelValue } = defineProps<{
+const props = defineProps<{
 	modelValue: DateTokenConfiguration;
 }>();
 
 const emit = defineEmits<{
 	"update:modelValue": [payload: DateTokenConfiguration];
 }>();
+
+function handleUpdateType($event: DateTokenType) {
+	emit("update:modelValue", {
+		...props.modelValue,
+		type: $event,
+		dictionary: $event === DateTokenType.string ? [""] : undefined,
+		minLeght: $event === DateTokenType.number ? 0 : undefined,
+	});
+}
+
+function addMemberToDictionary() {
+	if (!dateTokenConfigurationIsTypeString(props.modelValue)) return;
+	const clone = clonedeep(props.modelValue);
+
+	clone.dictionary.push("");
+	emit("update:modelValue", clone);
+}
+
+function handleDictionaryUpdateAtIndex(
+	index: number,
+	entryValue?: string
+): void {
+	if (!dateTokenConfigurationIsTypeString(props.modelValue)) return;
+	const clone = clonedeep(props.modelValue);
+
+	if (isDefined(entryValue)) clone.dictionary.splice(index, 1, entryValue);
+	else clone.dictionary.splice(index, 1);
+	emit("update:modelValue", clone);
+}
 </script>
 
 <template>
@@ -28,12 +60,7 @@ const emit = defineEmits<{
 					:model-value="modelValue.type"
 					:input-id="`configure-date-token-${modelValue.name}`"
 					:options="availableDateTokenTypeArray"
-					@update:modelValue="
-						emit('update:modelValue', {
-							...modelValue,
-							type: $event,
-						})
-					"
+					@update:modelValue="handleUpdateType"
 					translation-key="dateTokens.configure"
 				>
 					<template #label>{{
@@ -62,9 +89,37 @@ const emit = defineEmits<{
 						:max="10"
 					/>
 				</div>
-				<div v-if="dateTokenConfigurationIsTypeString(modelValue)">
-					<!-- TODO Array of string management -->
-				</div>
+				<ul
+					v-if="dateTokenConfigurationIsTypeString(modelValue)"
+					class="v-grid-display"
+				>
+					<VButton @click="addMemberToDictionary" has-accent>{{
+						$t("common.add")
+					}}</VButton>
+					<li
+						class="v-grid-display-2"
+						v-for="(entry, index) in modelValue.dictionary"
+					>
+						<VInput
+							type="text"
+							:inputId="`update-${modelValue.name}-dictionary-value-at-index-${index}`"
+							:value="entry"
+							:placeholder="
+								$t(
+									'settings.placeholder.stringTokenDctionaryEntry'
+								)
+							"
+							@update:value="
+								handleDictionaryUpdateAtIndex(index, $event)
+							"
+						/>
+						<VButton
+							@click="handleDictionaryUpdateAtIndex(index)"
+							v-if="modelValue.dictionary.length > 1"
+							>{{ $t("common.remove") }}</VButton
+						>
+					</li>
+				</ul>
 			</div>
 		</details>
 	</div>
