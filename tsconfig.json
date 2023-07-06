@@ -4,13 +4,13 @@
 		"inlineSourceMap": true,
 		"inlineSources": true,
 		"module": "ESNext",
-		"target": "ES6",
 		"allowJs": true,
 		"noImplicitAny": true,
 		"moduleResolution": "node",
 		"importHelpers": true,
 		"isolatedModules": true,
 		"strictNullChecks": true,
+		"downlevelIteration": true,
 		"resolveJsonModule": true,
 		"allowSyntheticDefaultImports": true,
 		"paths": {
@@ -18,7 +18,7 @@
 			"@/*": ["./tests/*"]
 		},
 		"lib": ["DOM", "ES5", "ES6", "ES7"],
-		"types": ["vitest/globals"]
+		"types": ["vitest/globals", "@types/lodash.clonedeep"]
 	},
 	"include": ["**/*.ts", "**/*.vue"]
 }

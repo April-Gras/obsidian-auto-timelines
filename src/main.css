@@ -7,6 +7,8 @@ If your plugin does not need CSS, delete this file.
 
 */
 
+@import "../main.css";
+
 .aat-root-container {
 	container-type: inline-size;
 	container-name: root;
@@ -233,4 +235,16 @@ div.aat-range-element:hover {
 .v-enter-from,
 .v-leave-to {
 	opacity: 0;
+}
+
+.v-warning-block {
+	background-color: rgba(var(--color-yellow-rgb), 0.15);
+	border-radius: 8px;
+	margin: 0px;
+	padding: 16px 24px;
+}
+
+.v-warning-block > figcaption {
+	font-size: 20px;
+	font-weight: 600;
 }

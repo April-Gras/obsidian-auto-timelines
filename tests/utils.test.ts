@@ -15,8 +15,10 @@ import {
 	isDefinedAsString,
 	isDefined,
 	getMetadataKey,
+	createDefaultDateConfiguration,
 } from "~/utils";
-import { DEFAULT_METADATA_KEYS } from "~/settings";
+import { SETTINGS_DEFAULT } from "~/settings";
+import { DateTokenConfiguration, DateTokenType } from "~/types";
 
 describe.concurrent("Utils", () => {
 	test("[compareAbstractDates] - no dates", () => {
@@ -196,7 +198,7 @@ describe.concurrent("Utils", () => {
 		expect(
 			getMetadataKey(
 				cachedMetadata,
-				DEFAULT_METADATA_KEYS.metadataKeyEventStartDate,
+				SETTINGS_DEFAULT.metadataKeyEventStartDate,
 				"number"
 			)
 		).toBe(undefined);
@@ -204,7 +206,7 @@ describe.concurrent("Utils", () => {
 		expect(
 			getMetadataKey(
 				cachedMetadata,
-				DEFAULT_METADATA_KEYS.metadataKeyEventStartDate,
+				SETTINGS_DEFAULT.metadataKeyEventStartDate,
 				"string"
 			)
 		).toBe("1000-1000-1000");
@@ -218,9 +220,41 @@ describe.concurrent("Utils", () => {
 		expect(
 			getMetadataKey(
 				cachedMetadata,
-				DEFAULT_METADATA_KEYS.metadataKeyEventStartDate,
+				SETTINGS_DEFAULT.metadataKeyEventStartDate,
 				"string"
 			)
 		).toBeUndefined();
+	});
+
+	test("[createDefaultDateConfiguration] - ok", () => {
+		expect(createDefaultDateConfiguration()).toStrictEqual({
+			minLeght: 2,
+			name: "",
+			type: DateTokenType.number,
+			dictionary: undefined,
+		} as DateTokenConfiguration);
+
+		expect(
+			createDefaultDateConfiguration({
+				name: "sample",
+			})
+		).toStrictEqual({
+			minLeght: 2,
+			name: "sample",
+			type: DateTokenType.number,
+			dictionary: undefined,
+		} as DateTokenConfiguration);
+
+		expect(
+			createDefaultDateConfiguration({
+				name: "sample",
+				minLeght: 234,
+			})
+		).toStrictEqual({
+			minLeght: 234,
+			name: "sample",
+			type: DateTokenType.number,
+			dictionary: undefined,
+		} as DateTokenConfiguration);
 	});
 });

@@ -7,13 +7,14 @@ import VApp from "~/views/App.vue";
 
 import type { App as ObsidianApp } from "obsidian";
 import type AprilsAutomaticTimelinesPlugin from "~/main";
-import type { AutoTimelineSettings } from "./types";
+import type { AutoTimelineSettings, DateTokenConfiguration } from "./types";
 import type { App as VueApp } from "vue";
+import { createDefaultDateConfiguration } from "./utils";
 
 /**
- * The keys looked for when processing metadata in a single note.
+ * Default key value relation for obsidian settings object
  */
-export const DEFAULT_METADATA_KEYS = {
+export const SETTINGS_DEFAULT = {
 	metadataKeyEventStartDate: "aat-event-start-date",
 	metadataKeyEventEndDate: "aat-event-end-date",
 	metadataKeyEventTitleOverride: "aat-event-title",
@@ -25,6 +26,11 @@ export const DEFAULT_METADATA_KEYS = {
 	dateParserGroupPriority: "year,month,day",
 	dateDisplayFormat: "{day}/{month}/{year}",
 	lookForTagsForTimeline: false,
+	dateTokenConfiguration: [
+		createDefaultDateConfiguration({ name: "year", minLeght: 4 }),
+		createDefaultDateConfiguration({ name: "month" }),
+		createDefaultDateConfiguration({ name: "day" }),
+	] as DateTokenConfiguration[],
 };
 
 export const __VUE_PROD_DEVTOOLS__ = true;

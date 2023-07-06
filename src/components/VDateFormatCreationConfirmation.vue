@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import VButton from "./VButton.vue";
 
+import type { DateTokenConfiguration } from "~/types";
+
 defineProps<{
-	tokens: string[];
+	tokenConfigurations: DateTokenConfiguration[];
 	inputRegex: string;
 	outputFormat: string;
 }>();
@@ -19,7 +21,7 @@ const emit = defineEmits<{
 			}}</b>
 		</div>
 		<ul>
-			<li v-for="token in tokens">{{ token }}</li>
+			<li v-for="token in tokenConfigurations">{{ token.name }}</li>
 		</ul>
 		<hr />
 		<p>

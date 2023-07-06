@@ -1,9 +1,9 @@
-import { DEFAULT_METADATA_KEYS } from "~/settings";
+import { SETTINGS_DEFAULT } from "~/settings";
 import { FnGetRangeData } from "./rangeData";
 import { FnExtractCardData, getDataFromNote } from "~/cardData";
 
 import type { App, CachedMetadata, TFile } from "obsidian";
-export type AutoTimelineSettings = typeof DEFAULT_METADATA_KEYS;
+export type AutoTimelineSettings = typeof SETTINGS_DEFAULT;
 /**
  * The main bundle of data needed to build a timeline.
  */
@@ -63,3 +63,35 @@ export type Range = ReturnType<FnGetRangeData>[number];
  * The only major limitation to this system is that all the dates must respect the same system.
  */
 export type AbstractDate = number[];
+
+/**
+ * Before formating an abstract date, the end user can configure it's output display
+ * This DateToken type helps to determine what's the nature of a given token
+ * E.g. should it be displayed as a number or as a string ?
+ */
+export enum DateTokenType {
+	number = "NUMBER",
+	string = "STRING",
+}
+
+export const availableDateTokenTypeArray = Object.values(DateTokenType);
+
+/**
+ * The data used to compute the output of an abstract date based on it's type
+ */
+export type DateTokenConfiguration<T extends DateTokenType = DateTokenType> = {
+	type: T;
+
+	// Number
+	/**
+	 * The minimum ammount of digits when displaying the date
+	 */
+	minLeght: T extends DateTokenType.number ? number : undefined;
+
+	// String
+	/**
+	 * The dictionary reference for the token
+	 */
+	dictionary: T extends DateTokenType.string ? string[] : undefined;
+	name: string;
+};

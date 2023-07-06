@@ -5,7 +5,7 @@ import VHeader from "~/components/VHeader.vue";
 import VInput from "~/components/VInput.vue";
 import VCheckbox from "~/components/VCheckbox.vue";
 
-import { DEFAULT_METADATA_KEYS } from "~/settings";
+import { SETTINGS_DEFAULT } from "~/settings";
 
 import type { AutoTimelineSettings } from "~/types";
 
@@ -17,9 +17,12 @@ const emit = defineEmits<{
 	"update:value": [payload: Partial<AutoTimelineSettings>];
 }>();
 
-const generalSettingKeys = Object.keys(DEFAULT_METADATA_KEYS).filter((e) =>
+const generalSettingKeys = Object.keys(SETTINGS_DEFAULT).filter((e) =>
 	e.startsWith("metadataKey")
-) as Exclude<keyof AutoTimelineSettings, "lookForTagsForTimeline">[];
+) as Exclude<
+	keyof AutoTimelineSettings,
+	"lookForTagsForTimeline" | "dateTokenConfiguration"
+>[];
 generalSettingKeys.push("markdownBlockTagsToFindSeparator");
 
 const fantasyCalendarPreset: Record<
@@ -50,7 +53,7 @@ const handleUpdateValueFantasyCalendarCheckbox = () => {
 		emit(
 			"update:value",
 			fantasyCalendarKeys.reduce((acc, key) => {
-				acc[key] = DEFAULT_METADATA_KEYS[key];
+				acc[key] = SETTINGS_DEFAULT[key];
 				return acc;
 			}, {} as Partial<AutoTimelineSettings>)
 		);

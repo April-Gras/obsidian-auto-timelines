@@ -1,5 +1,5 @@
 import { mock } from "vitest-mock-extended";
-import { DEFAULT_METADATA_KEYS } from "~/settings";
+import { SETTINGS_DEFAULT } from "~/settings";
 import {
 	TFile as TFileClass,
 	Component as ObsidianComponent,
@@ -128,9 +128,8 @@ export function mockGetFileCache() {
 				...mock<FrontMatterCache>(),
 				timelines: ["timeline"],
 				"aat-render-enabled": true,
-				[DEFAULT_METADATA_KEYS.metadataKeyEventStartDate]:
-					mock<number>(),
-				[DEFAULT_METADATA_KEYS.metadataKeyEventEndDate]: mock<number>(),
+				[SETTINGS_DEFAULT.metadataKeyEventStartDate]: mock<number>(),
+				[SETTINGS_DEFAULT.metadataKeyEventEndDate]: mock<number>(),
 			},
 		};
 	});
@@ -190,17 +189,14 @@ export function mockMarkdownCodeBlockTimelineProcessingContext(): MarkdownCodeBl
 			cardListRootElement: mockHTMLElement(),
 			timelineRootElement: mockHTMLElement(),
 		},
-		settings: DEFAULT_METADATA_KEYS,
+		settings: SETTINGS_DEFAULT,
 		cachedMetadata: {
 			frontmatter: {
 				"aat-render-enabled": true,
-				[DEFAULT_METADATA_KEYS.metadataKeyEventPictureOverride]:
-					undefined,
-				[DEFAULT_METADATA_KEYS.metadataKeyEventBodyOverride]: undefined,
-				[DEFAULT_METADATA_KEYS.metadataKeyEventStartDate]:
-					"1000-1000-1000",
-				[DEFAULT_METADATA_KEYS.metadataKeyEventTitleOverride]:
-					undefined,
+				[SETTINGS_DEFAULT.metadataKeyEventPictureOverride]: undefined,
+				[SETTINGS_DEFAULT.metadataKeyEventBodyOverride]: undefined,
+				[SETTINGS_DEFAULT.metadataKeyEventStartDate]: "1000-1000-1000",
+				[SETTINGS_DEFAULT.metadataKeyEventTitleOverride]: undefined,
 			},
 		},
 	});

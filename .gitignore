@@ -14,8 +14,9 @@ node_modules
 # Don't include the compiled main.js file in the repo.
 # They should be uploaded to GitHub releases instead.
 main.js
-# Style is now built from source
+# Styles are now built from source
 styles.css
+# root main.css will be kept to preserve build
 
 # Exclude sourcemaps
 *.map

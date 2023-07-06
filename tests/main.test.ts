@@ -7,7 +7,7 @@ import {
 } from "./obsidianMocks";
 
 import manifest from "~/../manifest.json";
-import { DEFAULT_METADATA_KEYS } from "~/settings";
+import { SETTINGS_DEFAULT } from "~/settings";
 
 import AprilsAutomaticTimelinesPlugin from "~/main";
 
@@ -40,8 +40,8 @@ describe.concurrent("Main", () => {
 				frontmatter: {
 					timelines: ["timeline"],
 					"aat-render-enabled": true,
-					[DEFAULT_METADATA_KEYS.metadataKeyEventStartDate]: 87,
-					[DEFAULT_METADATA_KEYS.metadataKeyEventEndDate]: true,
+					[SETTINGS_DEFAULT.metadataKeyEventStartDate]: 87,
+					[SETTINGS_DEFAULT.metadataKeyEventEndDate]: true,
 				},
 			}));
 		app.vault.getMarkdownFiles = vi.fn(() => [

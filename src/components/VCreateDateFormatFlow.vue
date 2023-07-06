@@ -7,7 +7,9 @@ import VCreateInputFormat from "./VCreateInputFormat.vue";
 import VCreateOutputFormat from "./VCreateOutputFormat.vue";
 import VDateFormatCreationConfirmation from "./VDateFormatCreationConfirmation.vue";
 
-import type { AutoTimelineSettings } from "~/types";
+import type { AutoTimelineSettings, DateTokenConfiguration } from "~/types";
+import { createDefaultDateConfiguration } from "~/utils";
+import VConfigureDateTokenArray from "./VConfigureDateTokenArray.vue";
 
 defineProps<{
 	value: AutoTimelineSettings;
@@ -20,13 +22,18 @@ const emit = defineEmits<{
 enum FlowState {
 	"not-started",
 	"token-creation",
+	"token-configuration",
 	"input-format",
 	"output-format",
 	"final",
 }
 const flowProgress = ref(FlowState["not-started"] as FlowState);
 
-const tokens = ref(["year", "month", "day"] as string[]);
+const tokenConfigurations = ref([
+	createDefaultDateConfiguration({ name: "year" }),
+	createDefaultDateConfiguration({ name: "month" }),
+	createDefaultDateConfiguration({ name: "day" }),
+] as DateTokenConfiguration[]);
 const inputRegex = ref("");
 const outputFormat = ref("");
 
@@ -34,8 +41,10 @@ function handlePreviousClick() {
 	switch (flowProgress.value) {
 		case FlowState["token-creation"]:
 			return (flowProgress.value = FlowState["not-started"]);
-		case FlowState["input-format"]:
+		case FlowState["token-configuration"]:
 			return (flowProgress.value = FlowState["token-creation"]);
+		case FlowState["input-format"]:
+			return (flowProgress.value = FlowState["token-configuration"]);
 		case FlowState["output-format"]:
 			return (flowProgress.value = FlowState["input-format"]);
 		default:
@@ -48,6 +57,8 @@ function handleNextClick() {
 		case FlowState["not-started"]:
 			return (flowProgress.value = FlowState["token-creation"]);
 		case FlowState["token-creation"]:
+			return (flowProgress.value = FlowState["token-configuration"]);
+		case FlowState["token-configuration"]:
 			return (flowProgress.value = FlowState["input-format"]);
 		case FlowState["input-format"]:
 			return (flowProgress.value = FlowState["output-format"]);
@@ -61,7 +72,9 @@ function handleNextClick() {
 function handleSave() {
 	emit("update:value", {
 		dateDisplayFormat: outputFormat.value,
-		dateParserGroupPriority: tokens.value.join(","),
+		dateParserGroupPriority: tokenConfigurations.value
+			.map(({ name }) => name)
+			.join(","),
 		dateParserRegex: inputRegex.value,
 	});
 	flowProgress.value = FlowState["not-started"];
@@ -97,16 +110,20 @@ function handleSave() {
 			<Transition mode="out-in">
 				<VCreateDateTokens
 					v-if="flowProgress === FlowState['token-creation']"
-					v-model="tokens"
+					v-model="tokenConfigurations"
+				/>
+				<VConfigureDateTokenArray
+					v-model="tokenConfigurations"
+					v-else-if="flowProgress == FlowState['token-configuration']"
 				/>
 				<VCreateInputFormat
 					v-model:value="inputRegex"
-					:tokens="tokens"
+					:token-configurations="tokenConfigurations"
 					v-else-if="flowProgress === FlowState['input-format']"
 				/>
 				<VCreateOutputFormat
 					v-model:value="outputFormat"
-					:tokens="tokens"
+					:token-configurations="tokenConfigurations"
 					v-else-if="flowProgress === FlowState['output-format']"
 				/>
 			</Transition>
@@ -121,7 +138,7 @@ function handleSave() {
 		</section>
 		<section v-else>
 			<VDateFormatCreationConfirmation
-				:tokens="tokens"
+				:token-configurations="tokenConfigurations"
 				:input-regex="inputRegex"
 				:output-format="outputFormat"
 				@save="handleSave"
