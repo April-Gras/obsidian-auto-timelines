@@ -101,6 +101,14 @@ cycle {cycle}, {moon}
 
 The end result for our initaly declared metadata would look something like: `cycle 687, 2`.
 
+##### Date token types
+
+In some cases numbers displaying your dates as plain numbers won't really cut it. This is where date token types come in. For now they come in two flavors
+
+- `numerical`: These date tokens should be displayed as default, for example the day and the year in `06 july 2018` are numerical date tokens. The `day` token has a minial length of `2` and the `year` token has a minimal length of `4`.
+- `string`: These are a bit more cumbersome to configure but add great visibility. For instance in our previous example (`06 july 2018`) the `month` token is a `string` date token.
+To configure your date tokens head to the plugins settings and use the `Date Format Settings` setup flow or edit them using advanced mode.
+
 ---
 
 ## Developement
