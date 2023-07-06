@@ -4,7 +4,8 @@
     "next": "Next",
     "start": "Start",
     "add": "Add",
-    "confirm": "Confirm my changes!"
+    "confirm": "Confirm my changes!",
+    "remove": "Remove"
   },
   "nav": {
     "title": {
@@ -83,6 +84,9 @@
       "button": {
         "syncTokens": "Update tokens to reflect the above configuration"
       }
+    },
+    "placeholder": {
+      "stringTokenDctionaryEntry": "Type the desired output of the token..."
     }
   },
   "dateTokens": {
