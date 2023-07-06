@@ -28,6 +28,7 @@
 		"esbuild": "0.18.11",
 		"esbuild-plugin-vue3": "^0.3.2",
 		"happy-dom": "^10.0.3",
+		"lodash.clonedeep": "^4.5.0",
 		"obsidian": "latest",
 		"sass": "^1.63.6",
 		"ts-essentials": "^9.3.2",
