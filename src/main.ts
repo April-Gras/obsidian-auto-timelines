@@ -8,6 +8,7 @@ import { createCardFromBuiltContext } from "~/cardMarkup";
 import { getAllRangeData } from "~/rangeData";
 import { renderRanges } from "~/rangeMarkup";
 import { SETTINGS_DEFAULT, TimelineSettingTab } from "~/settings";
+import { parseMarkdownBlockSource } from "./markdownBlockData";
 
 export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	settings: AutoTimelineSettings;
@@ -43,15 +44,14 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	) {
 		const runtimeTime = measureTime("Run time");
 		const { app } = this;
-		const tagsToFind = source
-			.split(SETTINGS_DEFAULT.markdownBlockTagsToFindSeparator)
-			.map((e) => e.replace("\n", "").trim());
+		const parserResults = parseMarkdownBlockSource(source);
+		const { tagsToFind, settingsOverride } = parserResults;
 
 		const creationContext = setupTimelineCreation(
 			app,
 			element,
 			sourcePath,
-			this.settings
+			{ ...this.settings, ...settingsOverride }
 		);
 		const cardDataTime = measureTime("Data fetch");
 		const cards = (
