@@ -183,7 +183,6 @@ export function createDefaultDateConfiguration(
 		minLeght: 2,
 		name: "",
 		type: DateTokenType.number,
-		dictionary: undefined,
 		...defaultValue,
 	};
 }

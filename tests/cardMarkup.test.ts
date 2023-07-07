@@ -111,10 +111,11 @@ describe.concurrent("Card Markup", () => {
 	});
 
 	test("[formatDateToken] - string", () => {
-		const configuration =
-			createDefaultDateConfiguration() as DateTokenConfiguration;
+		const configuration = createDefaultDateConfiguration();
 
+		// @ts-expect-error
 		configuration.type = DateTokenType.string;
+		// @ts-expect-error
 		configuration.dictionary = ["a", "b", "c", "d"];
 		expect(formatDateToken(2, configuration)).toBe("c");
 	});
@@ -125,6 +126,7 @@ describe.concurrent("Card Markup", () => {
 
 		// @ts-expect-error
 		configuration.type = "unvalid type";
+		// @ts-expect-error
 		configuration.dictionary = ["a", "b", "c", "d"];
 		expect(() => formatDateToken(2, configuration)).toThrowError();
 	});

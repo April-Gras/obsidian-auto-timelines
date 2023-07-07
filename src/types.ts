@@ -3,6 +3,7 @@ import { FnGetRangeData } from "./rangeData";
 import { FnExtractCardData, getDataFromNote } from "~/cardData";
 
 import type { App, CachedMetadata, TFile } from "obsidian";
+import type { Merge } from "ts-essentials";
 export type AutoTimelineSettings = typeof SETTINGS_DEFAULT;
 /**
  * The main bundle of data needed to build a timeline.
@@ -76,22 +77,32 @@ export enum DateTokenType {
 
 export const availableDateTokenTypeArray = Object.values(DateTokenType);
 
+/* eslint-disable no-mixed-spaces-and-tabs */
 /**
  * The data used to compute the output of an abstract date based on it's type
  */
-export type DateTokenConfiguration<T extends DateTokenType = DateTokenType> = {
-	type: T;
-
-	// Number
-	/**
-	 * The minimum ammount of digits when displaying the date
-	 */
-	minLeght: T extends DateTokenType.number ? number : undefined;
-
-	// String
-	/**
-	 * The dictionary reference for the token
-	 */
-	dictionary: T extends DateTokenType.string ? string[] : undefined;
-	name: string;
-};
+type CommonValues<T extends DateTokenType> = { name: string; type: T };
+export type DateTokenConfiguration<T extends DateTokenType = DateTokenType> =
+	T extends DateTokenType.number
+		? Merge<
+				CommonValues<T>,
+				{
+					/**
+					 * The minimum ammount of digits when displaying the date
+					 */
+					minLeght: number;
+				}
+		  >
+		: T extends DateTokenType.string
+		? Merge<
+				CommonValues<T>,
+				{
+					/**
+					 * The dictionary reference for the token
+					 */
+					dictionary: T extends DateTokenType.string
+						? string[]
+						: undefined;
+				}
+		  >
+		: CommonValues<T>;
