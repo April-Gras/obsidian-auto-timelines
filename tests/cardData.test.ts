@@ -13,7 +13,7 @@ import { vi } from "vitest";
 
 import type { TFile } from "obsidian";
 
-describe("Card Data", () => {
+describe.concurrent("Card Data", () => {
 	test("[getAbstractDateFromData] - ok", () => {
 		const date = getAbstractDateFromData(
 			["year", "month", "day"],
