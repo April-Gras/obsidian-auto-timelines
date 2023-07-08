@@ -12,7 +12,10 @@ import {
 	formatDateToken,
 } from "~/cardMarkup";
 import { DateTokenConfiguration, DateTokenType } from "~/types";
-import { createDefaultDateConfiguration } from "~/utils";
+import {
+	createNumberDateTokenConfiguration,
+	createStringDateTokenConfiguration,
+} from "~/utils";
 
 describe.concurrent("Card Markup", () => {
 	test("[formatAbstractDate] - boolean date", () => {
@@ -99,7 +102,9 @@ describe.concurrent("Card Markup", () => {
 	});
 
 	test("[formatDateToken] - numerical", () => {
-		const configuration = createDefaultDateConfiguration();
+		const configuration = createNumberDateTokenConfiguration({
+			type: DateTokenType.number,
+		});
 
 		expect(formatDateToken(2, configuration)).toBe("02");
 
@@ -111,18 +116,16 @@ describe.concurrent("Card Markup", () => {
 	});
 
 	test("[formatDateToken] - string", () => {
-		const configuration = createDefaultDateConfiguration();
+		const configuration = createStringDateTokenConfiguration({
+			dictionary: ["a", "b", "c", "d"],
+		});
 
-		// @ts-expect-error
-		configuration.type = DateTokenType.string;
-		// @ts-expect-error
-		configuration.dictionary = ["a", "b", "c", "d"];
 		expect(formatDateToken(2, configuration)).toBe("c");
 	});
 
 	test("[formatdateToken] - ko", () => {
 		const configuration =
-			createDefaultDateConfiguration() as DateTokenConfiguration;
+			createNumberDateTokenConfiguration() as DateTokenConfiguration;
 
 		// @ts-expect-error
 		configuration.type = "unvalid type";

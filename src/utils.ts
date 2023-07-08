@@ -176,13 +176,25 @@ export function isDefinedAsArray(value: unknown): value is unknown[] {
 	return isDefined(value) && value instanceof Array;
 }
 
-export function createDefaultDateConfiguration(
+export function createNumberDateTokenConfiguration(
 	defaultValue: Partial<DateTokenConfiguration<DateTokenType.number>> = {}
 ): DateTokenConfiguration<DateTokenType.number> {
 	return {
 		minLeght: 2,
 		name: "",
 		type: DateTokenType.number,
+		displayWhenZero: true,
+		...defaultValue,
+	};
+}
+
+export function createStringDateTokenConfiguration(
+	defaultValue: Partial<DateTokenConfiguration<DateTokenType.string>> = {}
+): DateTokenConfiguration<DateTokenType.string> {
+	return {
+		name: "",
+		type: DateTokenType.string,
+		dictionary: [""],
 		...defaultValue,
 	};
 }

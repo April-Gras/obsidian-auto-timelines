@@ -15,7 +15,8 @@ import {
 	isDefinedAsString,
 	isDefined,
 	getMetadataKey,
-	createDefaultDateConfiguration,
+	createNumberDateTokenConfiguration,
+	createStringDateTokenConfiguration,
 } from "~/utils";
 import { SETTINGS_DEFAULT } from "~/settings";
 import { DateTokenConfiguration, DateTokenType } from "~/types";
@@ -226,27 +227,27 @@ describe.concurrent("Utils", () => {
 		).toBeUndefined();
 	});
 
-	test("[createDefaultDateConfiguration] - ok", () => {
-		expect(createDefaultDateConfiguration()).toStrictEqual({
+	test("[createNumberDateTokenConfiguration] - ok", () => {
+		expect(createNumberDateTokenConfiguration()).toStrictEqual({
 			minLeght: 2,
 			name: "",
+			displayWhenZero: true,
 			type: DateTokenType.number,
-			dictionary: undefined,
 		} as DateTokenConfiguration);
 
 		expect(
-			createDefaultDateConfiguration({
+			createNumberDateTokenConfiguration({
 				name: "sample",
 			})
 		).toStrictEqual({
 			minLeght: 2,
 			name: "sample",
 			type: DateTokenType.number,
-			dictionary: undefined,
+			displayWhenZero: true,
 		} as DateTokenConfiguration);
 
 		expect(
-			createDefaultDateConfiguration({
+			createNumberDateTokenConfiguration({
 				name: "sample",
 				minLeght: 234,
 			})
@@ -254,7 +255,36 @@ describe.concurrent("Utils", () => {
 			minLeght: 234,
 			name: "sample",
 			type: DateTokenType.number,
-			dictionary: undefined,
+			displayWhenZero: true,
+		} as DateTokenConfiguration);
+	});
+
+	test("[createStringDateTokenConfiguration] - ok", () => {
+		expect(createStringDateTokenConfiguration()).toStrictEqual({
+			name: "",
+			dictionary: [""],
+			type: DateTokenType.string,
+		} as DateTokenConfiguration);
+
+		expect(
+			createStringDateTokenConfiguration({
+				name: "sample",
+			})
+		).toStrictEqual({
+			name: "sample",
+			dictionary: [""],
+			type: DateTokenType.string,
+		} as DateTokenConfiguration);
+
+		expect(
+			createStringDateTokenConfiguration({
+				name: "sample",
+				dictionary: ["a"],
+			})
+		).toStrictEqual({
+			name: "sample",
+			dictionary: ["a"],
+			type: DateTokenType.string,
 		} as DateTokenConfiguration);
 	});
 });

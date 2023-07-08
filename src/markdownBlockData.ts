@@ -51,7 +51,7 @@ function formatValueFromKey(
 }
 
 function parseSingleLine(line: string): Partial<AutoTimelineSettings> {
-	const reg = /((?<key>.*):(?<value>.*))/i;
+	const reg = /((?<key>(\s|\d|[a-z])*):(?<value>.*))/i;
 	const matches = line.match(reg);
 
 	if (

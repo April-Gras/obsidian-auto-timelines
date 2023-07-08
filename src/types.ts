@@ -77,32 +77,40 @@ export enum DateTokenType {
 
 export const availableDateTokenTypeArray = Object.values(DateTokenType);
 
-/* eslint-disable no-mixed-spaces-and-tabs */
 /**
  * The data used to compute the output of an abstract date based on it's type
  */
 type CommonValues<T extends DateTokenType> = { name: string; type: T };
 export type DateTokenConfiguration<T extends DateTokenType = DateTokenType> =
 	T extends DateTokenType.number
-		? Merge<
-				CommonValues<T>,
-				{
-					/**
-					 * The minimum ammount of digits when displaying the date
-					 */
-					minLeght: number;
-				}
-		  >
+		? NumberSpecific
 		: T extends DateTokenType.string
-		? Merge<
-				CommonValues<T>,
-				{
-					/**
-					 * The dictionary reference for the token
-					 */
-					dictionary: T extends DateTokenType.string
-						? string[]
-						: undefined;
-				}
-		  >
-		: CommonValues<T>;
+		? StringSpecific
+		: StringSpecific | NumberSpecific;
+
+/**
+ * Number typed date token.
+ */
+type NumberSpecific = Merge<
+	CommonValues<DateTokenType.number>,
+	{
+		/**
+		 * The minimum ammount of digits when displaying the date
+		 */
+		minLeght: number;
+		displayWhenZero: boolean;
+	}
+>;
+
+/**
+ * String typed date token.
+ */
+type StringSpecific = Merge<
+	CommonValues<DateTokenType.string>,
+	{
+		/**
+		 * The dictionary reference for the token
+		 */
+		dictionary: string[];
+	}
+>;
