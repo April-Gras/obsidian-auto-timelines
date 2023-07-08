@@ -7,7 +7,8 @@ A theme agnostic timeline generator for [obsidian](https://obsidian.md/)
 This plugins allows you to tag notes to generate timelines. It's designed with story telling in mind.
 
 ## Sample vault with basic examples
-[TimelineSampleVault.zip](https://github.com/April-Gras/obsidian-auto-timelines/files/11983177/TimelineSampleVault.zip)
+[TimelineSampleVault.zip](https://github.com/April-Gras/obsidian-auto-timelines/files/11990929/TimelineSampleVault.zip)
+
 
 Here's a zip file of a obsidian vault with various basic examples to help you build timelines.
 Alternatively [Josh Plunkett](https://www.youtube.com/@JoshPlunkett) did [a tutorial video](https://www.youtube.com/watch?v=992o1j8zRSk) covering the basics
@@ -114,6 +115,21 @@ In some cases numbers displaying your dates as plain numbers won't really cut it
 - `numerical`: These date tokens should be displayed as default, for example the day and the year in `06 july 2018` are numerical date tokens. The `day` token has a minial length of `2` and the `year` token has a minimal length of `4`.
 - `string`: These are a bit more cumbersome to configure but add great visibility. For instance in our previous example (`06 july 2018`) the `month` token is a `string` date token.
 To configure your date tokens head to the plugins settings and use the `Date Format Settings` setup flow or edit them using advanced mode.
+
+##### Timeline specific settings override
+
+In some cases the output format used defined in the settings is too broad for some timelines. Let's say we defined the following tokens:
+- year
+- month
+- day
+- hour
+- minute
+
+We could set our default output format to `{day} {month} {year}` and cover a lot of use cases. But let's say we have a timeline full of events that are potencially minutes apart.
+Instead of trying to compromise with other timelines display we could just write
+![image](https://github.com/April-Gras/obsidian-auto-timelines/assets/1866440/6ce32770-7ba6-4fe6-b1f8-eb629d960114)
+This will override the globals settings but just for this one timeline line
+The syntax is as follow: `dateDisplayFormat: whatever {token-name} some more whatever {other-token-name}`. You can use as many and as little tokens as you want as long as they where defined earlier in the global settings.
 
 ---
 

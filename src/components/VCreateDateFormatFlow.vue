@@ -8,7 +8,7 @@ import VCreateOutputFormat from "./VCreateOutputFormat.vue";
 import VDateFormatCreationConfirmation from "./VDateFormatCreationConfirmation.vue";
 
 import type { AutoTimelineSettings, DateTokenConfiguration } from "~/types";
-import { createDefaultDateConfiguration } from "~/utils";
+import { createNumberDateTokenConfiguration } from "~/utils";
 import VConfigureDateTokenArray from "./VConfigureDateTokenArray.vue";
 
 defineProps<{
@@ -30,9 +30,9 @@ enum FlowState {
 const flowProgress = ref(FlowState["not-started"] as FlowState);
 
 const tokenConfigurations = ref([
-	createDefaultDateConfiguration({ name: "year" }),
-	createDefaultDateConfiguration({ name: "month" }),
-	createDefaultDateConfiguration({ name: "day" }),
+	createNumberDateTokenConfiguration({ name: "year" }),
+	createNumberDateTokenConfiguration({ name: "month" }),
+	createNumberDateTokenConfiguration({ name: "day" }),
 ] as DateTokenConfiguration[]);
 const inputRegex = ref("");
 const outputFormat = ref("");

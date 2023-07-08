@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-auto-timelines",
-	"version": "0.5.0",
+	"version": "0.6.0",
 	"description": "This Obsidian (https://obsidian.md) plugin aims to simplify creating and maintaining timelines in different a project",
 	"main": "main.js",
 	"scripts": {
@@ -36,7 +36,7 @@
 		"typescript": "5.1.6",
 		"vite-tsconfig-paths": "^4.2.0",
 		"vitest": "^0.33.0",
-		"vitest-mock-extended": "^1.1.3"
+		"vitest-mock-extended": "^1.1.4"
 	},
 	"dependencies": {
 		"vue": "^3.3.4",

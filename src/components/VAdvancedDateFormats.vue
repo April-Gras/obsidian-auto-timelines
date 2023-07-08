@@ -6,7 +6,7 @@ import VButton from "./VButton.vue";
 import { SETTINGS_DEFAULT } from "~/settings";
 
 import type { AutoTimelineSettings } from "~/types";
-import { createDefaultDateConfiguration } from "~/utils";
+import { createNumberDateTokenConfiguration } from "~/utils";
 import VConfigureDateTokenArray from "./VConfigureDateTokenArray.vue";
 import VHeader from "./VHeader.vue";
 import VWarningBlock from "./VWarningBlock.vue";
@@ -40,7 +40,7 @@ function handleTokenResync() {
 		dateTokenConfiguration: [
 			...props.value.dateTokenConfiguration,
 			...unconfiguredTokens.value.map((name) =>
-				createDefaultDateConfiguration({ name })
+				createNumberDateTokenConfiguration({ name })
 			),
 		],
 	});
@@ -53,9 +53,9 @@ function handleResetToDefault(): void {
 			return accumulator;
 		}, {} as Partial<AutoTimelineSettings>),
 		dateTokenConfiguration: [
-			createDefaultDateConfiguration({ name: "year", minLeght: 4 }),
-			createDefaultDateConfiguration({ name: "month" }),
-			createDefaultDateConfiguration({ name: "day" }),
+			createNumberDateTokenConfiguration({ name: "year", minLeght: 4 }),
+			createNumberDateTokenConfiguration({ name: "month" }),
+			createNumberDateTokenConfiguration({ name: "day" }),
 		],
 	});
 }

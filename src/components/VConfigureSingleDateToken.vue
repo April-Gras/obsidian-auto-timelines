@@ -22,12 +22,19 @@ const emit = defineEmits<{
 }>();
 
 function handleUpdateType($event: DateTokenType) {
-	emit("update:modelValue", {
-		...props.modelValue,
-		type: $event,
-		dictionary: $event === DateTokenType.string ? [""] : undefined,
-		minLeght: $event === DateTokenType.number ? 0 : undefined,
-	});
+	if ($event === DateTokenType.string)
+		emit("update:modelValue", {
+			...props.modelValue,
+			type: $event,
+			dictionary: [""],
+		});
+	else
+		emit("update:modelValue", {
+			...props.modelValue,
+			type: $event,
+			minLeght: 0,
+			displayWhenZero: true,
+		});
 }
 
 function addMemberToDictionary() {
