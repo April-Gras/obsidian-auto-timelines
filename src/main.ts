@@ -1,8 +1,8 @@
 import { MarkdownPostProcessorContext, Plugin } from "obsidian";
 
-import type { AutoTimelineSettings } from "~/types";
+import type { AutoTimelineSettings, CompleteCardContext } from "~/types";
 import { compareAbstractDates, isDefined, measureTime } from "~/utils";
-import { getDataFromNote } from "~/cardData";
+import { getDataFromNoteMetadata, getDataFromNoteBody } from "~/cardData";
 import { setupTimelineCreation } from "~/timelineMarkup";
 import { createCardFromBuiltContext } from "~/cardMarkup";
 import { getAllRangeData } from "~/rangeData";
@@ -46,41 +46,47 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 		const { app } = this;
 		const parserResults = parseMarkdownBlockSource(source);
 		const { tagsToFind, settingsOverride } = parserResults;
-
+		const finalSettings = { ...this.settings, ...settingsOverride };
 		const creationContext = setupTimelineCreation(
 			app,
 			element,
 			sourcePath,
-			{ ...this.settings, ...settingsOverride }
+			finalSettings
 		);
 		const cardDataTime = measureTime("Data fetch");
-		const cards = (
-			await Promise.all(
-				creationContext.map((e) => getDataFromNote(e, tagsToFind))
-			)
-		)
-			.filter(isDefined)
-			.sort(
-				(
-					{ cardData: { startDate: a, endDate: aE } },
-					{ cardData: { startDate: b, endDate: bE } }
-				) => {
-					const score = compareAbstractDates(a, b);
+		const events: CompleteCardContext[] = [];
+		for (const context of creationContext) {
+			const baseData = await getDataFromNoteMetadata(context, tagsToFind);
 
-					if (score) return score;
-					return compareAbstractDates(aE, bE);
-				}
-			);
+			if (!baseData) continue;
+			events.push(baseData);
+			if (!finalSettings.allowInlineEventsInNotes) continue;
+			const inlineEvents = (
+				await getDataFromNoteBody(baseData, tagsToFind)
+			).filter(isDefined);
+			events.push(...inlineEvents);
+		}
+		events.sort(
+			(
+				{ cardData: { startDate: a, endDate: aE } },
+				{ cardData: { startDate: b, endDate: bE } }
+			) => {
+				const score = compareAbstractDates(a, b);
+
+				if (score) return score;
+				return compareAbstractDates(aE, bE);
+			}
+		);
 		cardDataTime();
 
 		const cardRenderTime = measureTime("Card Render");
-		cards.forEach(({ context, cardData }) =>
+		events.forEach(({ context, cardData }) =>
 			createCardFromBuiltContext(context, cardData)
 		);
 		cardRenderTime();
 
 		const rangeDataFecthTime = measureTime("Range Data");
-		const ranges = getAllRangeData(cards);
+		const ranges = getAllRangeData(events);
 		rangeDataFecthTime();
 
 		const rangeRenderTime = measureTime("Range Render");

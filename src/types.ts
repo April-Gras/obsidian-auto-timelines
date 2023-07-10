@@ -1,6 +1,6 @@
 import { SETTINGS_DEFAULT } from "~/settings";
 import { FnGetRangeData } from "./rangeData";
-import { FnExtractCardData, getDataFromNote } from "~/cardData";
+import { FnExtractCardData, getDataFromNoteMetadata } from "~/cardData";
 
 import type { App, CachedMetadata, TFile } from "obsidian";
 import type { Merge } from "ts-essentials";
@@ -42,7 +42,7 @@ export interface MarkdownCodeBlockTimelineProcessingContext {
  * The context extracted from a single note to create a single card in the timeline combined with the more general purpise timeline context.
  */
 export type CompleteCardContext = Exclude<
-	Awaited<ReturnType<typeof getDataFromNote>>,
+	Awaited<ReturnType<typeof getDataFromNoteMetadata>>,
 	undefined
 >;
 /**

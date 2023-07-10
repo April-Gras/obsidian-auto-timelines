@@ -1,6 +1,10 @@
 import "./obsidianMocks";
 
-import { extractCardData, getDataFromNote, getNoteTags } from "~/cardData";
+import {
+	extractCardData,
+	getDataFromNoteMetadata,
+	getNoteTags,
+} from "~/cardData";
 import { SETTINGS_DEFAULT } from "~/settings";
 import { mockMarkdownCodeBlockTimelineProcessingContext } from "./obsidianMocks";
 
@@ -19,15 +23,17 @@ describe.concurrent("Card Data", () => {
 		expect(data.endDate).toBe(true);
 	});
 
-	test("[getDataFromNote] - ko no metaData", async () => {
+	test("[getDataFromNoteMetadata] - ko no metaData", async () => {
 		const context = mockMarkdownCodeBlockTimelineProcessingContext();
 
 		context.cachedMetadata.frontmatter = undefined;
 
-		expect(await getDataFromNote(context, ["timline"])).toBeUndefined();
+		expect(
+			await getDataFromNoteMetadata(context, ["timline"])
+		).toBeUndefined();
 	});
 
-	test("[getDataFromNote] - ko render greenlight is false", async () => {
+	test("[getDataFromNoteMetadata] - ko render greenlight is false", async () => {
 		const context = mockMarkdownCodeBlockTimelineProcessingContext();
 
 		if (!context.cachedMetadata.frontmatter)
@@ -35,14 +41,18 @@ describe.concurrent("Card Data", () => {
 
 		context.cachedMetadata.frontmatter["aat-render-enabled"] = false;
 
-		expect(await getDataFromNote(context, ["timline"])).toBeUndefined();
+		expect(
+			await getDataFromNoteMetadata(context, ["timline"])
+		).toBeUndefined();
 	});
 
-	test("[getDataFromNote] - ko no timeline tags match", async () => {
+	test("[getDataFromNoteMetadata] - ko no timeline tags match", async () => {
 		const context = mockMarkdownCodeBlockTimelineProcessingContext();
 
 		// Try with missing timline metadata
-		expect(await getDataFromNote(context, ["timline"])).toBeUndefined();
+		expect(
+			await getDataFromNoteMetadata(context, ["timline"])
+		).toBeUndefined();
 
 		if (!context.cachedMetadata.frontmatter)
 			throw new Error("Missing frontmatter in mock");
@@ -50,21 +60,27 @@ describe.concurrent("Card Data", () => {
 		// Set timeline to nothing
 		context.cachedMetadata.frontmatter.timelines = [];
 
-		expect(await getDataFromNote(context, ["timline"])).toBeUndefined();
+		expect(
+			await getDataFromNoteMetadata(context, ["timline"])
+		).toBeUndefined();
 
 		context.cachedMetadata.frontmatter.timelines = ["not-timeline"];
 
-		expect(await getDataFromNote(context, ["timline"])).toBeUndefined();
+		expect(
+			await getDataFromNoteMetadata(context, ["timline"])
+		).toBeUndefined();
 	});
 
-	test("[getDataFromNote] - ok", async () => {
+	test("[getDataFromNoteMetadata] - ok", async () => {
 		const context = mockMarkdownCodeBlockTimelineProcessingContext();
 
 		if (!context.cachedMetadata.frontmatter)
 			throw new Error("Missing frontmatter in mock");
 		context.cachedMetadata.frontmatter.timelines = ["timline"];
 
-		expect(await getDataFromNote(context, ["timline"])).not.toBeUndefined();
+		expect(
+			await getDataFromNoteMetadata(context, ["timline"])
+		).not.toBeUndefined();
 	});
 
 	test("[getNoteTags] - ko empty args", () => {
