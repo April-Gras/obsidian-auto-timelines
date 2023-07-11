@@ -70,12 +70,14 @@ export async function getDataFromNoteBody(
 		`%%${settings.noteInlineNoteKey}\n(((\\s|\\d|[a-z]|-)*):(.*)\n)*%%`,
 		"gi"
 	);
+	const originalFrontmatter = context.cachedMetadata.frontmatter;
 	const matches = body.match(inlineEventBlockRegExp);
 
 	if (!matches) return [];
 
 	matches.unshift();
 	const output: CompleteCardContext[] = [];
+
 	for (const block of matches) {
 		const sanitizedBlock = block.split("\n");
 
@@ -86,12 +88,20 @@ export async function getDataFromNoteBody(
 		// Replace frontmatter with newly built fake one. Just to re-use all the existing code.
 		context.cachedMetadata.frontmatter = fakeFrontmatter;
 
+		const matchPositionInBody = body.indexOf(block);
 		output.push({
+			// @ts-expect-error
+			isInline: true,
+			cardData: await extractCardData(
+				context,
+				matchPositionInBody !== -1
+					? body.slice(matchPositionInBody + block.length)
+					: undefined
+			),
 			context,
-			cardData: await extractCardData(context),
 		});
 	}
-
+	context.cachedMetadata.frontmatter = originalFrontmatter;
 	return output;
 }
 
@@ -99,17 +109,19 @@ export async function getDataFromNoteBody(
  * Get the content of a card from a note. This function will parse the raw text content of a note and format it.
  *
  * @param { MarkdownCodeBlockTimelineProcessingContext } context - Timeline generic context.
+ * @param { string | undefined } rawFileContent - If you already have it, will avoid reading the file again.
  * @returns { CardContent } The extracted data to create a card from a note.
  */
 export async function extractCardData(
-	context: MarkdownCodeBlockTimelineProcessingContext
+	context: MarkdownCodeBlockTimelineProcessingContext,
+	rawFileContent?: string
 ) {
 	const { file, cachedMetadata: c, settings } = context;
-	const rawFileContent = await file.vault.cachedRead(file);
 	const fileTitle =
 		c.frontmatter?.[settings.metadataKeyEventTitleOverride] ||
 		file.basename;
 
+	rawFileContent = rawFileContent || (await file.vault.cachedRead(file));
 	return {
 		title: fileTitle as string,
 		body: getBodyFromContextOrDocument(rawFileContent, context),
@@ -157,18 +169,7 @@ export function getBodyFromContextOrDocument(
 	const processedArray = rawTextArray.slice(rawTextArray.indexOf("---") + 1);
 	const finalString = processedArray.join("\n").trim();
 
-	const out = finalString
-		// Remove external image links
-		.replace(/!\[.*\]\(.*\)/gi, "")
-		// Remove tags
-		.replace(/#[a-zA-Z\d-_]*/gi, "")
-		// Remove internal images ![[Pasted image 20230418232101.png]]
-		.replace(/!\[\[.*\]\]/gi, "")
-		// Remove other timelines to avoid circular dependencies!
-		.replace(/```aat-vertical\n.*\n```/gi, "")
-		// Trim the text
-		.trim();
-	return out;
+	return finalString;
 }
 
 /**

@@ -58,12 +58,14 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 		for (const context of creationContext) {
 			const baseData = await getDataFromNoteMetadata(context, tagsToFind);
 
-			if (!baseData) continue;
+			if (!isDefined(baseData)) continue;
 			events.push(baseData);
 			if (!finalSettings.allowInlineEventsInNotes) continue;
 			const inlineEvents = (
 				await getDataFromNoteBody(baseData, tagsToFind)
 			).filter(isDefined);
+
+			if (!inlineEvents.length) continue;
 			events.push(...inlineEvents);
 		}
 		events.sort(

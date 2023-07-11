@@ -10,6 +10,7 @@ import {
 	getDateText,
 	createCardFromBuiltContext,
 	formatDateToken,
+	formatBodyForCard,
 } from "~/cardMarkup";
 import { DateTokenConfiguration, DateTokenType } from "~/types";
 import {
@@ -132,5 +133,16 @@ describe.concurrent("Card Markup", () => {
 		// @ts-expect-error
 		configuration.dictionary = ["a", "b", "c", "d"];
 		expect(() => formatDateToken(2, configuration)).toThrowError();
+	});
+
+	test("[formatBodyForCard] - ok has other timelines", () => {
+		const bodyMock = "Some sample body data";
+		const timelineTextMock = "\n```aat-vertical\nother timeline\n```";
+
+		expect(
+			formatBodyForCard,
+			// Add fake note metadata block
+			"---\n---\n" + bodyMock + timelineTextMock
+		);
 	});
 });
