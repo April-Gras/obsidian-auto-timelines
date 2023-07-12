@@ -10,7 +10,9 @@ import type {
 	MarkdownCodeBlockTimelineProcessingContext,
 	AbstractDate,
 	AutoTimelineSettings,
+	CompleteCardContext,
 } from "~/types";
+import { parse } from "yaml";
 
 /**
  * A un-changeable key used to check if a note is eligeable for render.
@@ -24,7 +26,7 @@ const RENDER_GREENLIGHT_METADATA_KEY = ["aat-render-enabled"];
  * @param { string[] } tagsToFind - The tags to find in a note to match the current timeline.
  * @returns { CompleteCardContext | undefined } the context or underfined if it could not build it.
  */
-export async function getDataFromNote(
+export async function getDataFromNoteMetadata(
 	context: MarkdownCodeBlockTimelineProcessingContext,
 	tagsToFind: string[]
 ) {
@@ -52,22 +54,76 @@ export async function getDataFromNote(
 }
 
 /**
+ * Provides additional context for the creation cards in the DOM but reads it from the body
+ *
+ * @param { MarkdownCodeBlockTimelineProcessingContext } context - Timeline generic context.
+ * @param { string[] } tagsToFind - The tags to find in a note to match the current timeline.
+ * @returns { CompleteCardContext | undefined } the context or underfined if it could not build it.
+ */
+export async function getDataFromNoteBody(
+	{ cardData: { body }, context }: CompleteCardContext,
+	tagsToFind: string[]
+): Promise<CompleteCardContext[]> {
+	const { settings } = context;
+	if (!body) return [];
+	const inlineEventBlockRegExp = new RegExp(
+		`%%${settings.noteInlineNoteKey}\n(((\\s|\\d|[a-z]|-)*):(.*)\n)*%%`,
+		"gi"
+	);
+	const originalFrontmatter = context.cachedMetadata.frontmatter;
+	const matches = body.match(inlineEventBlockRegExp);
+
+	if (!matches) return [];
+
+	matches.unshift();
+	const output: CompleteCardContext[] = [];
+
+	for (const block of matches) {
+		const sanitizedBlock = block.split("\n");
+
+		sanitizedBlock.shift();
+		sanitizedBlock.pop();
+
+		const fakeFrontmatter = parse(sanitizedBlock.join("\n")); // this actually works lmao
+		// Replace frontmatter with newly built fake one. Just to re-use all the existing code.
+		context.cachedMetadata.frontmatter = fakeFrontmatter;
+
+		const matchPositionInBody = body.indexOf(block);
+		output.push({
+			// @ts-expect-error
+			isInline: true,
+			cardData: await extractCardData(
+				context,
+				matchPositionInBody !== -1
+					? body.slice(matchPositionInBody + block.length)
+					: undefined
+			),
+			context,
+		});
+	}
+	context.cachedMetadata.frontmatter = originalFrontmatter;
+	return output;
+}
+
+/**
  * Get the content of a card from a note. This function will parse the raw text content of a note and format it.
  *
  * @param { MarkdownCodeBlockTimelineProcessingContext } context - Timeline generic context.
+ * @param { string | undefined } rawFileContent - If you already have it, will avoid reading the file again.
  * @returns { CardContent } The extracted data to create a card from a note.
  */
 export async function extractCardData(
-	context: MarkdownCodeBlockTimelineProcessingContext
+	context: MarkdownCodeBlockTimelineProcessingContext,
+	rawFileContent?: string
 ) {
 	const { file, cachedMetadata: c, settings } = context;
-	const rawFileContent = await file.vault.cachedRead(file);
 	const fileTitle =
 		c.frontmatter?.[settings.metadataKeyEventTitleOverride] ||
 		file.basename;
 
+	rawFileContent = rawFileContent || (await file.vault.cachedRead(file));
 	return {
-		title: fileTitle,
+		title: fileTitle as string,
 		body: getBodyFromContextOrDocument(rawFileContent, context),
 		imageURL: getImageUrlFromContextOrDocument(rawFileContent, context),
 		startDate: getAbstractDateFromMetadata(
@@ -113,18 +169,7 @@ export function getBodyFromContextOrDocument(
 	const processedArray = rawTextArray.slice(rawTextArray.indexOf("---") + 1);
 	const finalString = processedArray.join("\n").trim();
 
-	const out = finalString
-		// Remove external image links
-		.replace(/!\[.*\]\(.*\)/gi, "")
-		// Remove tags
-		.replace(/#[a-zA-Z\d-_]*/gi, "")
-		// Remove internal images ![[Pasted image 20230418232101.png]]
-		.replace(/!\[\[.*\]\]/gi, "")
-		// Remove other timelines to avoid circular dependencies!
-		.replace(/```aat-vertical\n.*\n```/gi, "")
-		// Trim the text
-		.trim();
-	return out;
+	return finalString;
 }
 
 /**

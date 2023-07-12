@@ -74,10 +74,28 @@ export function createCardFromBuiltContext(
 
 	rendered.containerEl = markdownTextWrapper;
 	MarkdownRenderer.renderMarkdown(
-		body ? body : "No body for this note :(",
+		formatBodyForCard(body),
 		markdownTextWrapper,
 		file.path,
 		rendered
+	);
+}
+
+export function formatBodyForCard(body?: string | null): string {
+	if (!body) return "No body for this note :(";
+
+	// Remove external image links
+	return (
+		body
+			.replace(/!\[.*\]\(.*\)/gi, "")
+			// Remove tags
+			.replace(/#[a-zA-Z\d-_]*/gi, "")
+			// Remove internal images ![[Pasted image 20230418232101.png]]
+			.replace(/!\[\[.*\]\]/gi, "")
+			// Remove other timelines to avoid circular dependencies!
+			.replace(/```aat-vertical\n.*\n```/gi, "")
+			// Trim the text
+			.trim()
 	);
 }
 
