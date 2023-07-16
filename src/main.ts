@@ -33,9 +33,10 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	/**
 	 * Main runtime function to process a single timeline.
 	 *
-	 * @param { string } source - The content found in the markdown block.
-	 * @param { HTMLElement } element - The root element of all the timeline.
-	 * @param { MarkdownPostProcessorContext } param2 - The context provided by obsidians `registerMarkdownCodeBlockProcessor()` method.
+	 * @param source - The content found in the markdown block.
+	 * @param element - The root element of all the timeline.
+	 * @param param2 - The context provided by obsidians `registerMarkdownCodeBlockProcessor()` method.
+	 * @param param2.sourcePath - A string representing the fs path of a note.
 	 */
 	async run(
 		source: string,

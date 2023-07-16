@@ -5,8 +5,8 @@ import { isDefined, isDefinedAsString } from "./utils";
 /**
  * Fetches the tags to find and timeline specific settings override.
  *
- * @param { string } source - The markdown code block source, a.k.a. the content inside the code block.
- * @returns { Partial<AutoTimelineSettings> } Partial settings to override the global ones.
+ * @param source - The markdown code block source, a.k.a. the content inside the code block.
+ * @returns Partial settings to override the global ones.
  */
 export function parseMarkdownBlockSource(source: string): {
 	readonly tagsToFind: string[];
@@ -35,6 +35,12 @@ export function parseMarkdownBlockSource(source: string): {
 const acceptedSettingsOverride = ["dateDisplayFormat"] as const;
 type OverridableSettingKey = (typeof acceptedSettingsOverride)[number];
 
+/**
+ * Checks if a given string is part of the settings keys that can be overriden.
+ *
+ * @param value - A given settings key.
+ * @returns the typeguard boolean `true` if the key is indeed overridable.
+ */
 function isOverridableSettingsKey(
 	value: string
 ): value is OverridableSettingKey {
@@ -42,6 +48,13 @@ function isOverridableSettingsKey(
 	return acceptedSettingsOverride.includes(value);
 }
 
+/**
+ * Will apply the needed formatting to a setting value based of it's key.
+ *
+ * @param key - The settings key.
+ * @param value - The value associated to this value.
+ * @returns Undefined if unvalid or the actual expected value.
+ */
 function formatValueFromKey(
 	key: OverridableSettingKey,
 	value: string
@@ -50,6 +63,12 @@ function formatValueFromKey(
 	return undefined;
 }
 
+/**
+ * Parse a single line of the timeline markdown block content.
+ *
+ * @param line - The line to parse.
+ * @returns A potencialy partial settings object.
+ */
 function parseSingleLine(line: string): Partial<AutoTimelineSettings> {
 	const reg = /((?<key>(\s|\d|[a-z])*):(?<value>.*))/i;
 	const matches = line.match(reg);

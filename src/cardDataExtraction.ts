@@ -16,9 +16,9 @@ import type {
 /**
  * Returns a list of tags based off plugin settings, note frontmatter and note tags.
  *
- * @param { AutoTimelineSettings } settings - The plugins settings.
- * @param { FrontMatterCache } metaData - The frontematter cache.
- * @param { TagCache[] | undefined } tags - Potencial tags.
+ * @param settings - The plugins settings.
+ * @param metaData - The frontematter cache.
+ * @param tags - Potencial tags.
  * @returns A list of tags to look for in a note.
  */
 export function getTagsFromMetadataOrTagObject(
@@ -51,11 +51,11 @@ export function getTagsFromMetadataOrTagObject(
 
 /**
  * Extract the body from the raw text of a note.
- * @decsription After extraction most markdown tokens will be removed and links will be sanitized aswell and wrapped into bold tags for clearner display.
+ * After extraction most markdown tokens will be removed and links will be sanitized aswell and wrapped into bold tags for clearner display.
  *
- * @param { string } rawFileText - The text content of a obsidian note.
- * @param { MarkdownCodeBlockTimelineProcessingContext } context - Timeline generic context.
- * @returns { string | null } the body of a given card or null if none was found.
+ * @param rawFileText - The text content of a obsidian note.
+ * @param context - Timeline generic context.
+ * @returns the body of a given card or null if none was found.
  */
 export function getBodyFromContextOrDocument(
 	rawFileText: string,
@@ -80,9 +80,9 @@ export function getBodyFromContextOrDocument(
 /**
  * Extract the first image from the raw markdown in a note.
  *
- * @param { string } rawFileText - The text content of a obsidian note.
- * @param { MarkdownCodeBlockTimelineProcessingContext } context - Timeline generic context.
- * @returns { string | null } the URL of the image to be displayed in a card or null if none where found.
+ * @param rawFileText - The text content of a obsidian note.
+ * @param context - Timeline generic context.
+ * @returns the URL of the image to be displayed in a card or null if none where found.
  */
 export function getImageUrlFromContextOrDocument(
 	rawFileText: string,
@@ -123,9 +123,11 @@ export function getImageUrlFromContextOrDocument(
 /**
  * Given a metadata key it'll try to parse the associated data as an `AbstractDate` and return it
  *
- * @param { MarkdownCodeBlockTimelineProcessingContext } param0 - Timeline generic context.
- * @param { string } key - The target lookup key in the notes metadata object.
- * @returns { AbstractDate | undefined } the abstract date representation or undefined.
+ * @param param0 - Timeline generic context.
+ * @param param0.cachedMetadata - The cached metadata from a note.
+ * @param param0.settings - the plugin's settings.
+ * @param key - The target lookup key in the notes metadata object.
+ * @returns the abstract date representation or undefined.
  */
 export function getAbstractDateFromMetadata(
 	{ cachedMetadata, settings }: MarkdownCodeBlockTimelineProcessingContext,

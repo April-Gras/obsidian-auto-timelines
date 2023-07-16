@@ -7,10 +7,11 @@ import type {
 /**
  * A preliminary helper to fetch all the needed context to handle the timeline creation.
  *
- * @param { App } app - The app context provided by obsidian.
- * @param { HTMLElement } element - The root element of this timeline.
+ * @param app - The app context provided by obsidian.
+ * @param element - The root element of this timeline.
  * @param timelineFile - The file path of the timeline.
- * @returns { MarkdownCodeBlockTimelineProcessingContext } the nessessary context to build a timeline.
+ * @param settings - The plugin's settings.
+ * @returns the nessessary context to build a timeline.
  */
 export function setupTimelineCreation(
 	app: App,

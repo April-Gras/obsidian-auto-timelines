@@ -20,9 +20,9 @@ const RENDER_GREENLIGHT_METADATA_KEY = ["aat-render-enabled"];
 /**
  * Provides additional context for the creation cards in the DOM.
  *
- * @param { MarkdownCodeBlockTimelineProcessingContext } context - Timeline generic context.
- * @param { string[] } tagsToFind - The tags to find in a note to match the current timeline.
- * @returns { CompleteCardContext | undefined } the context or underfined if it could not build it.
+ * @param context - Timeline generic context.
+ * @param tagsToFind - The tags to find in a note to match the current timeline.
+ * @returns the context or underfined if it could not build it.
  */
 export async function getDataFromNoteMetadata(
 	context: MarkdownCodeBlockTimelineProcessingContext,
@@ -58,9 +58,12 @@ export async function getDataFromNoteMetadata(
 /**
  * Provides additional context for the creation cards in the DOM but reads it from the body
  *
- * @param { MarkdownCodeBlockTimelineProcessingContext } context - Timeline generic context.
- * @param { string[] } tagsToFind - The tags to find in a note to match the current timeline.
- * @returns { CompleteCardContext | undefined } the context or underfined if it could not build it.
+ * @param param0 - Timeline generic context.
+ * @param param0.cardData - The extracted data for one event card.
+ * @param param0.cardData.body - The extracted body for a single event card.
+ * @param param0.context - The context for a given event.
+ * @param tagsToFind - The tags to find in a note to match the current timeline.
+ * @returns the context or underfined if it could not build it.
  */
 export async function getDataFromNoteBody(
 	{ cardData: { body }, context }: CompleteCardContext,
@@ -110,9 +113,9 @@ export async function getDataFromNoteBody(
 /**
  * Get the content of a card from a note. This function will parse the raw text content of a note and format it.
  *
- * @param { MarkdownCodeBlockTimelineProcessingContext } context - Timeline generic context.
- * @param { string | undefined } rawFileContent - If you already have it, will avoid reading the file again.
- * @returns { CardContent } The extracted data to create a card from a note.
+ * @param context - Timeline generic context.
+ * @param rawFileContent - If you already have it, will avoid reading the file again.
+ * @returns The extracted data to create a card from a note.
  */
 export async function extractCardData(
 	context: MarkdownCodeBlockTimelineProcessingContext,

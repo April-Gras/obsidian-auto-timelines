@@ -8,10 +8,10 @@ import {
 /**
  * Quick util to read obsidians metadata object with some type safety.
  *
- * @param { MarkdownCodeBlockTimelineProcessingContext["cachedMetadata"] } - cachedMetadata - Obsidians cachedMetadata object.
- * @param { string } key - the sought after key in the obsidian metadata object.
- * @param { "string" | "number" } type - The expected type of the key value.
- * @returns { null | T } The metadata value assigned to the given key or null if unvalidated or missing.
+ * @param cachedMetadata - cachedMetadata - Obsidians cachedMetadata object.
+ * @param key - the sought after key in the obsidian metadata object.
+ * @param type - The expected type of the key value.
+ * @returns The metadata value assigned to the given key or null if unvalidated or missing.
  */
 export function getMetadataKey<T extends "string" | "number" | "boolean">(
 	cachedMetadata: MarkdownCodeBlockTimelineProcessingContext["cachedMetadata"],
@@ -31,16 +31,16 @@ export function getMetadataKey<T extends "string" | "number" | "boolean">(
 /**
  * Typeguard to check if a value is indeed defined.
  *
- * @param { T | undefined } argument a possibly undefined argument.
- * @returns { boolean } `true` if the element is defined, `false` if not.
+ * @param argument a possibly undefined argument.
+ * @returns `true` if the element is defined, `false` if not.
  */
 export const isDefined = <T>(argument: T | undefined): argument is T =>
 	argument !== undefined;
 
 /**
  *
- * @param { T | undefined } argument a possibly undefined argument.
- * @returns { boolean } `true` if the element is indeed a string, `false` if not.
+ * @param argument a possibly undefined argument.
+ * @returns `true` if the element is indeed a string, `false` if not.
  */
 export const isDefinedAsString = (argument: unknown): argument is string =>
 	typeof argument === "string";
@@ -48,9 +48,9 @@ export const isDefinedAsString = (argument: unknown): argument is string =>
 /**
  * Same as `Array.findIndex()` but going from right to left.
  *
- * @param { unknown[] } arr - An array of values
- * @param { (unknowd)=> boolean  } predicate - An evaluation function that works like the one you feed `.findIndex()`
- * @returns {number} `-1` if no index was found, or the last occurence of the predicament.
+ * @param arr - An array of values
+ * @param predicate - An evaluation function that works like the one you feed `.findIndex()`
+ * @returns `-1` if no index was found, or the last occurence of the predicament.
  */
 export function findLastIndex<T extends unknown[]>(
 	arr: T,
@@ -68,19 +68,19 @@ export function findLastIndex<T extends unknown[]>(
  * https://en.wikipedia.org/wiki/Linear_interpolation
  *
  * @description A naive implementation of the linear interpolation function.
- * @param { number } a - First point.
- * @param { number } b - Last point.
- * @param { number } t - From 0f to 1f, represent the percent of advancement.
- * @returns { number } the position between `a` and `b` @ `t`.
+ * @param a - First point.
+ * @param b - Last point.
+ * @param t - From 0f to 1f, represent the percent of advancement.
+ * @returns the position between `a` and `b` @ `t`.
  */
 export const lerp = (a: number, b: number, t: number) => a + t * (b - a);
 /**
  * https://en.wikipedia.org/wiki/Linear_interpolation
  *
  * @description The inverse of a lerp.
- * @param { number } a - First point.
- * @param { number } b - Last point.
- * @param { number } v - The desired point to look for.
+ * @param a - First point.
+ * @param b - Last point.
+ * @param v - The desired point to look for.
  * @returns The percent value of advancement for `v`
  */
 export const inLerp = (a: number, b: number, v: number) => (v - a) / (b - a);
@@ -88,7 +88,7 @@ export const inLerp = (a: number, b: number, v: number) => (v - a) / (b - a);
 /**
  * Quick util to measure performance.
  *
- * @param { string } str - Label for the timer.
+ * @param str - Label for the timer.
  * @returns the handler that will close the timer.
  */
 export const measureTime = (str: string) => {
@@ -103,9 +103,9 @@ export const measureTime = (str: string) => {
 /**
  * Shorthand function to get childs of a given HTML Element.
  *
- * @param {HTMLElement} el - Target HTMLElement.
- * @param {number} index - The desired child index.
- * @returns {HTMLElement} - The child at the desired index. If the element is missing the function will throw.
+ * @param el - Target HTMLElement.
+ * @param index - The desired child index.
+ * @returns - The child at the desired index. If the element is missing the function will throw.
  */
 export function getChildAtIndexInHTMLElement(
 	el: HTMLElement,
@@ -120,11 +120,11 @@ export function getChildAtIndexInHTMLElement(
 /**
  * Shorthand function to create an HTMLElement in a given HTMLElement.
  *
- * @param { HTMLElement } el - The root element.
- * @param { keyof HTMLElementTagNameMap } element - The desired HTML tag.
- * @param { string[] | string | undefined } classes - A single or a collection of tags.
- * @param { string | number | undefined } content - The content to inject inside the created element.
- * @returns { HTMLElement } The created element.
+ * @param el - The root element.
+ * @param element - The desired HTML tag.
+ * @param classes - A single or a collection of tags.
+ * @param content - The content to inject inside the created element.
+ * @returns The created element.
  */
 export function createElementShort(
 	el: HTMLElement,
@@ -143,8 +143,8 @@ export function createElementShort(
 /**
  * Compares two Abstract Dates
  *
- * @param { AbstractDate | undefined } a - first Abstract Date
- * @param { AbstractDate | undefined } b - second Abstract Date
+ * @param a - first Abstract Date
+ * @param b - second Abstract Date
  * @returns 0 if they are equal 1 if a > b and -1 if a < b
  */
 export function compareAbstractDates(
@@ -169,8 +169,8 @@ export function compareAbstractDates(
 /**
  * Typeguard to check if a value is an array of unknowed sub type.
  *
- * @param { unknown } value unknowed value.
- * @returns { boolean } `true` if the element is defined as an array, `false` if not.
+ * @param value unknowed value.
+ * @returns `true` if the element is defined as an array, `false` if not.
  */
 export function isDefinedAsArray(value: unknown): value is unknown[] {
 	return isDefined(value) && value instanceof Array;
@@ -179,7 +179,7 @@ export function isDefinedAsArray(value: unknown): value is unknown[] {
 /**
  * Shorthand to quickly get a well typed number date token configuration object.
  *
- * @param { Partial<DateTokenConfiguration<DateTokenType.number>> | undefined } defaultValue - Override the values of the return object.
+ * @param defaultValue - Override the values of the return object.
  * @returns DateTokenConfiguration<DateTokenType.number> - A well typed date token configuration object.
  */
 export function createNumberDateTokenConfiguration(
@@ -197,7 +197,7 @@ export function createNumberDateTokenConfiguration(
 /**
  * Shorthand to quickly get a well typed string date token configuration object.
  *
- * @param { Partial<DateTokenConfiguration<DateTokenType.string>> | undefined } defaultValue - Override the values of the return object.
+ * @param defaultValue - Override the values of the return object.
  * @returns DateTokenConfiguration<DateTokenType.string> - A well typed date token configuration object.
  */
 export function createStringDateTokenConfiguration(
@@ -214,8 +214,8 @@ export function createStringDateTokenConfiguration(
 /**
  * Narrow type down to specific subtype for DateTokenConfigurations.
  *
- * @param { DateTokenConfiguration } value - Date token configuration.
- * @returns { boolean } typeguard.
+ * @param value - Date token configuration.
+ * @returns typeguard.
  */
 export function dateTokenConfigurationIsTypeString(
 	value: DateTokenConfiguration
@@ -226,8 +226,8 @@ export function dateTokenConfigurationIsTypeString(
 /**
  * Narrow type down to specific subtype for DateTokenConfigurations.
  *
- * @param { DateTokenConfiguration } value - Date token configuration.
- * @returns { boolean } typeguard.
+ * @param value - Date token configuration.
+ * @returns typeguard.
  */
 export function dateTokenConfigurationIsTypeNumber(
 	value: DateTokenConfiguration
@@ -238,9 +238,9 @@ export function dateTokenConfigurationIsTypeNumber(
 /**
  * Parse a string based off user date extract settings.
  *
- * @param { string[] } groupsToCheck - The token names to check.
- * @param { string } metadataString - The actual extracted data from the frontmatter.
- * @param { RegExp } reg - The user defined regex to apply.
+ * @param groupsToCheck - The token names to check.
+ * @param metadataString - The actual extracted data from the frontmatter.
+ * @param reg - The user defined regex to apply.
  * @returns The parsed abstract date or nothing.
  */
 export function parseAbstractDate(

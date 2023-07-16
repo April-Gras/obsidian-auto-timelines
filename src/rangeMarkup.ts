@@ -25,8 +25,8 @@ const AVAILABLE_COLORS = [
 /**
  * Renders the little stripes in the gutter of the timeline.
  *
- * @param { Range[] } ranges - A collection of ranges.
- * @param { HTMLElement } rootElement - The root of all elements for this complete timeline.
+ * @param ranges - A collection of ranges.
+ * @param rootElement - The root of all elements for this complete timeline.
  */
 export function renderRanges(ranges: Range[], rootElement: HTMLElement) {
 	const endDates: (number[] | true | undefined)[] = AVAILABLE_COLORS.map(
@@ -57,9 +57,19 @@ export function renderRanges(ranges: Range[], rootElement: HTMLElement) {
 /**
  * Renders a single range element based off the offset computed previously.
  *
- * @param { Range } param0 - A single range.
- * @param { number } offset - The left offet index for this range.
- * @param { HTMLElement } rootElelement
+ * @param param0 - A single range.
+ * @param param0.index - The index of the card.
+ * @param param0.targetPosition - The target position of a given range. This determines where the rage should end.
+ * @param param0.cardRelativeTopPosition - The ammount of pixel from the top of the timeline relative to a given card.
+ * @param param0.relatedCardData - The associated card data.
+ * @param param0.relatedCardData.context - The associated runtime context for this card.
+ * @param param0.relatedCardData.context.elements - The HTMLElements exposed for this context.
+ * @param param0.relatedCardData.context.elements.cardListRootElement - The right side of the timeline, this is where the carads are spawned.
+ * @param param0.relatedCardData.context.elements.timelineRootElement - The base layer for the timeline.
+ * @param offset - The left offet index for this range.
+ * @param rootElelement - The root HTMLElement of the timeline elements.
+ *
+ * @returns Nothing, but it renders a single range inside it's target element.
  */
 export function renderSingleRange(
 	{
