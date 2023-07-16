@@ -101,4 +101,43 @@ describe.concurrent("Card Data", () => {
 			[]
 		);
 	});
+
+	test("[getDataFromNoteBody] - ok nothing to parse", async () => {
+		const context = mockCompleteCardContext({
+			context: mockMarkdownCodeBlockTimelineProcessingContext(),
+			cardData: {
+				body: "%%aat-inline-event\n%%\nsampletext",
+			},
+		});
+
+		expect(await getDataFromNoteBody(context, ["timeline"])).toStrictEqual(
+			[]
+		);
+	});
+
+	test("[getDataFromNoteBody] - ok tags are not valid", async () => {
+		const context = mockCompleteCardContext({
+			context: mockMarkdownCodeBlockTimelineProcessingContext(),
+			cardData: {
+				body: "'%%aat-inline-event\naat-event-start-date: 54\naat-event-end-date: true\naat-render-enabled: true\ntimelines: [nottimeline]\n%%",
+			},
+		});
+
+		expect(await getDataFromNoteBody(context, ["timeline"])).toStrictEqual(
+			[]
+		);
+	});
+
+	test("[getDataFromNoteBody] - ok tags are valid", async () => {
+		const context = mockCompleteCardContext({
+			context: mockMarkdownCodeBlockTimelineProcessingContext(),
+			cardData: {
+				body: "'%%aat-inline-event\naat-event-start-date: 54\naat-event-end-date: true\naat-render-enabled: true\ntimelines: [timeline]\n%%",
+			},
+		});
+
+		expect((await getDataFromNoteBody(context, ["timeline"])).length).toBe(
+			1
+		);
+	});
 });

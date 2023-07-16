@@ -51,7 +51,7 @@ describe.concurrent("Main", () => {
 
 		inlineEventFile.vault.cachedRead = vi.fn(
 			async () =>
-				"---\n---\n---\nSample file data%%aat-inline-event\naat-event-start-date: 54\naat-event-end-date: true\naat-render-enabled: true\ntimelines: [meme]\n%%"
+				"---\n---\n---\nSample file data%%aat-inline-event\naat-event-start-date: 54\naat-event-end-date: true\naat-render-enabled: true\ntimelines: [timeline]\n%%"
 		);
 		app.vault.getMarkdownFiles = vi.fn(() => [
 			mockTFile(),
