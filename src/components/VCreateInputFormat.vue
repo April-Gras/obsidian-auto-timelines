@@ -2,7 +2,7 @@
 import { computed, ref, watch } from "vue";
 import VInput from "./VInput.vue";
 
-import { getAbstractDateFromData } from "~/cardData";
+import { parseAbstractDate } from "~/cardData";
 
 import type { DateTokenConfiguration } from "~/types";
 
@@ -33,7 +33,7 @@ function generateInputRegex() {
 
 const tryOutResults = computed(() => {
 	try {
-		return getAbstractDateFromData(
+		return parseAbstractDate(
 			props.tokenConfigurations.map((e) => e.name),
 			tryoutInput.value,
 			generateInputRegex()

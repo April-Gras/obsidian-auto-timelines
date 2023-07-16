@@ -176,6 +176,12 @@ export function isDefinedAsArray(value: unknown): value is unknown[] {
 	return isDefined(value) && value instanceof Array;
 }
 
+/**
+ * Shorthand to quickly get a well typed number date token configuration object.
+ *
+ * @param { Partial<DateTokenConfiguration<DateTokenType.number>> | undefined } defaultValue - Override the values of the return object.
+ * @returns DateTokenConfiguration<DateTokenType.number> - A well typed date token configuration object.
+ */
 export function createNumberDateTokenConfiguration(
 	defaultValue: Partial<DateTokenConfiguration<DateTokenType.number>> = {}
 ): DateTokenConfiguration<DateTokenType.number> {
@@ -188,6 +194,12 @@ export function createNumberDateTokenConfiguration(
 	};
 }
 
+/**
+ * Shorthand to quickly get a well typed string date token configuration object.
+ *
+ * @param { Partial<DateTokenConfiguration<DateTokenType.string>> | undefined } defaultValue - Override the values of the return object.
+ * @returns DateTokenConfiguration<DateTokenType.string> - A well typed date token configuration object.
+ */
 export function createStringDateTokenConfiguration(
 	defaultValue: Partial<DateTokenConfiguration<DateTokenType.string>> = {}
 ): DateTokenConfiguration<DateTokenType.string> {
@@ -199,14 +211,59 @@ export function createStringDateTokenConfiguration(
 	};
 }
 
+/**
+ * Narrow type down to specific subtype for DateTokenConfigurations.
+ *
+ * @param { DateTokenConfiguration } value - Date token configuration.
+ * @returns { boolean } typeguard.
+ */
 export function dateTokenConfigurationIsTypeString(
 	value: DateTokenConfiguration
 ): value is DateTokenConfiguration<DateTokenType.string> {
 	return value.type === DateTokenType.string;
 }
 
+/**
+ * Narrow type down to specific subtype for DateTokenConfigurations.
+ *
+ * @param { DateTokenConfiguration } value - Date token configuration.
+ * @returns { boolean } typeguard.
+ */
 export function dateTokenConfigurationIsTypeNumber(
 	value: DateTokenConfiguration
 ): value is DateTokenConfiguration<DateTokenType.number> {
 	return value.type === DateTokenType.number;
+}
+
+/**
+ * Parse a string based off user date extract settings.
+ *
+ * @param { string[] } groupsToCheck - The token names to check.
+ * @param { string } metadataString - The actual extracted data from the frontmatter.
+ * @param { RegExp } reg - The user defined regex to apply.
+ * @returns The parsed abstract date or nothing.
+ */
+export function parseAbstractDate(
+	groupsToCheck: string[],
+	metadataString: string,
+	reg: RegExp | string
+): AbstractDate | undefined {
+	const matches = metadataString.match(reg);
+
+	if (!matches || !matches.groups) return undefined;
+
+	const { groups } = matches;
+
+	const output = groupsToCheck.reduce((accumulator, groupName) => {
+		const value = Number(groups[groupName]);
+
+		// In the case of a faulty regex given by the user in the settings
+		if (!isNaN(value)) accumulator.push(value);
+		return accumulator;
+	}, [] as AbstractDate);
+
+	// Malformed payload bail out
+	if (output.length !== groupsToCheck.length) return undefined;
+
+	return output;
 }
