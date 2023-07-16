@@ -133,13 +133,30 @@ The syntax is as follow: `dateDisplayFormat: whatever {token-name} some more wha
 
 ---
 
-## Developement
+## In-line events
+
+In-line events are enabled by default but if you don't need them you can always disable them to shave a couple processing cycles off each note.
+With this feature you can define events from inside a note. The event will ignore anything above it's position in a note, and parse the note from there on. This means you could describe all events for a single timeline inside one note.
+The following example could be inthe middle of your note. Or at the end of it. Or anywhere really. Just not before the frontmatter
+```markdown
+%%aat-inline-event
+aat-event-start-date: 54
+aat-event-end-date: true
+aat-render-enabled: true
+timelines: [timeline-name]
+%%
+```
+The keys are the ones you setup in your settings. Check the [sample vault](https://github.com/April-Gras/obsidian-auto-timelines#sample-vault-with-basic-examples) for more examples on this.
+
+---
+
+## Development
 
 As per obsidians [unofficial documentation](https://marcus.se.net/obsidian-plugin-docs/getting-started):
 
 -   clone the repository in a test vault
 -   `npm install` to install dependencies
--   `npm run dev` to launch dev watcher
+-   `npm run dev` to launch development watcher
 
 ## Testing
 
