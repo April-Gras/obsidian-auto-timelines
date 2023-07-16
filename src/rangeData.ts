@@ -12,8 +12,8 @@ import type { CompleteCardContext, AbstractDate } from "~/types";
 /**
  * Will compute all the data needed to build ranges in the timeline.
  *
- * @param { CompleteCardContext[] } collection - The complete collection of relevant data gathered from notes.
- * @returns { Range[] } the needed  data to build ranges in the timeline.
+ * @param collection - The complete collection of relevant data gathered from notes.
+ * @returns the needed  data to build ranges in the timeline.
  */
 export function getAllRangeData(collection: CompleteCardContext[]) {
 	if (!collection.length) return [];
@@ -89,12 +89,12 @@ export type FnGetRangeData = typeof getAllRangeData;
 /**
  * Finds the end position in pixel relative to the top of the timeline root element for the give endDate of a range.
  *
- * @param { AbstractDate } date - The target endDate to position on the timeline.
- * @param { CompleteCardContext[] } collection - The collection of cards part of the same timeline.
- * @param { number } timelineLength - The length in pixel of the timeline.
- * @param { HTMLElement } rootElement - The root HTMLElement of the cardList.
- * @param { number } indexOffset  - Since the date is already sorted by date we can save a little time by skipping all the elements before.
- * @returns { number } The expected position relative to the top of the timeline container for this date range.
+ * @param date - The target endDate to position on the timeline.
+ * @param collection - The collection of cards part of the same timeline.
+ * @param timelineLength - The length in pixel of the timeline.
+ * @param rootElement - The root HTMLElement of the cardList.
+ * @param indexOffset  - Since the date is already sorted by date we can save a little time by skipping all the elements before.
+ * @returns The expected position relative to the top of the timeline container for this date range.
  */
 export function findEndPositionForDate(
 	date: AbstractDate,
@@ -128,9 +128,9 @@ export function findEndPositionForDate(
 /**
  * Gets the values to compute the inlerp needed for range gutter renders.
  *
- * @param { AbstractDate } a - The start date
- * @param { AbstractDate } b - The end date
- * @param { AbstractDate } c - The date in between
+ * @param a - The start date
+ * @param b - The end date
+ * @param c - The date in between
  * @returns the first non equal member of a - b when compared from left to right, also returns the same member from c.
  */
 export function getInLerpValues(
@@ -149,11 +149,11 @@ type Boundary = { date: AbstractDate; top: number };
 /**
  * Find the position of the last card having a lower start date and the first card with a higher start date relative to the endDate of the evaluated range.
  *
- * @param { number } date - The target endDate to position on the timeline.
- * @param { CompleteCardContext[] } collection - The collection of cards part of the same timeline.
- * @param { HTMLElement } rootElement - The root HTMLElement of the cardList.
- * @param { number } indexOffset  - Since the date is already sorted by date we can save a little time by skipping all the elements before.
- * @returns { Boundary } The start and end boundaries of the target end date.
+ * @param date - The target endDate to position on the timeline.
+ * @param collection - The collection of cards part of the same timeline.
+ * @param rootElement - The root HTMLElement of the cardList.
+ * @param indexOffset  - Since the date is already sorted by date we can save a little time by skipping all the elements before.
+ * @returns The start and end boundaries of the target end date.
  */
 export function findBoundaries(
 	date: AbstractDate,

@@ -17,6 +17,7 @@ import {
 	getMetadataKey,
 	createNumberDateTokenConfiguration,
 	createStringDateTokenConfiguration,
+	parseAbstractDate,
 } from "~/utils";
 import { SETTINGS_DEFAULT } from "~/settings";
 import { DateTokenConfiguration, DateTokenType } from "~/types";
@@ -286,5 +287,35 @@ describe.concurrent("Utils", () => {
 			dictionary: ["a"],
 			type: DateTokenType.string,
 		} as DateTokenConfiguration);
+	});
+
+	test("[parseAbstractDate] - ok", () => {
+		const date = parseAbstractDate(
+			["year", "month", "day"],
+			"1000-1000-1000",
+			SETTINGS_DEFAULT.dateParserRegex
+		);
+
+		expect(date).toStrictEqual([1000, 1000, 1000]);
+	});
+
+	test("[parseAbstractDate] - faulty regex", () => {
+		const date = parseAbstractDate(
+			["year", "month", "day"],
+			"1000-1000-1000",
+			"this-regex-will-not-match"
+		);
+
+		expect(date).toBeUndefined();
+	});
+
+	test("[parseAbstractDate] - partial regex match", () => {
+		const date = parseAbstractDate(
+			["year", "month", "day"],
+			"1000-1000-1000",
+			"(?<year>-?[0-9]*)-"
+		);
+
+		expect(date).toBeUndefined();
 	});
 });

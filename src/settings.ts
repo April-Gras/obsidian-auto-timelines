@@ -21,11 +21,13 @@ export const SETTINGS_DEFAULT = {
 	metadataKeyEventBodyOverride: "aat-event-body",
 	metadataKeyEventPictureOverride: "aat-event-picture",
 	metadataKeyEventTimelineTag: "timelines",
+	noteInlineEventKey: "aat-inline-event",
 	markdownBlockTagsToFindSeparator: ",",
 	dateParserRegex: "(?<year>-?[0-9]*)-(?<month>-?[0-9]*)-(?<day>-?[0-9]*)",
 	dateParserGroupPriority: "year,month,day",
 	dateDisplayFormat: "{day}/{month}/{year}",
 	lookForTagsForTimeline: false,
+	lookForInlineEventsInNotes: true,
 	dateTokenConfiguration: [
 		createNumberDateTokenConfiguration({ name: "year", minLeght: 4 }),
 		createNumberDateTokenConfiguration({ name: "month" }),

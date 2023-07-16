@@ -34,8 +34,8 @@ describe.concurrent("Main", () => {
 
 	test("ok on/un/load", async () => {
 		const app = mockObsidianApp();
-		app.metadataCache.getFileCache =
-			mockGetFileCache().mockImplementationOnce(() => ({
+		app.metadataCache.getFileCache = mockGetFileCache()
+			.mockImplementationOnce(() => ({
 				// @ts-expect-error
 				frontmatter: {
 					timelines: ["timeline"],
@@ -43,11 +43,21 @@ describe.concurrent("Main", () => {
 					[SETTINGS_DEFAULT.metadataKeyEventStartDate]: 87,
 					[SETTINGS_DEFAULT.metadataKeyEventEndDate]: true,
 				},
+			}))
+			.mockImplementationOnce(() => ({
+				frontmatter: undefined,
 			}));
+		const inlineEventFile = mockTFile();
+
+		inlineEventFile.vault.cachedRead = vi.fn(
+			async () =>
+				"---\n---\n---\nSample file data%%aat-inline-event\naat-event-start-date: 54\naat-event-end-date: true\naat-render-enabled: true\ntimelines: [timeline]\n%%"
+		);
 		app.vault.getMarkdownFiles = vi.fn(() => [
 			mockTFile(),
 			mockTFile(),
 			mockTFile(),
+			inlineEventFile,
 		]);
 		const plugin = new AprilsAutomaticTimelinesPlugin(app, manifest);
 		const spy = vi.spyOn(plugin, "run");

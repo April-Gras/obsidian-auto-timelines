@@ -18,8 +18,12 @@ import type {
 /**
  * Generates a card in the DOM based on given ccontext.
  *
- * @param { MarkdownCodeBlockTimelineProcessingContext } param0 - The context built for this timeline.
- * @param { CardContent } param1 - The context for a single card.
+ * @param param0 - The context built for this timeline.
+ * @param param0.elements - The HTMLElements exposed for this context.
+ * @param param0.elements.cardListRootElement - The right side of the timeline, this is where the carads are spawned.
+ * @param param0.file - The target note file.
+ * @param param0.settings - The plugin's settings.
+ * @param cardContent - The content of a single timeline card.
  */
 export function createCardFromBuiltContext(
 	{
@@ -74,7 +78,7 @@ export function createCardFromBuiltContext(
 
 	rendered.containerEl = markdownTextWrapper;
 	MarkdownRenderer.renderMarkdown(
-		body ? body : "No body for this note :(",
+		formatBodyForCard(body),
 		markdownTextWrapper,
 		file.path,
 		rendered
@@ -82,10 +86,36 @@ export function createCardFromBuiltContext(
 }
 
 /**
+ * Format the body string of the note data for a single card.
  *
- * @param { CardContent } param0 - The context for a single card.
- * @param { AutoTimelineSettings } settings - The settings of the plugin.
- * @returns { string } a formated string representation of the dates included in the card content based off the settings.
+ * @param body - The body string parsed earlier.
+ * @returns The formated string ready to be displayed.
+ */
+export function formatBodyForCard(body?: string | null): string {
+	if (!body) return "No body for this note :(";
+
+	// Remove external image links
+	return (
+		body
+			.replace(/!\[.*\]\(.*\)/gi, "")
+			// Remove tags
+			.replace(/#[a-zA-Z\d-_]*/gi, "")
+			// Remove internal images ![[Pasted image 20230418232101.png]]
+			.replace(/!\[\[.*\]\]/gi, "")
+			// Remove other timelines to avoid circular dependencies!
+			.replace(/```aat-vertical\n.*\n```/gi, "")
+			// Trim the text
+			.trim()
+	);
+}
+
+/**
+ *
+ * @param param0 - The context for a single card.
+ * @param param0.startDate - the start date of an event.
+ * @param param0.endDate - the end date of an event.
+ * @param settings - The settings of the plugin.
+ * @returns a formated string representation of the dates included in the card content based off the settings.
  */
 export function getDateText(
 	{ startDate, endDate }: Pick<CardContent, "startDate" | "endDate">,
@@ -100,9 +130,12 @@ export function getDateText(
 
 /**
  *
- * @param { AbstractDate } date - Target date to format.
- * @param { AutoTimelineSettings } param1 - The settings of the plugin.
- * @returns { string } the formated representation of a given date based off the plugins settings.
+ * @param date - Target date to format.
+ * @param param1 - The settings of the plugin.
+ * @param param1.dateDisplayFormat - The target format to displat the date in.
+ * @param param1.dateParserGroupPriority - The token priority list for the date format.
+ * @param param1.dateTokenConfiguration - The configuration for the given date format.
+ * @returns the formated representation of a given date based off the plugins settings.
  */
 export function formatAbstractDate(
 	date: AbstractDate | boolean,
@@ -143,9 +176,9 @@ export function formatAbstractDate(
 /**
  * Shorthand to format a part of an abstract date.
  *
- * @param { number } datePart - fragment of an abstract date.
- * @param { DateTokenConfiguration<DateTokenType.number> } param1 - A numerical date token configuration to apply.
- * @returns {string} the formated token.
+ * @param datePart - fragment of an abstract date.
+ * @param configuration - the configuration bound to that date token.
+ * @returns the formated token.
  */
 export function formatDateToken(
 	datePart: number,
@@ -163,9 +196,10 @@ export function formatDateToken(
 /**
  * Used to quickly format a fragment of an abstract date based off a number typed date token configuration.
  *
- * @param { number } datePart - fragment of an abstract date.
- * @param { DateTokenConfiguration<DateTokenType.number> } param1 - A numerical date token configuration to apply.
- * @returns {string} the formated token.
+ * @param datePart - fragment of an abstract date.
+ * @param param1 - A numerical date token configuration to apply.
+ * @param param1.minLeght - the minimal length of a numerical date input.
+ * @returns the formated token.
  */
 function formatNumberDateToken(
 	datePart: number,
@@ -182,9 +216,10 @@ function formatNumberDateToken(
 /**
  * Used to quickly format a fragment of an abstract date based off a string typed date token configuration.
  *
- * @param { number } datePart - fragment of an abstract date.
- * @param { DateTokenConfiguration<DateTokenType.string> } param1 - A string typed date token configuration to apply.
- * @returns {string} the formated token.
+ * @param datePart - fragment of an abstract date.
+ * @param param1 - A string typed date token configuration to apply.
+ * @param param1.dictionary - the relation dictionary for a date string typed token.
+ * @returns the formated token.
  */
 function formatStringDateToken(
 	datePart: number,

@@ -87,6 +87,11 @@ vi.mock("obsidian", () => {
 	};
 });
 
+/**
+ * Mock a native HTMLElement object.
+ *
+ * @returns - The mocked native HTMLElement object.
+ */
 export function mockHTMLElement(): HTMLElement {
 	// @ts-expect-error
 	return mock<HTMLElement>({
@@ -121,6 +126,11 @@ export function mockHTMLElement(): HTMLElement {
 	});
 }
 
+/**
+ * Quickhand function to mock the obsidian `mockGetFileCache` function.
+ *
+ * @returns - The mocked obsidian `mockGetFileCache` function.
+ */
 export function mockGetFileCache() {
 	return vi.fn<[], CachedMetadata | null>(() => {
 		return {
@@ -135,6 +145,11 @@ export function mockGetFileCache() {
 	});
 }
 
+/**
+ * Quickhand function to mock a obsidian App Class.
+ *
+ * @returns - the mocked obsidian App class.
+ */
 export function mockObsidianApp(): App {
 	return mock<App>({
 		vault: mockVault(),
@@ -144,6 +159,11 @@ export function mockObsidianApp(): App {
 	});
 }
 
+/**
+ * Quickhand function to mock the obsidian TFile class.
+ *
+ * @returns - The mocked obsidian TFile.
+ */
 export function mockTFile() {
 	return mock<TFile>({
 		vault: {
@@ -154,6 +174,11 @@ export function mockTFile() {
 	});
 }
 
+/**
+ * Quickhand function to mock a Obsidian Vault.
+ *
+ * @returns - The mocked vault.
+ */
 export function mockVault(): Vault {
 	return mock<Vault>({
 		getResourcePath: vi.fn((file: TFile) => {
@@ -168,6 +193,11 @@ export function mockVault(): Vault {
 	});
 }
 
+/**
+ * Quickly mock a MarkdownCodeBlockTimelineProcessingContext. A lot of default are set so inspect the function for further details.
+ *
+ * @returns - The mocked object.
+ */
 export function mockMarkdownCodeBlockTimelineProcessingContext(): MarkdownCodeBlockTimelineProcessingContext {
 	const vault = mockVault();
 	return mock<MarkdownCodeBlockTimelineProcessingContext>({
@@ -202,6 +232,11 @@ export function mockMarkdownCodeBlockTimelineProcessingContext(): MarkdownCodeBl
 	});
 }
 
+/**
+ * Quickly mock a card context object.
+ *
+ * @returns - The mocked card content.
+ */
 export function mockCardContext() {
 	return mock<CardContent>({
 		startDate: [1000, 0, 0],
@@ -212,10 +247,22 @@ export function mockCardContext() {
 	});
 }
 
+/**
+ * Mocks a Range object.
+ *
+ * @param defaultVal - Value override for user defined cases.
+ * @returns -  A mocked range object.
+ */
 export function mockRange(defaultVal: DeepPartial<Range> = {}): Range {
 	return mock<Range>(defaultVal);
 }
 
+/**
+ * Mocks the complete card context.
+ *
+ * @param defaultVal - Value override for user defined cases.
+ * @returns -  The complete card context mock object.
+ */
 export function mockCompleteCardContext(
 	defaultVal: DeepPartial<CompleteCardContext> = {}
 ): CompleteCardContext {
