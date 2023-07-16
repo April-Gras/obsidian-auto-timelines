@@ -23,7 +23,7 @@ import type {
  */
 export function getTagsFromMetadataOrTagObject(
 	settings: AutoTimelineSettings,
-	metaData: FrontMatterCache,
+	metaData: Omit<FrontMatterCache, "position">,
 	tags?: TagCache[]
 ): string[] {
 	let output = [] as string[];

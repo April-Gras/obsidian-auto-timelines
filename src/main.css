@@ -116,6 +116,7 @@ div.aat-card-body {
 	display: -webkit-box;
 	margin: 0;
 	color: var(--text-normal);
+	height: fit-content;
 }
 
 h4.aat-card-start-date {

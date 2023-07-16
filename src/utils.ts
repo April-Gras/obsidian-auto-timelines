@@ -177,6 +177,18 @@ export function isDefinedAsArray(value: unknown): value is unknown[] {
 }
 
 /**
+ * Typeguard to check if a value is an object of unknowed key values.
+ *
+ * @param value unknowed value.
+ * @returns `true` if the element is defined as an object, `false` if not.
+ */
+export function isDefinedAsObject(
+	value: unknown
+): value is { [key: string]: unknown } {
+	return isDefined(value) && value instanceof Object;
+}
+
+/**
  * Shorthand to quickly get a well typed number date token configuration object.
  *
  * @param defaultValue - Override the values of the return object.

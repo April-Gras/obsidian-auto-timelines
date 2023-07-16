@@ -1,4 +1,4 @@
-import { getMetadataKey, isDefined } from "~/utils";
+import { getMetadataKey, isDefined, isDefinedAsObject } from "~/utils";
 
 import type {
 	MarkdownCodeBlockTimelineProcessingContext,
@@ -43,11 +43,7 @@ export async function getDataFromNoteMetadata(
 
 	// TimelineTags is not defined as an array :<
 	// OR Sought after tags where not found
-	if (
-		!timelineTags.length ||
-		!timelineTags.some((tag) => tagsToFind.includes(tag))
-	)
-		return undefined;
+	if (!extractedTagsAreValid(timelineTags, tagsToFind)) return undefined;
 
 	return {
 		cardData: await extractCardData(context),
@@ -92,6 +88,15 @@ export async function getDataFromNoteBody(
 		const fakeFrontmatter = parse(sanitizedBlock.join("\n")); // this actually works lmao
 		// Replace frontmatter with newly built fake one. Just to re-use all the existing code.
 		context.cachedMetadata.frontmatter = fakeFrontmatter;
+		if (!isDefinedAsObject(fakeFrontmatter)) continue;
+
+		const timelineTags = getTagsFromMetadataOrTagObject(
+			settings,
+			fakeFrontmatter,
+			context.cachedMetadata.tags
+		);
+
+		if (!extractedTagsAreValid(timelineTags, tagsToFind)) continue;
 
 		const matchPositionInBody = body.indexOf(block);
 		output.push({
@@ -106,6 +111,20 @@ export async function getDataFromNoteBody(
 	}
 	context.cachedMetadata.frontmatter = originalFrontmatter;
 	return output;
+}
+
+/**
+ * Checks if the extracted tags match at least one of the tags to find.
+ *
+ * @param timelineTags - The extracted tags from the note.
+ * @param tagsToFind - The tags to find.
+ * @returns `true` if valid.
+ */
+function extractedTagsAreValid(
+	timelineTags: string[],
+	tagsToFind: string[]
+): boolean {
+	return timelineTags.some((tag) => tagsToFind.includes(tag));
 }
 
 /**
