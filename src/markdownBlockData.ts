@@ -56,9 +56,10 @@ function isOverridableSettingsKey(
  * @returns Undefined if unvalid or the actual expected value.
  */
 function formatValueFromKey(
-	key: OverridableSettingKey,
+	key: string,
 	value: string
 ): AutoTimelineSettings[OverridableSettingKey] | undefined {
+	if (!isOverridableSettingsKey(key)) return undefined;
 	if (isDefinedAsString(SETTINGS_DEFAULT[key])) return value;
 	return undefined;
 }
@@ -82,8 +83,6 @@ function parseSingleLine(line: string): Partial<AutoTimelineSettings> {
 		return {};
 
 	const key = matches.groups.key.trim();
-
-	if (!isOverridableSettingsKey(key)) return {};
 	const value = formatValueFromKey(key, matches.groups.value.trim());
 
 	if (!isDefined(value)) return {};

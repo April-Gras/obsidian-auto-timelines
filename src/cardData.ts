@@ -95,8 +95,6 @@ export async function getDataFromNoteBody(
 
 		const matchPositionInBody = body.indexOf(block);
 		output.push({
-			// @ts-expect-error
-			isInline: true,
 			cardData: await extractCardData(
 				context,
 				matchPositionInBody !== -1

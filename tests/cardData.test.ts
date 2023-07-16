@@ -1,8 +1,15 @@
 import "./obsidianMocks";
 
-import { extractCardData, getDataFromNoteMetadata } from "~/cardData";
+import {
+	extractCardData,
+	getDataFromNoteMetadata,
+	getDataFromNoteBody,
+} from "~/cardData";
 import { SETTINGS_DEFAULT } from "~/settings";
-import { mockMarkdownCodeBlockTimelineProcessingContext } from "./obsidianMocks";
+import {
+	mockCompleteCardContext,
+	mockMarkdownCodeBlockTimelineProcessingContext,
+} from "./obsidianMocks";
 
 describe.concurrent("Card Data", () => {
 	test("[extractCardData] - ok no title override", async () => {
@@ -85,5 +92,13 @@ describe.concurrent("Card Data", () => {
 		expect(
 			await getDataFromNoteMetadata(context, ["timline"])
 		).not.toBeUndefined();
+	});
+
+	test("[getDataFromNoteBody] - ok empty", async () => {
+		const context = mockCompleteCardContext();
+
+		expect(await getDataFromNoteBody(context, ["timeline"])).toStrictEqual(
+			[]
+		);
 	});
 });
