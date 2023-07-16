@@ -2,7 +2,7 @@
 import { computed, ref, watch } from "vue";
 import VInput from "./VInput.vue";
 
-import { parseAbstractDate } from "~/cardData";
+import { parseAbstractDate } from "~/utils";
 
 import type { DateTokenConfiguration } from "~/types";
 

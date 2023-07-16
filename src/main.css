@@ -172,6 +172,11 @@ div.aat-range-element:hover {
 	gap: 24px;
 }
 
+.v-grid-display.slim,
+.v-grid-display-2.slim {
+	gap: 8px;
+}
+
 .v-grid-display-2 {
 	grid-template-columns: 1fr 1fr;
 }
@@ -247,4 +252,8 @@ div.aat-range-element:hover {
 .v-warning-block > figcaption {
 	font-size: 20px;
 	font-weight: 600;
+}
+
+h2.v-header {
+	margin: 0px !important;
 }

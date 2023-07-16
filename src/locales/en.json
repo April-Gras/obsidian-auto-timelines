@@ -29,10 +29,12 @@
       "date-formats": "Date formating",
       "slot-presets": "Enable presets for {slot}",
       "lookForTagsForTimeline": "Look into note tags",
+      "lookForInlineEventsInNotes": "Look for events in note body",
       "advancedDateFormatsTokenConfiguration": "Configure the tokens"
     },
     "label": {
       "dateDisplayFormat": "Date display format",
+      "noteInlineEventKey": "The note inline event key",
       "dateParserGroupPriority": "Date parser group priority",
       "dateParserRegex": "Date parser regex",
       "fantasyCalendarCheckbox": "Enable fantasy calendar integration",
@@ -46,6 +48,7 @@
       "tryYourInputFormat": "Try your input format out",
       "useAdvancedMode": "Use advanced mode / edit regexes",
       "lookForTagsForTimeline": "Check to include a notes tags into the values used to assign notes to a timeline",
+      "lookForInlineEventsInNotes": "Check to ennable the inline event feature. This allows to define events for any timeline from inside a note.",
       "configureSingleDateToken": "The type of the token"
     },
     "button": {
@@ -53,6 +56,7 @@
     },
     "description": {
       "dateDisplayFormat": "This is the end format the date should be displayed as in the actual timeline cards. You don't actually need to include every parsed member here.",
+      "noteInlineEventKey": "Used to detect inline events. This is the key written after the \"%%\" signs to open an inline event block.",
       "dateFormatFlowOnboarding": "For this plugin to work it needs to be fed a couple of informations regarding dates and how to sort them.Right now token priority is as follow {dateParserGroupPriority} and output is formated using {dateDisplayFormat}. To customize this you can either use the more user friendly flow by pressing start or just edit the values yourself by hand. Worst case scenario you can also reset to default in the advanced section.",
       "dateParserGroupPriority": "No spaces and make sure to separate every entry with a \",\". This value is used to order the parsed tokens. For example if your custom regex pulls the year month and day out of a date, the natural order should be \"year,month,day\". Note that you should have as many entries as your regex has capture groups. See presets for inspiration.",
       "dateParserRegex": "The regex used to parse your date. It needs to include the same amount of capture group as the next setting input. If you're unfamilliar with regexes and / or capture groups I would recommend to stick to the preset.",
@@ -66,10 +70,17 @@
       "markdownBlockTagsToFindSeparator": "The character or string used to split the different tags to find in a markdown code block. The split values will be looked for in notes.",
       "tryYourInputFormat": "Just type out the date like you would in a notes metadata block. Bellow, every field should corespond to the correct token and be sorted in the correct order.",
       "lookForTagsForTimeline": "This means if you tag you note with a string and include that string in the timeline definition this note will be included in the timeline computing",
+      "lookForInlineEventsInNotes": "Check {linkText} on how to create inline events.",
       "configureSingleDateToken": {
         "STRING": "A string typed date token represents something akin to our months. tl;dr, they are written using letter and not numbers",
         "NUMBER": "A numerical typed date token is your stardard number representing a date. Just make sure to configure it's mininal lengh. For example a minimal length set to 2 will result in the 6th day being written as \"06\""
       }
+    },
+    "linkValue": {
+      "lookForInlineEventsInNotes": "https://github.com/April-Gras/obsidian-auto-timelines#in-line-events"
+    },
+    "linkText": {
+      "lookForInlineEventsInNotes": "the documentation"
     },
     "details": {
       "createDateToken": "Write your date system tokens ordered from top to bottom. Make sure not to leave any cluter, these token will be used to capture your date and sort them in the expeted order."

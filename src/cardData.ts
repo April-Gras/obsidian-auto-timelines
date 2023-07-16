@@ -72,7 +72,7 @@ export async function getDataFromNoteBody(
 	const { settings } = context;
 	if (!body) return [];
 	const inlineEventBlockRegExp = new RegExp(
-		`%%${settings.noteInlineNoteKey}\n(((\\s|\\d|[a-z]|-)*):(.*)\n)*%%`,
+		`%%${settings.noteInlineEventKey}\n(((\\s|\\d|[a-z]|-)*):(.*)\n)*%%`,
 		"gi"
 	);
 	const originalFrontmatter = context.cachedMetadata.frontmatter;

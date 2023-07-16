@@ -21,9 +21,14 @@ const generalSettingKeys = Object.keys(SETTINGS_DEFAULT).filter((e) =>
 	e.startsWith("metadataKey")
 ) as Exclude<
 	keyof AutoTimelineSettings,
-	"lookForTagsForTimeline" | "dateTokenConfiguration"
+	| "lookForTagsForTimeline"
+	| "dateTokenConfiguration"
+	| "lookForInlineEventsInNotes"
 >[];
-generalSettingKeys.push("markdownBlockTagsToFindSeparator");
+generalSettingKeys.push(
+	"markdownBlockTagsToFindSeparator",
+	"noteInlineEventKey"
+);
 
 const fantasyCalendarPreset: Record<
 	Extract<
@@ -59,12 +64,16 @@ const handleUpdateValueFantasyCalendarCheckbox = () => {
 		);
 	else emit("update:value", fantasyCalendarPreset);
 };
+
+const checkboxKeys: readonly Extract<
+	keyof AutoTimelineSettings,
+	"lookForTagsForTimeline" | "lookForInlineEventsInNotes"
+>[] = ["lookForInlineEventsInNotes", "lookForTagsForTimeline"];
 </script>
 
 <template>
 	<div class="v-grid-display">
 		<section class="v-grid-display">
-			<VHeader>{{ $t("settings.title.generic-settings") }}</VHeader>
 			<VInput
 				type="text"
 				v-for="key in generalSettingKeys"
@@ -79,25 +88,36 @@ const handleUpdateValueFantasyCalendarCheckbox = () => {
 			</VInput>
 		</section>
 		<hr />
-		<section class="v-grid-display">
-			<VHeader>{{ $t("settings.title.lookForTagsForTimeline") }}</VHeader>
+		<section class="v-grid-display slim" v-for="key in checkboxKeys">
+			<VHeader>{{ $t(`settings.title.${key}`) }}</VHeader>
 			<VCheckbox
-				:value="value.lookForTagsForTimeline"
-				input-id="look-for-tags-for-timeline"
-				@update:value="
-					emit('update:value', { lookForTagsForTimeline: $event })
-				"
+				:value="value[key]"
+				:input-id="key"
+				@update:value="emit('update:value', { [key]: $event })"
 			>
-				<template #label>{{
-					$t("settings.label.lookForTagsForTimeline")
-				}}</template>
-				<template #description>{{
-					$t("settings.description.lookForTagsForTimeline")
-				}}</template>
+				<template #label>{{ $t(`settings.label.${key}`) }}</template>
+				<template #description>
+					<i18n-t
+						scope="global"
+						:keypath="`settings.description.${key}`"
+					>
+						<template
+							#linkText
+							v-if="
+								$te(`settings.linkValue.${key}`) &&
+								$te(`settings.linkText.${key}`)
+							"
+						>
+							<a :href="$t(`settings.linkValue.${key}`)">{{
+								$t(`settings.linkText.${key}`)
+							}}</a>
+						</template>
+					</i18n-t>
+				</template>
 			</VCheckbox>
 		</section>
 		<hr />
-		<section class="v-grid-display">
+		<section class="v-grid-display slim">
 			<VHeader>
 				<i18n-t keypath="settings.title.slot-presets" scope="global">
 					<template #slot>

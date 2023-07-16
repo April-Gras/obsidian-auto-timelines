@@ -61,7 +61,7 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 
 			if (!isDefined(baseData)) continue;
 			events.push(baseData);
-			if (!finalSettings.allowInlineEventsInNotes) continue;
+			if (!finalSettings.lookForInlineEventsInNotes) continue;
 			const inlineEvents = (
 				await getDataFromNoteBody(baseData, tagsToFind)
 			).filter(isDefined);
