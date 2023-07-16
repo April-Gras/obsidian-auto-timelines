@@ -41,8 +41,6 @@ export async function getDataFromNoteMetadata(
 		tags
 	);
 
-	// TimelineTags is not defined as an array :<
-	// OR Sought after tags where not found
 	if (!extractedTagsAreValid(timelineTags, tagsToFind)) return undefined;
 
 	return {
