@@ -7,8 +7,8 @@ A theme agnostic timeline generator for [obsidian](https://obsidian.md/)
 This plugins allows you to tag notes to generate timelines. It's designed with story telling in mind.
 
 ## Sample vault with basic examples
-[TimelineSampleVault.zip](https://github.com/April-Gras/obsidian-auto-timelines/files/11990929/TimelineSampleVault.zip)
 
+[TimelineSampleVault.zip](https://github.com/April-Gras/obsidian-auto-timelines/files/12065143/TimelineSampleVault.zip)
 
 Here's a zip file of a obsidian vault with various basic examples to help you build timelines.
 Alternatively [Josh Plunkett](https://www.youtube.com/@JoshPlunkett) did [a tutorial video](https://www.youtube.com/watch?v=992o1j8zRSk) covering the basics
@@ -112,18 +112,19 @@ The end result for our initaly declared metadata would look something like: `cyc
 
 In some cases numbers displaying your dates as plain numbers won't really cut it. This is where date token types come in. For now they come in two flavors
 
-- `numerical`: These date tokens should be displayed as default, for example the day and the year in `06 july 2018` are numerical date tokens. The `day` token has a minial length of `2` and the `year` token has a minimal length of `4`.
-- `string`: These are a bit more cumbersome to configure but add great visibility. For instance in our previous example (`06 july 2018`) the `month` token is a `string` date token.
-To configure your date tokens head to the plugins settings and use the `Date Format Settings` setup flow or edit them using advanced mode.
+-   `numerical`: These date tokens should be displayed as default, for example the day and the year in `06 july 2018` are numerical date tokens. The `day` token has a minial length of `2` and the `year` token has a minimal length of `4`.
+-   `string`: These are a bit more cumbersome to configure but add great visibility. For instance in our previous example (`06 july 2018`) the `month` token is a `string` date token.
+    To configure your date tokens head to the plugins settings and use the `Date Format Settings` setup flow or edit them using advanced mode.
 
 ##### Timeline specific settings override
 
 In some cases the output format used defined in the settings is too broad for some timelines. Let's say we defined the following tokens:
-- year
-- month
-- day
-- hour
-- minute
+
+-   year
+-   month
+-   day
+-   hour
+-   minute
 
 We could set our default output format to `{day} {month} {year}` and cover a lot of use cases. But let's say we have a timeline full of events that are potencially minutes apart.
 Instead of trying to compromise with other timelines display we could just write
@@ -138,6 +139,7 @@ The syntax is as follow: `dateDisplayFormat: whatever {token-name} some more wha
 In-line events are enabled by default but if you don't need them you can always disable them to shave a couple processing cycles off each note.
 With this feature you can define events from inside a note. The event will ignore anything above it's position in a note, and parse the note from there on. This means you could describe all events for a single timeline inside one note.
 The following example could be inthe middle of your note. Or at the end of it. Or anywhere really. Just not before the frontmatter
+
 ```markdown
 %%aat-inline-event
 aat-event-start-date: 54
@@ -146,6 +148,7 @@ aat-render-enabled: true
 timelines: [timeline-name]
 %%
 ```
+
 The keys are the ones you setup in your settings. Check the [sample vault](https://github.com/April-Gras/obsidian-auto-timelines#sample-vault-with-basic-examples) for more examples on this.
 
 ---
