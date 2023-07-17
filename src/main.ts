@@ -56,14 +56,17 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 		);
 		const cardDataTime = measureTime("Data fetch");
 		const events: CompleteCardContext[] = [];
+
 		for (const context of creationContext) {
 			const baseData = await getDataFromNoteMetadata(context, tagsToFind);
 
-			if (!isDefined(baseData)) continue;
-			events.push(baseData);
+			if (isDefined(baseData)) events.push(baseData);
 			if (!finalSettings.lookForInlineEventsInNotes) continue;
+			const body =
+				baseData?.cardData.body ||
+				(await context.file.vault.cachedRead(context.file));
 			const inlineEvents = (
-				await getDataFromNoteBody(baseData, tagsToFind)
+				await getDataFromNoteBody(body, context, tagsToFind)
 			).filter(isDefined);
 
 			if (!inlineEvents.length) continue;

@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-auto-timelines",
-	"version": "0.7.0",
+	"version": "0.7.1",
 	"description": "This Obsidian (https://obsidian.md) plugin aims to simplify creating and maintaining timelines in different a project",
 	"main": "main.js",
 	"scripts": {
@@ -29,7 +29,7 @@
 		"esbuild-plugin-vue3": "^0.3.2",
 		"eslint": "^8.45.0",
 		"eslint-plugin-jsdoc": "^46.4.4",
-		"happy-dom": "^10.3.2",
+		"happy-dom": "^10.5.1",
 		"lodash.clonedeep": "^4.5.0",
 		"obsidian": "latest",
 		"sass": "^1.63.6",

@@ -95,49 +95,61 @@ describe.concurrent("Card Data", () => {
 	});
 
 	test("[getDataFromNoteBody] - ok empty", async () => {
-		const context = mockCompleteCardContext();
+		const {
+			context,
+			cardData: { body },
+		} = mockCompleteCardContext();
 
-		expect(await getDataFromNoteBody(context, ["timeline"])).toStrictEqual(
-			[]
-		);
+		expect(
+			await getDataFromNoteBody(body, context, ["timeline"])
+		).toStrictEqual([]);
 	});
 
 	test("[getDataFromNoteBody] - ok nothing to parse", async () => {
-		const context = mockCompleteCardContext({
+		const {
+			context,
+			cardData: { body },
+		} = mockCompleteCardContext({
 			context: mockMarkdownCodeBlockTimelineProcessingContext(),
 			cardData: {
 				body: "%%aat-inline-event\n%%\nsampletext",
 			},
 		});
 
-		expect(await getDataFromNoteBody(context, ["timeline"])).toStrictEqual(
-			[]
-		);
+		expect(
+			await getDataFromNoteBody(body, context, ["timeline"])
+		).toStrictEqual([]);
 	});
 
 	test("[getDataFromNoteBody] - ok tags are not valid", async () => {
-		const context = mockCompleteCardContext({
+		const {
+			context,
+			cardData: { body },
+		} = mockCompleteCardContext({
 			context: mockMarkdownCodeBlockTimelineProcessingContext(),
 			cardData: {
 				body: "'%%aat-inline-event\naat-event-start-date: 54\naat-event-end-date: true\naat-render-enabled: true\ntimelines: [nottimeline]\n%%",
 			},
 		});
 
-		expect(await getDataFromNoteBody(context, ["timeline"])).toStrictEqual(
-			[]
-		);
+		expect(
+			await getDataFromNoteBody(body, context, ["timeline"])
+		).toStrictEqual([]);
 	});
 
 	test("[getDataFromNoteBody] - ok tags are valid", async () => {
-		const context = mockCompleteCardContext({
+		const {
+			context,
+			cardData: { body },
+		} = mockCompleteCardContext({
 			context: mockMarkdownCodeBlockTimelineProcessingContext(),
 			cardData: {
 				body: "'%%aat-inline-event\naat-event-start-date: 54\naat-event-end-date: true\naat-render-enabled: true\ntimelines: [timeline]\n%%",
 			},
 		});
 
-		expect((await getDataFromNoteBody(context, ["timeline"])).length).toBe(
-			1
-		);
+		expect(
+			(await getDataFromNoteBody(body, context, ["timeline"])).length
+		).toBe(1);
 	});
 });
