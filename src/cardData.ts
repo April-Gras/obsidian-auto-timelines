@@ -52,15 +52,14 @@ export async function getDataFromNoteMetadata(
 /**
  * Provides additional context for the creation cards in the DOM but reads it from the body
  *
- * @param param0 - Timeline generic context.
- * @param param0.cardData - The extracted data for one event card.
- * @param param0.cardData.body - The extracted body for a single event card.
- * @param param0.context - The context for a given event.
+ * @param body - The extracted body for a single event card.
+ * @param context - Timeline generic context.
  * @param tagsToFind - The tags to find in a note to match the current timeline.
  * @returns the context or underfined if it could not build it.
  */
 export async function getDataFromNoteBody(
-	{ cardData: { body }, context }: CompleteCardContext,
+	body: string | undefined | null,
+	context: MarkdownCodeBlockTimelineProcessingContext,
 	tagsToFind: string[]
 ): Promise<CompleteCardContext[]> {
 	const { settings } = context;
