@@ -189,8 +189,7 @@ export function findBoundaries(
 				compareAbstractDates(
 					startDate,
 					collection[firstLastUnderIndex].cardData.startDate
-				) === 0 && !!index
-				// The !!index makes sure the returned element is not the card itself.
+				) === 0
 			);
 		}
 	);
