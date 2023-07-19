@@ -67,9 +67,7 @@ describe.concurrent("Range Data", () => {
 				mockHTMLElement(),
 				0
 			)
-		).toThrowError(
-			"No last under found - Can't draw range since there are no other two start date to referrence it's position"
-		);
+		).toThrowError("Missing child @ index 2 for element");
 	});
 
 	test("[findBoundaries] - ok", () => {
