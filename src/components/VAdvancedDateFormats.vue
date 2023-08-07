@@ -21,7 +21,9 @@ const emit = defineEmits<{
 
 const targetKeys: Exclude<
 	keyof AutoTimelineSettings,
-	"dateTokenConfiguration" | "lookForTagsForTimeline"
+	| "dateTokenConfiguration"
+	| "lookForTagsForTimeline"
+	| "lookForInlineEventsInNotes"
 >[] = ["dateParserRegex", "dateParserGroupPriority", "dateDisplayFormat"];
 
 const unconfiguredTokens = computed(() => {
@@ -102,6 +104,7 @@ function handleResetToDefault(): void {
 		}}</VHeader>
 		<VConfigureDateTokenArray
 			:model-value="value.dateTokenConfiguration"
+			display-delete-option
 			@update:model-value="
 				emit('update:value', { dateTokenConfiguration: $event })
 			"

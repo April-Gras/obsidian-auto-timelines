@@ -13,12 +13,19 @@ import VButton from "./VButton.vue";
 
 import type { DateTokenConfiguration } from "~/types";
 
-const props = defineProps<{
-	modelValue: DateTokenConfiguration;
-}>();
+const props = withDefaults(
+	defineProps<{
+		modelValue: DateTokenConfiguration;
+		allowDelete: boolean;
+	}>(),
+	{
+		allowDelete: false,
+	}
+);
 
 const emit = defineEmits<{
 	"update:modelValue": [payload: DateTokenConfiguration];
+	delete: [];
 }>();
 
 function handleUpdateType($event: DateTokenType) {
@@ -60,6 +67,7 @@ function handleDictionaryUpdateAtIndex(
 
 <template>
 	<div class="v-grid-display">
+		<VButton @click="$emit('delete')">{{ $t("common.remove") }}</VButton>
 		<details class="v-grid-display">
 			<summary>{{ modelValue.name }}</summary>
 			<div style="margin-top: 8px" class="v-grid-display">
