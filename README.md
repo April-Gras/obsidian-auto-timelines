@@ -2,7 +2,7 @@
 
 A theme agnostic timeline generator for [obsidian](https://obsidian.md/)
 
-<img src="https://user-images.githubusercontent.com/1866440/    232319031-7eeb18ef-da01-488d-b0cc-f528e7760574.png" width=480 />
+<img src="https://user-images.githubusercontent.com/1866440/232319031-7eeb18ef-da01-488d-b0cc-f528e7760574.png" width=480 />
 
 This plugins allows you to tag notes to generate timelines. It's designed with story telling in mind.
 
