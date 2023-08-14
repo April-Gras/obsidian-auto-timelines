@@ -1,8 +1,12 @@
 import "./obsidianMocks";
 import { SETTINGS_DEFAULT } from "~/settings";
 
-import { formatAbstractDate, formatDateToken } from "~/abstractDateFormating";
-import { DateTokenConfiguration, DateTokenType } from "~/types";
+import {
+	applyConditionBasedFormating,
+	formatAbstractDate,
+	formatDateToken,
+} from "~/abstractDateFormating";
+import { Condition, DateTokenConfiguration, DateTokenType } from "~/types";
 import {
 	createNumberDateTokenConfiguration,
 	createStringDateTokenConfiguration,
@@ -79,5 +83,79 @@ describe.concurrent("Abstract Date Formating", () => {
 		// @ts-expect-error
 		configuration.dictionary = ["a", "b", "c", "d"];
 		expect(() => formatDateToken(2, configuration)).toThrowError();
+	});
+
+	test("[applyConditionBasedFormating] - ok skip formatting", () => {
+		const input = "sample input";
+
+		expect(
+			applyConditionBasedFormating(
+				input,
+				0,
+				createNumberDateTokenConfiguration(),
+				false
+			)
+		).toBe(input);
+	});
+
+	test("[applyConditionBasedFormating] - ok no formatting", () => {
+		const input = "sample input";
+
+		expect(
+			applyConditionBasedFormating(
+				input,
+				0,
+				createNumberDateTokenConfiguration(),
+				true
+			)
+		).toBe(input);
+	});
+
+	test("[applyConditionBasedFormating] - ok full conditions exclusive", () => {
+		const configuration = createNumberDateTokenConfiguration({
+			formating: [
+				{
+					evaluations: [
+						{ condition: Condition.Greater, value: 0 },
+						{ condition: Condition.Equal, value: -56 },
+					],
+					conditionsAreExclusive: true,
+					formatting: "{value} sample condition formating",
+				},
+			],
+		});
+		const input = "sample";
+
+		expect(
+			applyConditionBasedFormating(input, -56, configuration, true)
+		).toBe(`${input} sample condition formating`);
+
+		expect(
+			applyConditionBasedFormating(input, 0, configuration, true)
+		).toBe(input);
+	});
+
+	test("[applyConditionBasedFormating] - ok full conditions inclusive", () => {
+		const configuration = createNumberDateTokenConfiguration({
+			formating: [
+				{
+					evaluations: [
+						{ condition: Condition.Less, value: 0 },
+						{ condition: Condition.Equal, value: -56 },
+					],
+					conditionsAreExclusive: false,
+					formatting: "{value} sample condition formating",
+				},
+			],
+		});
+		const input = "sample";
+
+		expect(
+			applyConditionBasedFormating(input, -56, configuration, true)
+		).toBe(`${input} sample condition formating`);
+
+		expect(
+			applyConditionBasedFormating(input, -435, configuration, true)
+		).toBe(input);
 	});
 });

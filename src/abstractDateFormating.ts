@@ -1,6 +1,7 @@
 import {
 	dateTokenConfigurationIsTypeNumber,
 	dateTokenConfigurationIsTypeString,
+	evalNumericalCondition,
 } from "~/utils";
 
 import type {
@@ -8,6 +9,7 @@ import type {
 	AbstractDate,
 	DateTokenConfiguration,
 	DateTokenType,
+	AdditionalDateFormating,
 } from "~/types";
 
 /**
@@ -94,7 +96,7 @@ export function formatDateToken(
  * @param applyAdditonalConditionFormatting - The boolean toggle to check or not for additional condition based formatings.
  * @returns the fully formated token ready to be inserted in the output string.
  */
-function applyConditionBasedFormating(
+export function applyConditionBasedFormating(
 	formatedDate: string,
 	date: number,
 	{ formating }: DateTokenConfiguration,
@@ -103,8 +105,20 @@ function applyConditionBasedFormating(
 	if (!applyAdditonalConditionFormatting) return formatedDate;
 
 	return formating.reduce((output, format) => {
-		// Eval condition
+		const evalHandler = format.conditionsAreExclusive
+			? format.evaluations.some
+			: format.evaluations.every;
 
+		const evaluationRestult = evalHandler.bind(format.evaluations)(
+			({
+				condition,
+				value,
+			}: AdditionalDateFormating["evaluations"][number]) =>
+				evalNumericalCondition(condition, date, value)
+		);
+
+		if (evaluationRestult)
+			return format.formatting.replace("{value}", output);
 		return output;
 	}, formatedDate);
 }

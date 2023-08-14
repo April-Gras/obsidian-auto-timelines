@@ -76,16 +76,17 @@ export enum DateTokenType {
 }
 export const availableDateTokenTypeArray = Object.values(DateTokenType);
 
-enum Condition {
+export enum Condition {
 	Greater = "GREATER",
 	Less = "LESS",
 	Equal = "EQUAL",
+	NotEqual = "NOTEQUAL",
 	GreaterOrEqual = "GREATEROREQUAL",
 	LessOrEqual = "LESSOREQUAL",
 }
 
-type AdditionalDateFormating = {
-	conditions: Condition[];
+export type AdditionalDateFormating<T extends number = number> = {
+	evaluations: { condition: Condition; value: T }[];
 	/**
 	 * Basically: if `true` the conditions all need to be `true` to return `true`. Else it only need one of the conditions to be checked.
 	 */

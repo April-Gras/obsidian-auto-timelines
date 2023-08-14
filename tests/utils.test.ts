@@ -18,9 +18,10 @@ import {
 	createNumberDateTokenConfiguration,
 	createStringDateTokenConfiguration,
 	parseAbstractDate,
+	evalNumericalCondition,
 } from "~/utils";
 import { SETTINGS_DEFAULT } from "~/settings";
-import { DateTokenConfiguration, DateTokenType } from "~/types";
+import { Condition, DateTokenConfiguration, DateTokenType } from "~/types";
 
 describe.concurrent("Utils", () => {
 	test("[compareAbstractDates] - no dates", () => {
@@ -323,5 +324,31 @@ describe.concurrent("Utils", () => {
 		);
 
 		expect(date).toBeUndefined();
+	});
+
+	test("[evalNumericalCondition] - full suite", () => {
+		const fn = evalNumericalCondition;
+
+		expect(fn(Condition.Equal, 0, 0)).toBe(true);
+		expect(fn(Condition.Equal, 0, 1)).toBe(false);
+
+		expect(fn(Condition.NotEqual, 0, 0)).toBe(false);
+		expect(fn(Condition.NotEqual, 0, 1)).toBe(true);
+
+		expect(fn(Condition.Greater, 0, 0)).toBe(false);
+		expect(fn(Condition.Greater, 0, 1)).toBe(false);
+		expect(fn(Condition.Greater, 2, 1)).toBe(true);
+
+		expect(fn(Condition.GreaterOrEqual, 0, 1)).toBe(false);
+		expect(fn(Condition.GreaterOrEqual, 0, 0)).toBe(true);
+		expect(fn(Condition.GreaterOrEqual, 1, 0)).toBe(true);
+
+		expect(fn(Condition.Less, 0, 0)).toBe(false);
+		expect(fn(Condition.Less, 1, 0)).toBe(false);
+		expect(fn(Condition.Less, 0, 1)).toBe(true);
+
+		expect(fn(Condition.LessOrEqual, 0, 0)).toBe(true);
+		expect(fn(Condition.LessOrEqual, 1, 0)).toBe(false);
+		expect(fn(Condition.LessOrEqual, 0, 1)).toBe(true);
 	});
 });
