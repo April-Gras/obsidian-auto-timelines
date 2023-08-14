@@ -233,8 +233,9 @@ describe.concurrent("Utils", () => {
 			minLeght: 2,
 			name: "",
 			displayWhenZero: true,
+			formating: [],
 			type: DateTokenType.number,
-		} as DateTokenConfiguration);
+		} satisfies DateTokenConfiguration);
 
 		expect(
 			createNumberDateTokenConfiguration({
@@ -245,7 +246,8 @@ describe.concurrent("Utils", () => {
 			name: "sample",
 			type: DateTokenType.number,
 			displayWhenZero: true,
-		} as DateTokenConfiguration);
+			formating: [],
+		} satisfies DateTokenConfiguration);
 
 		expect(
 			createNumberDateTokenConfiguration({
@@ -257,7 +259,8 @@ describe.concurrent("Utils", () => {
 			name: "sample",
 			type: DateTokenType.number,
 			displayWhenZero: true,
-		} as DateTokenConfiguration);
+			formating: [],
+		} satisfies DateTokenConfiguration);
 	});
 
 	test("[createStringDateTokenConfiguration] - ok", () => {
@@ -265,7 +268,8 @@ describe.concurrent("Utils", () => {
 			name: "",
 			dictionary: [""],
 			type: DateTokenType.string,
-		} as DateTokenConfiguration);
+			formating: [],
+		} satisfies DateTokenConfiguration);
 
 		expect(
 			createStringDateTokenConfiguration({
@@ -275,7 +279,8 @@ describe.concurrent("Utils", () => {
 			name: "sample",
 			dictionary: [""],
 			type: DateTokenType.string,
-		} as DateTokenConfiguration);
+			formating: [],
+		} satisfies DateTokenConfiguration);
 
 		expect(
 			createStringDateTokenConfiguration({
@@ -286,7 +291,8 @@ describe.concurrent("Utils", () => {
 			name: "sample",
 			dictionary: ["a"],
 			type: DateTokenType.string,
-		} as DateTokenConfiguration);
+			formating: [],
+		} satisfies DateTokenConfiguration);
 	});
 
 	test("[parseAbstractDate] - ok", () => {

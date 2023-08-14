@@ -28,11 +28,12 @@ export const SETTINGS_DEFAULT = {
 	dateDisplayFormat: "{day}/{month}/{year}",
 	lookForTagsForTimeline: false,
 	lookForInlineEventsInNotes: true,
+	applyAdditonalConditionFormatting: true,
 	dateTokenConfiguration: [
 		createNumberDateTokenConfiguration({ name: "year", minLeght: 4 }),
 		createNumberDateTokenConfiguration({ name: "month" }),
 		createNumberDateTokenConfiguration({ name: "day" }),
-	] as DateTokenConfiguration[],
+	] satisfies DateTokenConfiguration[],
 };
 
 export const __VUE_PROD_DEVTOOLS__ = true;

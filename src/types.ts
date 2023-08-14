@@ -74,13 +74,36 @@ export enum DateTokenType {
 	number = "NUMBER",
 	string = "STRING",
 }
-
 export const availableDateTokenTypeArray = Object.values(DateTokenType);
+
+enum Condition {
+	Greater = "GREATER",
+	Less = "LESS",
+	Equal = "EQUAL",
+	GreaterOrEqual = "GREATEROREQUAL",
+	LessOrEqual = "LESSOREQUAL",
+}
+
+type AdditionalDateFormating = {
+	conditions: Condition[];
+	/**
+	 * Basically: if `true` the conditions all need to be `true` to return `true`. Else it only need one of the conditions to be checked.
+	 */
+	conditionsAreExclusive: boolean;
+	/**
+	 * Use `{value}` to include the pre-formated output of the numerical value held.
+	 */
+	formatting: string;
+};
 
 /**
  * The data used to compute the output of an abstract date based on it's type
  */
-type CommonValues<T extends DateTokenType> = { name: string; type: T };
+type CommonValues<T extends DateTokenType> = {
+	name: string;
+	type: T;
+	formating: AdditionalDateFormating[];
+};
 export type DateTokenConfiguration<T extends DateTokenType = DateTokenType> =
 	T extends DateTokenType.number
 		? NumberSpecific
