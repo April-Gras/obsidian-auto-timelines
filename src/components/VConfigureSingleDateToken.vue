@@ -25,7 +25,9 @@ const emit = defineEmits<{
 
 <template>
 	<div class="v-grid-display">
-		<VButton @click="$emit('delete')">{{ $t("common.remove") }}</VButton>
+		<VButton v-if="allowDelete" @click="$emit('delete')">{{
+			$t("common.remove")
+		}}</VButton>
 		<VHeader>{{ modelValue.name }}</VHeader>
 		<VDetails>
 			<template #summary>{{

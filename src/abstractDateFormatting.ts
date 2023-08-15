@@ -104,23 +104,23 @@ export function applyConditionBasedFormatting(
 ): string {
 	if (!applyAdditonalConditionFormatting) return formatedDate;
 
-	return formatting.reduce((output, format) => {
-		const evaluationRestult = (
-			format.conditionsAreExclusive
-				? format.evaluations.some
-				: format.evaluations.every
-		).bind(format.evaluations)(
-			({
-				condition,
-				value,
-			}: AdditionalDateFormatting["evaluations"][number]) =>
-				evalNumericalCondition(condition, date, value)
-		);
+	return formatting.reduce(
+		(output, { format, conditionsAreExclusive, evaluations }) => {
+			const evaluationRestult = (
+				conditionsAreExclusive ? evaluations.some : evaluations.every
+			).bind(evaluations)(
+				({
+					condition,
+					value,
+				}: AdditionalDateFormatting["evaluations"][number]) =>
+					evalNumericalCondition(condition, date, value)
+			);
 
-		if (evaluationRestult)
-			return format.formatting.replace("{value}", output);
-		return output;
-	}, formatedDate);
+			if (evaluationRestult) return format.replace("{value}", output);
+			return output;
+		},
+		formatedDate
+	);
 }
 
 /**

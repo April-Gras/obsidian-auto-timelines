@@ -37,7 +37,7 @@ const emit = defineEmits<{
 			}}</b>
 		</p>
 		<p>{{ outputFormat }}</p>
-		<VButton @click="emit('save')" has-accent>{{
+		<VButton @click.native="emit('save')" has-accent>{{
 			$t("common.confirm")
 		}}</VButton>
 	</section>

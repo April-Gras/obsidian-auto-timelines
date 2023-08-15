@@ -92,9 +92,14 @@ export enum Condition {
 	GreaterOrEqual = "GREATEROREQUAL",
 	LessOrEqual = "LESSOREQUAL",
 }
+export const availableConditionArray = Object.values(Condition);
 
+export type Evaluation<T extends number = number> = {
+	condition: Condition;
+	value: T;
+};
 export type AdditionalDateFormatting<T extends number = number> = {
-	evaluations: { condition: Condition; value: T }[];
+	evaluations: Evaluation<T>[];
 	/**
 	 * Basically: if `true` the conditions all need to be `true` to return `true`. Else it only need one of the conditions to be checked.
 	 */
@@ -102,7 +107,7 @@ export type AdditionalDateFormatting<T extends number = number> = {
 	/**
 	 * Use `{value}` to include the pre-formated output of the numerical value held.
 	 */
-	formatting: string;
+	format: string;
 };
 
 /**
