@@ -203,7 +203,7 @@ export function createNumberDateTokenConfiguration(
 		name: "",
 		type: DateTokenType.number,
 		displayWhenZero: true,
-		formating: [],
+		formatting: [],
 		hideSign: false,
 		...defaultValue,
 	};
@@ -222,7 +222,7 @@ export function createStringDateTokenConfiguration(
 		name: "",
 		type: DateTokenType.string,
 		dictionary: [""],
-		formating: [],
+		formatting: [],
 		...defaultValue,
 	};
 }

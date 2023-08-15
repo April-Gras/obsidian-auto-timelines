@@ -9,7 +9,7 @@ import type {
 	AbstractDate,
 	DateTokenConfiguration,
 	DateTokenType,
-	AdditionalDateFormating,
+	AdditionalDateFormatting,
 } from "~/types";
 
 /**
@@ -20,7 +20,7 @@ import type {
  * @param param1.dateDisplayFormat - The target format to displat the date in.
  * @param param1.dateParserGroupPriority - The token priority list for the date format.
  * @param param1.dateTokenConfiguration - The configuration for the given date format.
- * @param param1.applyAdditonalConditionFormatting - The boolean toggle to check or not for additional condition based formatings.
+ * @param param1.applyAdditonalConditionFormatting - The boolean toggle to check or not for additional condition based formattings.
  * @returns the formated representation of a given date based off the plugins settings.
  */
 export function formatAbstractDate(
@@ -54,7 +54,7 @@ export function formatAbstractDate(
 
 		output = output.replace(
 			`{${token}}`,
-			applyConditionBasedFormating(
+			applyConditionBasedFormatting(
 				formatDateToken(date[index], configuration),
 				date[index],
 				configuration,
@@ -87,24 +87,24 @@ export function formatDateToken(
 }
 
 /**
- * This functions processes each tokens additional conditional formating.
+ * This functions processes each tokens additional conditional formatting.
  *
  * @param formatedDate - The previously processed date token.
  * @param date - The numerical value of the token.
  * @param configuration - The configuration of the token.
- * @param configuration.formating - The formating array bound to a token configuration.
- * @param applyAdditonalConditionFormatting - The boolean toggle to check or not for additional condition based formatings.
+ * @param configuration.formatting - The formatting array bound to a token configuration.
+ * @param applyAdditonalConditionFormatting - The boolean toggle to check or not for additional condition based formattings.
  * @returns the fully formated token ready to be inserted in the output string.
  */
-export function applyConditionBasedFormating(
+export function applyConditionBasedFormatting(
 	formatedDate: string,
 	date: number,
-	{ formating }: DateTokenConfiguration,
+	{ formatting }: DateTokenConfiguration,
 	applyAdditonalConditionFormatting: AutoTimelineSettings["applyAdditonalConditionFormatting"]
 ): string {
 	if (!applyAdditonalConditionFormatting) return formatedDate;
 
-	return formating.reduce((output, format) => {
+	return formatting.reduce((output, format) => {
 		const evaluationRestult = (
 			format.conditionsAreExclusive
 				? format.evaluations.some
@@ -113,7 +113,7 @@ export function applyConditionBasedFormating(
 			({
 				condition,
 				value,
-			}: AdditionalDateFormating["evaluations"][number]) =>
+			}: AdditionalDateFormatting["evaluations"][number]) =>
 				evalNumericalCondition(condition, date, value)
 		);
 

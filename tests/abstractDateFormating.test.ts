@@ -2,17 +2,17 @@ import "./obsidianMocks";
 import { SETTINGS_DEFAULT } from "~/settings";
 
 import {
-	applyConditionBasedFormating,
+	applyConditionBasedFormatting,
 	formatAbstractDate,
 	formatDateToken,
-} from "~/abstractDateFormating";
+} from "~/abstractDateFormatting";
 import { Condition, DateTokenConfiguration, DateTokenType } from "~/types";
 import {
 	createNumberDateTokenConfiguration,
 	createStringDateTokenConfiguration,
 } from "~/utils";
 
-describe.concurrent("Abstract Date Formating", () => {
+describe.concurrent("Abstract Date Formatting", () => {
 	test("[formatAbstractDate] - boolean date", () => {
 		const absctractDateMock = true;
 		const output = formatAbstractDate(absctractDateMock, SETTINGS_DEFAULT);
@@ -85,11 +85,11 @@ describe.concurrent("Abstract Date Formating", () => {
 		expect(() => formatDateToken(2, configuration)).toThrowError();
 	});
 
-	test("[applyConditionBasedFormating] - ok skip formatting", () => {
+	test("[applyConditionBasedFormatting] - ok skip formatting", () => {
 		const input = "sample input";
 
 		expect(
-			applyConditionBasedFormating(
+			applyConditionBasedFormatting(
 				input,
 				0,
 				createNumberDateTokenConfiguration(),
@@ -98,11 +98,11 @@ describe.concurrent("Abstract Date Formating", () => {
 		).toBe(input);
 	});
 
-	test("[applyConditionBasedFormating] - ok no formatting", () => {
+	test("[applyConditionBasedFormatting] - ok no formatting", () => {
 		const input = "sample input";
 
 		expect(
-			applyConditionBasedFormating(
+			applyConditionBasedFormatting(
 				input,
 				0,
 				createNumberDateTokenConfiguration(),
@@ -111,51 +111,51 @@ describe.concurrent("Abstract Date Formating", () => {
 		).toBe(input);
 	});
 
-	test("[applyConditionBasedFormating] - ok full conditions exclusive", () => {
+	test("[applyConditionBasedFormatting] - ok full conditions exclusive", () => {
 		const configuration = createNumberDateTokenConfiguration({
-			formating: [
+			formatting: [
 				{
 					evaluations: [
 						{ condition: Condition.Greater, value: 0 },
 						{ condition: Condition.Equal, value: -56 },
 					],
 					conditionsAreExclusive: true,
-					formatting: "{value} sample condition formating",
+					formatting: "{value} sample condition formatting",
 				},
 			],
 		});
 		const input = "sample";
 
 		expect(
-			applyConditionBasedFormating(input, -56, configuration, true)
-		).toBe(`${input} sample condition formating`);
+			applyConditionBasedFormatting(input, -56, configuration, true)
+		).toBe(`${input} sample condition formatting`);
 
 		expect(
-			applyConditionBasedFormating(input, 0, configuration, true)
+			applyConditionBasedFormatting(input, 0, configuration, true)
 		).toBe(input);
 	});
 
-	test("[applyConditionBasedFormating] - ok full conditions inclusive", () => {
+	test("[applyConditionBasedFormatting] - ok full conditions inclusive", () => {
 		const configuration = createNumberDateTokenConfiguration({
-			formating: [
+			formatting: [
 				{
 					evaluations: [
 						{ condition: Condition.Less, value: 0 },
 						{ condition: Condition.Equal, value: -56 },
 					],
 					conditionsAreExclusive: false,
-					formatting: "{value} sample condition formating",
+					formatting: "{value} sample condition formatting",
 				},
 			],
 		});
 		const input = "sample";
 
 		expect(
-			applyConditionBasedFormating(input, -56, configuration, true)
-		).toBe(`${input} sample condition formating`);
+			applyConditionBasedFormatting(input, -56, configuration, true)
+		).toBe(`${input} sample condition formatting`);
 
 		expect(
-			applyConditionBasedFormating(input, -435, configuration, true)
+			applyConditionBasedFormatting(input, -435, configuration, true)
 		).toBe(input);
 	});
 });

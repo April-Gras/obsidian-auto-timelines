@@ -41,7 +41,7 @@ const emit = defineEmits<{
 		<VDetails>
 			<template #summary>{{
 				$t(
-					"settings.label.configureSingleDateToken.conditionalFormating"
+					"settings.label.configureSingleDateToken.conditionalFormatting"
 				)
 			}}</template>
 			<template #details>

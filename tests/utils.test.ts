@@ -234,7 +234,7 @@ describe.concurrent("Utils", () => {
 			minLeght: 2,
 			name: "",
 			displayWhenZero: true,
-			formating: [],
+			formatting: [],
 			type: DateTokenType.number,
 			hideSign: false,
 		} satisfies DateTokenConfiguration);
@@ -249,7 +249,7 @@ describe.concurrent("Utils", () => {
 			type: DateTokenType.number,
 			displayWhenZero: true,
 			hideSign: false,
-			formating: [],
+			formatting: [],
 		} satisfies DateTokenConfiguration);
 
 		expect(
@@ -263,7 +263,7 @@ describe.concurrent("Utils", () => {
 			type: DateTokenType.number,
 			displayWhenZero: true,
 			hideSign: false,
-			formating: [],
+			formatting: [],
 		} satisfies DateTokenConfiguration);
 	});
 
@@ -272,7 +272,7 @@ describe.concurrent("Utils", () => {
 			name: "",
 			dictionary: [""],
 			type: DateTokenType.string,
-			formating: [],
+			formatting: [],
 		} satisfies DateTokenConfiguration);
 
 		expect(
@@ -283,7 +283,7 @@ describe.concurrent("Utils", () => {
 			name: "sample",
 			dictionary: [""],
 			type: DateTokenType.string,
-			formating: [],
+			formatting: [],
 		} satisfies DateTokenConfiguration);
 
 		expect(
@@ -295,7 +295,7 @@ describe.concurrent("Utils", () => {
 			name: "sample",
 			dictionary: ["a"],
 			type: DateTokenType.string,
-			formating: [],
+			formatting: [],
 		} satisfies DateTokenConfiguration);
 	});
 

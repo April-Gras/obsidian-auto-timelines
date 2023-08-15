@@ -74,7 +74,7 @@ export type Range = ReturnType<FnGetRangeData>[number];
 export type AbstractDate = number[];
 
 /**
- * Before formating an abstract date, the end user can configure it's output display
+ * Before formatting an abstract date, the end user can configure it's output display
  * This DateToken type helps to determine what's the nature of a given token
  * E.g. should it be displayed as a number or as a string ?
  */
@@ -93,7 +93,7 @@ export enum Condition {
 	LessOrEqual = "LESSOREQUAL",
 }
 
-export type AdditionalDateFormating<T extends number = number> = {
+export type AdditionalDateFormatting<T extends number = number> = {
 	evaluations: { condition: Condition; value: T }[];
 	/**
 	 * Basically: if `true` the conditions all need to be `true` to return `true`. Else it only need one of the conditions to be checked.
@@ -111,7 +111,7 @@ export type AdditionalDateFormating<T extends number = number> = {
 type CommonValues<T extends DateTokenType> = {
 	name: string;
 	type: T;
-	formating: AdditionalDateFormating[];
+	formatting: AdditionalDateFormatting[];
 };
 export type DateTokenConfiguration<T extends DateTokenType = DateTokenType> =
 	T extends DateTokenType.number

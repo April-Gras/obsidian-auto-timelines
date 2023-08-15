@@ -6,7 +6,7 @@ import type {
 	CardContent,
 	AutoTimelineSettings,
 } from "~/types";
-import { formatAbstractDate } from "./abstractDateFormating";
+import { formatAbstractDate } from "./abstractDateFormatting";
 
 /**
  * Generates a card in the DOM based on given ccontext.

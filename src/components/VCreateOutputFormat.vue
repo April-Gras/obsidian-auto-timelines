@@ -3,7 +3,7 @@ import { computed, ref, onMounted } from "vue";
 
 import VInput from "./VInput.vue";
 
-import { formatAbstractDate } from "~/abstractDateFormating";
+import { formatAbstractDate } from "~/abstractDateFormatting";
 
 import type { DateTokenConfiguration } from "~/types";
 
