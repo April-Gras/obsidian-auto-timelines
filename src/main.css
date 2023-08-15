@@ -258,3 +258,15 @@ div.aat-range-element:hover {
 h2.v-header {
 	margin: 0px !important;
 }
+
+.v-card {
+	transition: box-shadow 150ms ease-in-out;
+	box-shadow: var(--input-shadow);
+	background-color: var(--background-secondary);
+	padding: 16px;
+	border-radius: 4px;
+}
+
+.v-card:hover {
+	box-shadow: var(--input-shadow-hover);
+}

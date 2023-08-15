@@ -105,11 +105,11 @@ export function applyConditionBasedFormating(
 	if (!applyAdditonalConditionFormatting) return formatedDate;
 
 	return formating.reduce((output, format) => {
-		const evalHandler = format.conditionsAreExclusive
-			? format.evaluations.some
-			: format.evaluations.every;
-
-		const evaluationRestult = evalHandler.bind(format.evaluations)(
+		const evaluationRestult = (
+			format.conditionsAreExclusive
+				? format.evaluations.some
+				: format.evaluations.every
+		)(
 			({
 				condition,
 				value,
@@ -129,13 +129,16 @@ export function applyConditionBasedFormating(
  * @param datePart - fragment of an abstract date.
  * @param param1 - A numerical date token configuration to apply.
  * @param param1.minLeght - the minimal length of a numerical date input.
+ * @param param1.hideSign - if `true` the date part will be passed to `Math.abs` before anu further formatting.
  * @returns the formated token.
  */
 function formatNumberDateToken(
 	datePart: number,
-	{ minLeght }: DateTokenConfiguration<DateTokenType.number>
+	{ minLeght, hideSign }: DateTokenConfiguration<DateTokenType.number>
 ): string {
-	let stringifiedToken = datePart.toString();
+	let stringifiedToken = (
+		hideSign ? Math.abs(datePart) : datePart
+	).toString();
 
 	if (minLeght < 0) return stringifiedToken;
 	while (stringifiedToken.length < minLeght)

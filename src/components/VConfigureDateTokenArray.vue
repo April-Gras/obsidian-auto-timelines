@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import VConfigureSingleDateToken from "./VConfigureSingleDateToken.vue";
+import VCard from "./VCard.vue";
 
 import type { DateTokenConfiguration } from "~/types";
 
 const props = withDefaults(
 	defineProps<{
 		modelValue: DateTokenConfiguration[];
-		displayDeleteOption: boolean;
+		displayDeleteOption?: boolean;
 	}>(),
 	{ displayDeleteOption: false }
 );
@@ -35,7 +36,7 @@ function handleDeleteModelValueAtIndex(index: number) {
 
 <template>
 	<section class="v-grid-display">
-		<div v-for="(dateTokenConfiguration, index) in modelValue">
+		<VCard v-for="(dateTokenConfiguration, index) in modelValue">
 			<VConfigureSingleDateToken
 				:model-value="dateTokenConfiguration"
 				:allowDelete="displayDeleteOption"
@@ -44,7 +45,6 @@ function handleDeleteModelValueAtIndex(index: number) {
 				"
 				@delete="handleDeleteModelValueAtIndex(index)"
 			/>
-			<hr v-if="index < modelValue.length - 1" />
-		</div>
+		</VCard>
 	</section>
 </template>

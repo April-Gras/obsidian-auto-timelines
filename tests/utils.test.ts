@@ -236,6 +236,7 @@ describe.concurrent("Utils", () => {
 			displayWhenZero: true,
 			formating: [],
 			type: DateTokenType.number,
+			hideSign: false,
 		} satisfies DateTokenConfiguration);
 
 		expect(
@@ -247,6 +248,7 @@ describe.concurrent("Utils", () => {
 			name: "sample",
 			type: DateTokenType.number,
 			displayWhenZero: true,
+			hideSign: false,
 			formating: [],
 		} satisfies DateTokenConfiguration);
 
@@ -260,6 +262,7 @@ describe.concurrent("Utils", () => {
 			name: "sample",
 			type: DateTokenType.number,
 			displayWhenZero: true,
+			hideSign: false,
 			formating: [],
 		} satisfies DateTokenConfiguration);
 	});

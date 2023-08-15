@@ -49,7 +49,14 @@
       "useAdvancedMode": "Use advanced mode / edit regexes",
       "lookForTagsForTimeline": "Check to include a notes tags into the values used to assign notes to a timeline",
       "lookForInlineEventsInNotes": "Check to ennable the inline event feature. This allows to define events for any timeline from inside a note.",
-      "configureSingleDateToken": "The type of the token"
+      "configureSingleDateToken": {
+        "type": "The type of the token",
+        "conditionalFormating": "Add additional formatting"
+      },
+      "configureSingleDateTokenType": {
+        "minLength": "The minimum amount of digits",
+        "hideSign": "Hide the sign"
+      }
     },
     "button": {
       "resetToDefault": "Reset to default"
@@ -74,6 +81,10 @@
       "configureSingleDateToken": {
         "STRING": "A string typed date token represents something akin to our months. tl;dr, they are written using letter and not numbers",
         "NUMBER": "A numerical typed date token is your stardard number representing a date. Just make sure to configure it's mininal lengh. For example a minimal length set to 2 will result in the 6th day being written as \"06\""
+      },
+      "configureSingleDateTokenType": {
+        "minLength": "If set to 2, this would always display at least two digit. So for a value of 3 it would display 03.",
+        "hideSign": "When checked, the sign of the number won't be displayed on the card."
       }
     },
     "linkValue": {

@@ -204,6 +204,7 @@ export function createNumberDateTokenConfiguration(
 		type: DateTokenType.number,
 		displayWhenZero: true,
 		formating: [],
+		hideSign: false,
 		...defaultValue,
 	};
 }

@@ -123,6 +123,7 @@ type NumberSpecific = Merge<
 		 */
 		minLeght: number;
 		displayWhenZero: boolean;
+		hideSign: boolean;
 	}
 >;
 
