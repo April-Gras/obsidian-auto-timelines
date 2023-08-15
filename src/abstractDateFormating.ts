@@ -109,7 +109,7 @@ export function applyConditionBasedFormating(
 			format.conditionsAreExclusive
 				? format.evaluations.some
 				: format.evaluations.every
-		)(
+		).bind(format.evaluations)(
 			({
 				condition,
 				value,

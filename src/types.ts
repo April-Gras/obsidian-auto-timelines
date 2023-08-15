@@ -4,6 +4,14 @@ import { FnExtractCardData, getDataFromNoteMetadata } from "~/cardData";
 
 import type { App, CachedMetadata, TFile } from "obsidian";
 import type { Merge } from "ts-essentials";
+
+/**
+ * @author https://stackoverflow.com/a/69756175
+ */
+export type PickByType<T, Value> = {
+	[P in keyof T as T[P] extends Value | undefined ? P : never]: T[P];
+};
+
 export type AutoTimelineSettings = typeof SETTINGS_DEFAULT;
 /**
  * The main bundle of data needed to build a timeline.

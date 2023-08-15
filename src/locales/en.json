@@ -30,7 +30,8 @@
       "slot-presets": "Enable presets for {slot}",
       "lookForTagsForTimeline": "Look into note tags",
       "lookForInlineEventsInNotes": "Look for events in note body",
-      "advancedDateFormatsTokenConfiguration": "Configure the tokens"
+      "advancedDateFormatsTokenConfiguration": "Configure the tokens",
+      "applyAdditonalConditionFormatting": "Apply additonal condition based formatting"
     },
     "label": {
       "dateDisplayFormat": "Date display format",
@@ -49,6 +50,7 @@
       "useAdvancedMode": "Use advanced mode / edit regexes",
       "lookForTagsForTimeline": "Check to include a notes tags into the values used to assign notes to a timeline",
       "lookForInlineEventsInNotes": "Check to ennable the inline event feature. This allows to define events for any timeline from inside a note.",
+      "applyAdditonalConditionFormatting": "Toggle on to allow date tokens conditional formatting to be allowed. When set to false this feature will be skipped. This could save you a few milliseconds off every card render.",
       "configureSingleDateToken": {
         "type": "The type of the token",
         "conditionalFormating": "Add additional formatting"
@@ -78,6 +80,7 @@
       "tryYourInputFormat": "Just type out the date like you would in a notes metadata block. Bellow, every field should corespond to the correct token and be sorted in the correct order.",
       "lookForTagsForTimeline": "This means if you tag you note with a string and include that string in the timeline definition this note will be included in the timeline computing",
       "lookForInlineEventsInNotes": "Check {linkText} on how to create inline events.",
+      "applyAdditonalConditionFormatting": "Toggle on to allow date tokens conditional formatting to be allowed. When set to false this feature will be skipped. This could save you a few milliseconds off every card render.",
       "configureSingleDateToken": {
         "STRING": "A string typed date token represents something akin to our months. tl;dr, they are written using letter and not numbers",
         "NUMBER": "A numerical typed date token is your stardard number representing a date. Just make sure to configure it's mininal lengh. For example a minimal length set to 2 will result in the 6th day being written as \"06\""
@@ -88,10 +91,12 @@
       }
     },
     "linkValue": {
-      "lookForInlineEventsInNotes": "https://github.com/April-Gras/obsidian-auto-timelines#in-line-events"
+      "lookForInlineEventsInNotes": "https://github.com/April-Gras/obsidian-auto-timelines#in-line-events",
+      "applyAdditonalConditionFormatting": "https://github.com/April-Gras/obsidian-auto-timelines#conditional-token-formatting"
     },
     "linkText": {
-      "lookForInlineEventsInNotes": "the documentation"
+      "lookForInlineEventsInNotes": "the documentation",
+      "applyAdditonalConditionFormatting": "the documentation"
     },
     "details": {
       "createDateToken": "Write your date system tokens ordered from top to bottom. Make sure not to leave any cluter, these token will be used to capture your date and sort them in the expeted order."
