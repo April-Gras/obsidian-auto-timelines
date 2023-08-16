@@ -21,10 +21,21 @@ describe.concurrent("Markdown block data", () => {
 
 	test("[parseMarkdownBlockSource] - ok settings", () => {
 		const { tagsToFind, settingsOverride } = parseMarkdownBlockSource(
-			"timeline-name\ndateDisplayFormat     :     {year}\n      faultyKey: notValid\ndateTokenConfiguration: this is a valid key but the override is not supported yet"
+			"timeline-name\ndateDisplayFormat     :     {year}\n      faultyKey: notValid\ndateTokenConfiguration: this is a valid key but the override is not supported yet\napplyAdditonalConditionFormatting: FaLse\napplyAdditonalConditionFormatting: true"
 		);
 
 		expect(tagsToFind).toStrictEqual(["timeline-name"]);
-		expect(settingsOverride).toStrictEqual({ dateDisplayFormat: "{year}" });
+		expect(settingsOverride).toStrictEqual({
+			dateDisplayFormat: "{year}",
+			applyAdditonalConditionFormatting: true,
+		});
+	});
+
+	test("[parseMarkdownBlockSource] - ko settings - faulty value for boolean type", () => {
+		expect(() =>
+			parseMarkdownBlockSource(
+				"timeline-name\ndateDisplayFormat     :     {year}\n      faultyKey: notValid\ndateTokenConfiguration: this is a valid key but the override is not supported yet\napplyAdditonalConditionFormatting: notValidValue"
+			)
+		).toThrowError("notValidValue is supposed to be a boolean");
 	});
 });

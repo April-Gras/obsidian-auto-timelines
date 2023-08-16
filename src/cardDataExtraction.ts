@@ -112,7 +112,7 @@ export function getImageUrlFromContextOrDocument(
 		const file = getFirstLinkpathDest.bind(app.metadataCache)(
 			matchs.groups.src,
 			currentFile.path
-		) as TFile | null;
+		) satisfies TFile | null;
 
 		if (file instanceof TFile) return vault.getResourcePath(file);
 		// Thanks https://github.com/joethei

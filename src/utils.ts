@@ -3,6 +3,7 @@ import {
 	DateTokenConfiguration,
 	MarkdownCodeBlockTimelineProcessingContext,
 	DateTokenType,
+	Condition,
 } from "~/types";
 
 /**
@@ -38,12 +39,22 @@ export const isDefined = <T>(argument: T | undefined): argument is T =>
 	argument !== undefined;
 
 /**
+ * Check if a runtime value is defined and is a string.
  *
  * @param argument a possibly undefined argument.
  * @returns `true` if the element is indeed a string, `false` if not.
  */
 export const isDefinedAsString = (argument: unknown): argument is string =>
 	typeof argument === "string";
+
+/**
+ * Check if a runtime value is defined and is a boolean
+ *
+ * @param argument a possibly undefined argument.
+ * @returns `true` if the element is indeed a boolean, `false` if not.
+ */
+export const isDefinedAsBoolean = (argument: unknown): argument is boolean =>
+	typeof argument === "boolean";
 
 /**
  * Same as `Array.findIndex()` but going from right to left.
@@ -202,6 +213,8 @@ export function createNumberDateTokenConfiguration(
 		name: "",
 		type: DateTokenType.number,
 		displayWhenZero: true,
+		formatting: [],
+		hideSign: false,
 		...defaultValue,
 	};
 }
@@ -219,6 +232,7 @@ export function createStringDateTokenConfiguration(
 		name: "",
 		type: DateTokenType.string,
 		dictionary: [""],
+		formatting: [],
 		...defaultValue,
 	};
 }
@@ -278,4 +292,33 @@ export function parseAbstractDate(
 	if (output.length !== groupsToCheck.length) return undefined;
 
 	return output;
+}
+
+/**
+ * Used to quickly assert any programatic conditions configured by the users.
+ *
+ * @param condition - A specific condition.
+ * @param a - Left hand value.
+ * @param b - Right hand value.
+ * @returns the evaluated boolean.
+ */
+export function evalNumericalCondition(
+	condition: Condition,
+	a: number,
+	b: number
+): boolean {
+	switch (condition) {
+		case Condition.Equal:
+			return a === b;
+		case Condition.NotEqual:
+			return a !== b;
+		case Condition.Greater:
+			return a > b;
+		case Condition.GreaterOrEqual:
+			return a >= b;
+		case Condition.Less:
+			return a < b;
+		case Condition.LessOrEqual:
+			return a <= b;
+	}
 }

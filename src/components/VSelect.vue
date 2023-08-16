@@ -1,7 +1,7 @@
 <script setup lang="ts" generic="T extends string">
 import VLabel from "~/components/VLabel.vue";
 
-const props = defineProps<{
+defineProps<{
 	options: T[];
 	modelValue: T;
 	inputId: string;
@@ -9,7 +9,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	"update:modelValue": [payload: T];
+	(e: "update:modelValue", payload: T): void;
 }>();
 
 defineSlots<{

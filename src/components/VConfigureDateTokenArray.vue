@@ -1,32 +1,50 @@
 <script setup lang="ts">
 import VConfigureSingleDateToken from "./VConfigureSingleDateToken.vue";
+import VCard from "./VCard.vue";
 
 import type { DateTokenConfiguration } from "~/types";
 
-const { modelValue } = defineProps<{
-	modelValue: DateTokenConfiguration[];
-}>();
+const props = withDefaults(
+	defineProps<{
+		modelValue: DateTokenConfiguration[];
+		displayDeleteOption?: boolean;
+	}>(),
+	{ displayDeleteOption: false }
+);
 
 const emit = defineEmits<{
 	"update:modelValue": [payload: DateTokenConfiguration[]];
 }>();
 
-function handleUpdateModelValue(value: DateTokenConfiguration, index: number) {
-	const clone = [...modelValue];
+function handleUpdateModelValueAtIndex(
+	value: DateTokenConfiguration,
+	index: number
+) {
+	const clone = [...props.modelValue];
 
 	clone[index] = value;
 	emit("update:modelValue", clone);
+}
+
+function handleDeleteModelValueAtIndex(index: number) {
+	emit(
+		"update:modelValue",
+		props.modelValue.filter((_, i) => index !== i)
+	);
 }
 </script>
 
 <template>
 	<section class="v-grid-display">
-		<div v-for="(dateTokenConfiguration, index) in modelValue">
+		<VCard v-for="(dateTokenConfiguration, index) in modelValue">
 			<VConfigureSingleDateToken
 				:model-value="dateTokenConfiguration"
-				@update:model-value="handleUpdateModelValue($event, index)"
+				:allowDelete="displayDeleteOption"
+				@update:model-value="
+					handleUpdateModelValueAtIndex($event, index)
+				"
+				@delete="handleDeleteModelValueAtIndex(index)"
 			/>
-			<hr v-if="index < modelValue.length - 1" />
-		</div>
+		</VCard>
 	</section>
 </template>

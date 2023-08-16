@@ -1,6 +1,7 @@
 import Vue from "esbuild-plugin-vue3";
 import esbuild from "esbuild";
 import process from "process";
+import { writeFileSync } from "node:fs";
 import builtins from "builtin-modules";
 
 const banner = `/*
@@ -10,6 +11,8 @@ if you want to view the source, please visit the github repository of this plugi
 `;
 
 const prod = process.argv[2] === "production";
+
+writeFileSync("./main.css", "");
 
 const context = await esbuild.context({
 	banner: {

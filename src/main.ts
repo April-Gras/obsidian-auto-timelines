@@ -45,8 +45,8 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	) {
 		const runtimeTime = measureTime("Run time");
 		const { app } = this;
-		const parserResults = parseMarkdownBlockSource(source);
-		const { tagsToFind, settingsOverride } = parserResults;
+		const { tagsToFind, settingsOverride } =
+			parseMarkdownBlockSource(source);
 		const finalSettings = { ...this.settings, ...settingsOverride };
 		const creationContext = setupTimelineCreation(
 			app,
@@ -112,6 +112,14 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 			await this.loadData()
 		);
 
+		for (
+			let index = 0;
+			index < this.settings.dateTokenConfiguration.length;
+			index++
+		) {
+			this.settings.dateTokenConfiguration[index].formatting =
+				this.settings.dateTokenConfiguration[index].formatting || [];
+		}
 		this.addSettingTab(new TimelineSettingTab(this.app, this));
 	}
 

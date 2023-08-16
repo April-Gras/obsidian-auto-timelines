@@ -4,6 +4,14 @@ import { FnExtractCardData, getDataFromNoteMetadata } from "~/cardData";
 
 import type { App, CachedMetadata, TFile } from "obsidian";
 import type { Merge } from "ts-essentials";
+
+/**
+ * @author https://stackoverflow.com/a/69756175
+ */
+export type PickByType<T, Value> = {
+	[P in keyof T as T[P] extends Value | undefined ? P : never]: T[P];
+};
+
 export type AutoTimelineSettings = typeof SETTINGS_DEFAULT;
 /**
  * The main bundle of data needed to build a timeline.
@@ -66,7 +74,7 @@ export type Range = ReturnType<FnGetRangeData>[number];
 export type AbstractDate = number[];
 
 /**
- * Before formating an abstract date, the end user can configure it's output display
+ * Before formatting an abstract date, the end user can configure it's output display
  * This DateToken type helps to determine what's the nature of a given token
  * E.g. should it be displayed as a number or as a string ?
  */
@@ -74,13 +82,42 @@ export enum DateTokenType {
 	number = "NUMBER",
 	string = "STRING",
 }
-
 export const availableDateTokenTypeArray = Object.values(DateTokenType);
+
+export enum Condition {
+	Greater = "GREATER",
+	Less = "LESS",
+	Equal = "EQUAL",
+	NotEqual = "NOTEQUAL",
+	GreaterOrEqual = "GREATEROREQUAL",
+	LessOrEqual = "LESSOREQUAL",
+}
+export const availableConditionArray = Object.values(Condition);
+
+export type Evaluation<T extends number = number> = {
+	condition: Condition;
+	value: T;
+};
+export type AdditionalDateFormatting<T extends number = number> = {
+	evaluations: Evaluation<T>[];
+	/**
+	 * Basically: if `true` the conditions all need to be `true` to return `true`. Else it only need one of the conditions to be checked.
+	 */
+	conditionsAreExclusive: boolean;
+	/**
+	 * Use `{value}` to include the pre-formated output of the numerical value held.
+	 */
+	format: string;
+};
 
 /**
  * The data used to compute the output of an abstract date based on it's type
  */
-type CommonValues<T extends DateTokenType> = { name: string; type: T };
+type CommonValues<T extends DateTokenType> = {
+	name: string;
+	type: T;
+	formatting: AdditionalDateFormatting[];
+};
 export type DateTokenConfiguration<T extends DateTokenType = DateTokenType> =
 	T extends DateTokenType.number
 		? NumberSpecific
@@ -99,6 +136,7 @@ type NumberSpecific = Merge<
 		 */
 		minLeght: number;
 		displayWhenZero: boolean;
+		hideSign: boolean;
 	}
 >;
 

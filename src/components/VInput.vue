@@ -2,7 +2,6 @@
 import { computed } from "vue";
 
 import VLabel from "./VLabel.vue";
-import { isDefined } from "~/utils";
 import type { TranslateResult } from "vue-i18n";
 
 type V = T extends "number" ? number : string;

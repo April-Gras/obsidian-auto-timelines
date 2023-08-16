@@ -5,7 +5,7 @@ import VInput from "./VInput.vue";
 import VButton from "./VButton.vue";
 import { SETTINGS_DEFAULT } from "~/settings";
 
-import type { AutoTimelineSettings } from "~/types";
+import type { AutoTimelineSettings, PickByType } from "~/types";
 import { createNumberDateTokenConfiguration } from "~/utils";
 import VConfigureDateTokenArray from "./VConfigureDateTokenArray.vue";
 import VHeader from "./VHeader.vue";
@@ -19,10 +19,11 @@ const emit = defineEmits<{
 	"update:value": [payload: Partial<AutoTimelineSettings>];
 }>();
 
-const targetKeys: Exclude<
-	keyof AutoTimelineSettings,
-	"dateTokenConfiguration" | "lookForTagsForTimeline"
->[] = ["dateParserRegex", "dateParserGroupPriority", "dateDisplayFormat"];
+const targetKeys = [
+	"dateParserRegex",
+	"dateParserGroupPriority",
+	"dateDisplayFormat",
+] satisfies (keyof PickByType<AutoTimelineSettings, string>)[];
 
 const unconfiguredTokens = computed(() => {
 	return props.value.dateParserGroupPriority
@@ -102,6 +103,7 @@ function handleResetToDefault(): void {
 		}}</VHeader>
 		<VConfigureDateTokenArray
 			:model-value="value.dateTokenConfiguration"
+			display-delete-option
 			@update:model-value="
 				emit('update:value', { dateTokenConfiguration: $event })
 			"

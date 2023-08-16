@@ -5,7 +5,8 @@
     "start": "Start",
     "add": "Add",
     "confirm": "Confirm my changes!",
-    "remove": "Remove"
+    "remove": "Remove",
+    "formatCount": "Format #{count}"
   },
   "nav": {
     "title": {
@@ -26,11 +27,12 @@
     },
     "title": {
       "generic-settings": "Generic settings",
-      "date-formats": "Date formating",
+      "date-formats": "Date formatting",
       "slot-presets": "Enable presets for {slot}",
       "lookForTagsForTimeline": "Look into note tags",
       "lookForInlineEventsInNotes": "Look for events in note body",
-      "advancedDateFormatsTokenConfiguration": "Configure the tokens"
+      "advancedDateFormatsTokenConfiguration": "Configure the tokens",
+      "applyAdditonalConditionFormatting": "Apply additonal condition based formatting"
     },
     "label": {
       "dateDisplayFormat": "Date display format",
@@ -49,10 +51,23 @@
       "useAdvancedMode": "Use advanced mode / edit regexes",
       "lookForTagsForTimeline": "Check to include a notes tags into the values used to assign notes to a timeline",
       "lookForInlineEventsInNotes": "Check to ennable the inline event feature. This allows to define events for any timeline from inside a note.",
-      "configureSingleDateToken": "The type of the token"
+      "applyAdditonalConditionFormatting": "Toggle on to allow date tokens conditional formatting to be allowed. When set to false this feature will be skipped. This could save you a few milliseconds off every card render.",
+      "configureSingleDateToken": {
+        "type": "The type of the token",
+        "conditionalFormatting": "Add additional formatting"
+      },
+      "configureSingleDateTokenType": {
+        "minLength": "The minimum amount of digits",
+        "hideSign": "Hide the sign"
+      },
+      "configureSingleDateTokenConditionalFormatting": {
+        "conditionsAreExclusive": "Condtions are exclusive",
+        "format": "The template format to apply"
+      }
     },
     "button": {
-      "resetToDefault": "Reset to default"
+      "resetToDefault": "Reset to default",
+      "addACondition": "Add a condition to evaluate"
     },
     "description": {
       "dateDisplayFormat": "This is the end format the date should be displayed as in the actual timeline cards. You don't actually need to include every parsed member here.",
@@ -71,16 +86,27 @@
       "tryYourInputFormat": "Just type out the date like you would in a notes metadata block. Bellow, every field should corespond to the correct token and be sorted in the correct order.",
       "lookForTagsForTimeline": "This means if you tag you note with a string and include that string in the timeline definition this note will be included in the timeline computing",
       "lookForInlineEventsInNotes": "Check {linkText} on how to create inline events.",
+      "applyAdditonalConditionFormatting": "Toggle on to allow date tokens conditional formatting to be allowed. When set to false this feature will be skipped. This could save you a few milliseconds off every card render.",
       "configureSingleDateToken": {
         "STRING": "A string typed date token represents something akin to our months. tl;dr, they are written using letter and not numbers",
         "NUMBER": "A numerical typed date token is your stardard number representing a date. Just make sure to configure it's mininal lengh. For example a minimal length set to 2 will result in the 6th day being written as \"06\""
+      },
+      "configureSingleDateTokenType": {
+        "minLength": "If set to 2, this would always display at least two digit. So for a value of 3 it would display 03.",
+        "hideSign": "When checked, the sign of the number won't be displayed on the card."
+      },
+      "configureSingleDateTokenConditionalFormatting": {
+        "conditionsAreExclusive": "When checked only one condition need to be true for the format to apply. If it's unchecked all conditions need to be true.",
+        "format": "Use `{value}` to include the formated token in the template."
       }
     },
     "linkValue": {
-      "lookForInlineEventsInNotes": "https://github.com/April-Gras/obsidian-auto-timelines#in-line-events"
+      "lookForInlineEventsInNotes": "https://github.com/April-Gras/obsidian-auto-timelines#in-line-events",
+      "applyAdditonalConditionFormatting": "https://github.com/April-Gras/obsidian-auto-timelines#conditional-token-formatting"
     },
     "linkText": {
-      "lookForInlineEventsInNotes": "the documentation"
+      "lookForInlineEventsInNotes": "the documentation",
+      "applyAdditonalConditionFormatting": "the documentation"
     },
     "details": {
       "createDateToken": "Write your date system tokens ordered from top to bottom. Make sure not to leave any cluter, these token will be used to capture your date and sort them in the expeted order."
@@ -105,5 +131,13 @@
       "STRING": "String",
       "NUMBER": "Numerical"
     }
+  },
+  "conditions": {
+    "GREATER": "Greater than",
+    "LESS": "Less than",
+    "EQUAL": "Equal to",
+    "NOTEQUAL": "Not equal to",
+    "GREATEROREQUAL": "Greater or equal to",
+    "LESSOREQUAL": "Less or equal to"
   }
 }

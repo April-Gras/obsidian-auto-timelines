@@ -28,6 +28,7 @@ export const SETTINGS_DEFAULT = {
 	dateDisplayFormat: "{day}/{month}/{year}",
 	lookForTagsForTimeline: false,
 	lookForInlineEventsInNotes: true,
+	applyAdditonalConditionFormatting: true,
 	dateTokenConfiguration: [
 		createNumberDateTokenConfiguration({ name: "year", minLeght: 4 }),
 		createNumberDateTokenConfiguration({ name: "month" }),

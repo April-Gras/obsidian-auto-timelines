@@ -7,7 +7,7 @@ import VCheckbox from "~/components/VCheckbox.vue";
 
 import { SETTINGS_DEFAULT } from "~/settings";
 
-import type { AutoTimelineSettings } from "~/types";
+import type { AutoTimelineSettings, PickByType } from "~/types";
 
 const props = defineProps<{
 	value: AutoTimelineSettings;
@@ -17,18 +17,16 @@ const emit = defineEmits<{
 	"update:value": [payload: Partial<AutoTimelineSettings>];
 }>();
 
-const generalSettingKeys = Object.keys(SETTINGS_DEFAULT).filter((e) =>
-	e.startsWith("metadataKey")
-) as Exclude<
-	keyof AutoTimelineSettings,
-	| "lookForTagsForTimeline"
-	| "dateTokenConfiguration"
-	| "lookForInlineEventsInNotes"
->[];
-generalSettingKeys.push(
+const generalSettingKeys = [
+	"metadataKeyEventStartDate",
+	"metadataKeyEventEndDate",
+	"metadataKeyEventTitleOverride",
+	"metadataKeyEventBodyOverride",
+	"metadataKeyEventPictureOverride",
+	"metadataKeyEventTimelineTag",
 	"markdownBlockTagsToFindSeparator",
-	"noteInlineEventKey"
-);
+	"noteInlineEventKey",
+] satisfies (keyof PickByType<AutoTimelineSettings, string>)[];
 
 const fantasyCalendarPreset: Record<
 	Extract<
@@ -65,10 +63,14 @@ const handleUpdateValueFantasyCalendarCheckbox = () => {
 	else emit("update:value", fantasyCalendarPreset);
 };
 
-const checkboxKeys: readonly Extract<
-	keyof AutoTimelineSettings,
-	"lookForTagsForTimeline" | "lookForInlineEventsInNotes"
->[] = ["lookForInlineEventsInNotes", "lookForTagsForTimeline"];
+const checkboxKeys: readonly (keyof PickByType<
+	AutoTimelineSettings,
+	boolean
+>)[] = [
+	"lookForInlineEventsInNotes",
+	"lookForTagsForTimeline",
+	"applyAdditonalConditionFormatting",
+];
 </script>
 
 <template>

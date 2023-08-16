@@ -8,7 +8,7 @@ This plugins allows you to tag notes to generate timelines. It's designed with s
 
 ## Sample vault with basic examples
 
-[TimelineSampleVault.zip](https://github.com/April-Gras/obsidian-auto-timelines/files/12065143/TimelineSampleVault.zip)
+[TimelineSampleVault.zip](https://github.com/April-Gras/obsidian-auto-timelines/files/12358993/TimelineSampleVault.zip)
 
 Here's a zip file of a obsidian vault with various basic examples to help you build timelines.
 Alternatively [Josh Plunkett](https://www.youtube.com/@JoshPlunkett) did [a tutorial video](https://www.youtube.com/watch?v=992o1j8zRSk) covering the basics
@@ -152,6 +152,11 @@ timelines: [timeline-name]
 The keys are the ones you setup in your settings. Check the [sample vault](https://github.com/April-Gras/obsidian-auto-timelines#sample-vault-with-basic-examples) for more examples on this.
 
 ---
+
+## Conditional token formatting
+
+This feature has a bit of an overwhelming name but it basically allows for date system to incorporate token based formatting. I think an example would be 10x easier to understand.
+For example some people use `B.C.` and `A.D.` to annotate their dates. This can be configured in the settings of the plugin. For a more in dept example refer to the [Sample vault](https://github.com/April-Gras/obsidian-auto-timelines#sample-vault-with-basic-examples) chapter named `07 - Condition based token formats`.
 
 ## Development
 
