@@ -47,7 +47,6 @@ function editFormattingAtIndex(
 		...clonedModelValue.formatting[index],
 		...edits,
 	});
-
 	emit("update:modelValue", clonedModelValue);
 }
 

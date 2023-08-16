@@ -45,8 +45,8 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	) {
 		const runtimeTime = measureTime("Run time");
 		const { app } = this;
-		const parserResults = parseMarkdownBlockSource(source);
-		const { tagsToFind, settingsOverride } = parserResults;
+		const { tagsToFind, settingsOverride } =
+			parseMarkdownBlockSource(source);
 		const finalSettings = { ...this.settings, ...settingsOverride };
 		const creationContext = setupTimelineCreation(
 			app,

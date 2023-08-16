@@ -1,6 +1,6 @@
 import { SETTINGS_DEFAULT } from "~/settings";
 import { AutoTimelineSettings } from "./types";
-import { isDefined, isDefinedAsString } from "./utils";
+import { isDefined, isDefinedAsBoolean, isDefinedAsString } from "./utils";
 
 /**
  * Fetches the tags to find and timeline specific settings override.
@@ -32,8 +32,11 @@ export function parseMarkdownBlockSource(source: string): {
 	} as const;
 }
 
-const acceptedSettingsOverride = ["dateDisplayFormat"] as const;
 type OverridableSettingKey = (typeof acceptedSettingsOverride)[number];
+const acceptedSettingsOverride = [
+	"dateDisplayFormat",
+	"applyAdditonalConditionFormatting",
+] as const;
 
 /**
  * Checks if a given string is part of the settings keys that can be overriden.
@@ -61,6 +64,13 @@ function formatValueFromKey(
 ): AutoTimelineSettings[OverridableSettingKey] | undefined {
 	if (!isOverridableSettingsKey(key)) return undefined;
 	if (isDefinedAsString(SETTINGS_DEFAULT[key])) return value;
+	if (isDefinedAsBoolean(SETTINGS_DEFAULT[key])) {
+		const validBooleanStrings = ["true", "false"];
+
+		if (!validBooleanStrings.includes(value.toLocaleLowerCase()))
+			throw new Error(`${value} is supposed to be a boolean`);
+		return value.toLocaleLowerCase() === "true" ? true : false;
+	}
 	return undefined;
 }
 

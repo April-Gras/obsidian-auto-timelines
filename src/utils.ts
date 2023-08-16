@@ -39,12 +39,22 @@ export const isDefined = <T>(argument: T | undefined): argument is T =>
 	argument !== undefined;
 
 /**
+ * Check if a runtime value is defined and is a string.
  *
  * @param argument a possibly undefined argument.
  * @returns `true` if the element is indeed a string, `false` if not.
  */
 export const isDefinedAsString = (argument: unknown): argument is string =>
 	typeof argument === "string";
+
+/**
+ * Check if a runtime value is defined and is a boolean
+ *
+ * @param argument a possibly undefined argument.
+ * @returns `true` if the element is indeed a boolean, `false` if not.
+ */
+export const isDefinedAsBoolean = (argument: unknown): argument is boolean =>
+	typeof argument === "boolean";
 
 /**
  * Same as `Array.findIndex()` but going from right to left.

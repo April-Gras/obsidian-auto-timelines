@@ -33,7 +33,7 @@ export const SETTINGS_DEFAULT = {
 		createNumberDateTokenConfiguration({ name: "year", minLeght: 4 }),
 		createNumberDateTokenConfiguration({ name: "month" }),
 		createNumberDateTokenConfiguration({ name: "day" }),
-	] satisfies DateTokenConfiguration[],
+	] as DateTokenConfiguration[],
 };
 
 export const __VUE_PROD_DEVTOOLS__ = true;

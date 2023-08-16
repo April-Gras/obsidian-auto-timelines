@@ -26,7 +26,7 @@ const emit = defineEmits<{
 				:model-value="modelValue.condition"
 				:input-id="`configure-single-date-token-format-condition-${inputId}`"
 				translation-key="conditions"
-				@update:value="
+				@update:modelValue="
 					emit('update:modelValue', {
 						...modelValue,
 						condition: $event,

@@ -120,7 +120,7 @@ describe.concurrent("Abstract Date Formatting", () => {
 						{ condition: Condition.Equal, value: -56 },
 					],
 					conditionsAreExclusive: true,
-					formatting: "{value} sample condition formatting",
+					format: "{value} sample condition formatting",
 				},
 			],
 		});
@@ -144,7 +144,7 @@ describe.concurrent("Abstract Date Formatting", () => {
 						{ condition: Condition.Equal, value: -56 },
 					],
 					conditionsAreExclusive: false,
-					formatting: "{value} sample condition formatting",
+					format: "{value} sample condition formatting",
 				},
 			],
 		});
