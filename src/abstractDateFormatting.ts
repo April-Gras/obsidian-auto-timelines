@@ -136,13 +136,12 @@ function formatNumberDateToken(
 	datePart: number,
 	{ minLeght, hideSign }: DateTokenConfiguration<DateTokenType.number>
 ): string {
-	let stringifiedToken = (
-		hideSign ? Math.abs(datePart) : datePart
-	).toString();
+	let stringifiedToken = Math.abs(datePart).toString();
 
 	if (minLeght < 0) return stringifiedToken;
 	while (stringifiedToken.length < minLeght)
 		stringifiedToken = "0" + stringifiedToken;
+	if (!hideSign && datePart < 0) stringifiedToken = `-${stringifiedToken}`;
 	return stringifiedToken;
 }
 
