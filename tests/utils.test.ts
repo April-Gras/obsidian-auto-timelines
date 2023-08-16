@@ -19,6 +19,7 @@ import {
 	createStringDateTokenConfiguration,
 	parseAbstractDate,
 	evalNumericalCondition,
+	isDefinedAsBoolean,
 } from "~/utils";
 import { SETTINGS_DEFAULT } from "~/settings";
 import { Condition, DateTokenConfiguration, DateTokenType } from "~/types";
@@ -177,6 +178,12 @@ describe.concurrent("Utils", () => {
 	test("[isDefinedAsString] - ok/ko", () => {
 		expect(isDefinedAsString("")).toBe(true);
 		expect(isDefinedAsString(45)).toBe(false);
+	});
+
+	test("[isDefinedAsBoolean] - ok/ko", () => {
+		expect(isDefinedAsBoolean(true)).toBe(true);
+		expect(isDefinedAsBoolean(false)).toBe(true);
+		expect(isDefinedAsBoolean(45)).toBe(false);
 	});
 
 	test("[isDefined] - ok/ko", () => {
