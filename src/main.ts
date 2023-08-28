@@ -1,4 +1,4 @@
-import { MarkdownPostProcessorContext, Plugin } from "obsidian";
+import { EventRef, MarkdownPostProcessorContext, Plugin } from "obsidian";
 
 import type { AutoTimelineSettings, CompleteCardContext } from "~/types";
 import { compareAbstractDates, isDefined, measureTime } from "~/utils";
@@ -12,6 +12,10 @@ import { parseMarkdownBlockSource } from "./markdownBlockData";
 
 export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	settings: AutoTimelineSettings;
+	/**
+	 * Native file watcher that triggers on file edit and re-renders timelines
+	 */
+	fileWatcher: EventRef | null;
 
 	/**
 	 * The default onload method of a obsidian plugin
@@ -28,7 +32,9 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 		);
 	}
 
-	onunload() {}
+	onunload() {
+		if (this.fileWatcher) this.app.vault.offref(this.fileWatcher);
+	}
 
 	/**
 	 * Main runtime function to process a single timeline.
@@ -41,8 +47,9 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	async run(
 		source: string,
 		element: HTMLElement,
-		{ sourcePath }: MarkdownPostProcessorContext
+		{ sourcePath }: Pick<MarkdownPostProcessorContext, "sourcePath">
 	) {
+		element.empty();
 		const runtimeTime = measureTime("Run time");
 		const { app } = this;
 		const { tagsToFind, settingsOverride } =
@@ -101,6 +108,20 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 		rangeRenderTime();
 
 		runtimeTime();
+
+		if (this.fileWatcher) app.vault.offref(this.fileWatcher);
+		const allFiles = events.map(({ context: { file } }) => file);
+		let timerClamp = null as null | ReturnType<typeof setTimeout>;
+
+		this.fileWatcher = app.vault.on("modify", (file) => {
+			if (!allFiles.some((usedFile) => (usedFile.path = file.path)))
+				return;
+			if (timerClamp) clearTimeout(timerClamp);
+			timerClamp = setTimeout(
+				() => this.run(source, element, { sourcePath }),
+				1000
+			);
+		});
 	}
 
 	/**
