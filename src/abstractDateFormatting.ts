@@ -138,9 +138,10 @@ function formatNumberDateToken(
 ): string {
 	let stringifiedToken = Math.abs(datePart).toString();
 
-	if (minLeght < 0) return stringifiedToken;
+	if (minLeght < 0) minLeght = 0;
 	while (stringifiedToken.length < minLeght)
 		stringifiedToken = "0" + stringifiedToken;
+
 	if (!hideSign && datePart < 0) stringifiedToken = `-${stringifiedToken}`;
 	return stringifiedToken;
 }

@@ -6,7 +6,7 @@ import {
 	formatAbstractDate,
 	formatDateToken,
 } from "~/abstractDateFormatting";
-import { Condition, DateTokenConfiguration, DateTokenType } from "~/types";
+import { Condition, DateTokenConfiguration } from "~/types";
 import {
 	createNumberDateTokenConfiguration,
 	createStringDateTokenConfiguration,
@@ -53,9 +53,7 @@ describe.concurrent("Abstract Date Formatting", () => {
 	});
 
 	test("[formatDateToken] - numerical", () => {
-		const configuration = createNumberDateTokenConfiguration({
-			type: DateTokenType.number,
-		});
+		const configuration = createNumberDateTokenConfiguration();
 
 		expect(formatDateToken(2, configuration)).toBe("02");
 
@@ -63,7 +61,7 @@ describe.concurrent("Abstract Date Formatting", () => {
 		expect(formatDateToken(2, configuration)).toBe("0000000002");
 
 		configuration.minLeght = -10;
-		expect(formatDateToken(2, configuration)).toBe("2");
+		expect(formatDateToken(-2, configuration)).toBe("-2");
 	});
 
 	test("[formatDateToken] - string", () => {
