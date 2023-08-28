@@ -6,7 +6,7 @@ import {
 	formatAbstractDate,
 	formatDateToken,
 } from "~/abstractDateFormatting";
-import { Condition, DateTokenConfiguration, DateTokenType } from "~/types";
+import { Condition, DateTokenConfiguration } from "~/types";
 import {
 	createNumberDateTokenConfiguration,
 	createStringDateTokenConfiguration,
