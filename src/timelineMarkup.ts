@@ -1,5 +1,3 @@
-import { differenceInMinutes } from "date-fns";
-
 import type { App } from "obsidian";
 import type {
 	AutoTimelineSettings,
