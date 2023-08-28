@@ -34,7 +34,7 @@ vi.mock("obsidian", () => {
 		parent: TFolder | null;
 		constructor() {
 			this.stat = mock<FileStats>();
-			this.basename = mock<string>();
+			this.basename = "sample file base";
 			this.extension = mock<string>();
 			this.vault = mock<Vault>();
 			this.path = mock<string>();
@@ -171,6 +171,7 @@ export function mockTFile() {
 				return "---\n---\n---\nSample file data";
 			}),
 		},
+		basename: "sample",
 	});
 }
 
