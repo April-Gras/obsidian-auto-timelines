@@ -1,4 +1,4 @@
-import { EventRef, MarkdownPostProcessorContext, Plugin } from "obsidian";
+import { type EventRef, MarkdownPostProcessorContext, Plugin } from "obsidian";
 
 import type { AutoTimelineSettings, CompleteCardContext } from "~/types";
 import { compareAbstractDates, isDefined, measureTime } from "~/utils";
@@ -9,6 +9,7 @@ import { getAllRangeData } from "~/rangeData";
 import { renderRanges } from "~/rangeMarkup";
 import { SETTINGS_DEFAULT, TimelineSettingTab } from "~/settings";
 import { parseMarkdownBlockSource } from "./markdownBlockData";
+import { watchFiles } from "./watchFileChange";
 
 export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	settings: AutoTimelineSettings;
@@ -107,21 +108,15 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 		renderRanges(ranges, element);
 		rangeRenderTime();
 
+		const watcherSetupTime = measureTime("File change watcher setup");
+		this.fileWatcher = watchFiles(
+			this.app,
+			events.map(({ context: { file } }) => file),
+			() => this.run(source, element, { sourcePath }),
+			this.fileWatcher
+		);
+		watcherSetupTime();
 		runtimeTime();
-
-		if (this.fileWatcher) app.vault.offref(this.fileWatcher);
-		const allFiles = events.map(({ context: { file } }) => file);
-		let timerClamp = null as null | ReturnType<typeof setTimeout>;
-
-		this.fileWatcher = app.vault.on("modify", (file) => {
-			if (!allFiles.some((usedFile) => (usedFile.path = file.path)))
-				return;
-			if (timerClamp) clearTimeout(timerClamp);
-			timerClamp = setTimeout(
-				() => this.run(source, element, { sourcePath }),
-				1000
-			);
-		});
 	}
 
 	/**
