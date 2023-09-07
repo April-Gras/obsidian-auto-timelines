@@ -14,6 +14,8 @@ import type {
 	FileStats,
 	CachedMetadata,
 	FrontMatterCache,
+	TAbstractFile,
+	EventRef,
 } from "obsidian";
 import type { DeepPartial } from "ts-essentials";
 import type {
@@ -172,6 +174,7 @@ export function mockTFile() {
 			}),
 		},
 		basename: "sample",
+		path: "./samplePath",
 	});
 }
 
@@ -185,6 +188,16 @@ export function mockVault(): Vault {
 		getResourcePath: vi.fn((file: TFile) => {
 			return "sample";
 		}),
+		// @ts-expect-error this should do for now.
+		on: vi.fn(
+			(
+				name: "create" | "delete" | "modify" | "rename" | "closed",
+				cb: (file: TAbstractFile) => unknown,
+				ctx?: unknown
+			) => {
+				return {} as EventRef;
+			}
+		) as Vault["on"],
 		cachedRead: vi.fn(async (file: TFile) => {
 			return "---\n---\n---\nSample file data";
 		}),

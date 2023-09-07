@@ -29,6 +29,7 @@ export function setupTimelineCreation(
 	root.classList.add("aat-vertical-timeline");
 	cardListRootElement.classList.add("aat-card-list-root");
 	timelineRootElement.classList.add("aat-timeline-root");
+
 	const dataBundleArray = fileArray.reduce((accumulator, file) => {
 		const cachedMetadata = metadataCache.getFileCache(file);
 
