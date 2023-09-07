@@ -1,7 +1,7 @@
 import type { App, EventRef, TFile } from "obsidian";
 
 /**
- * Quickhand to trigger re-renders on file change.
+ * Quickhand to (re)-watch for file changes and execute a callback.
  *
  * @param app - The obsidian `app` object.
  * @param filesToWatch - The files to watch.
