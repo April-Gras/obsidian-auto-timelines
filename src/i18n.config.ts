@@ -8,5 +8,4 @@ export default () =>
 		messages: {
 			en,
 		},
-		allowComposition: true,
 	});
