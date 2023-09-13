@@ -7,7 +7,7 @@ import type { App, EventRef, TFile } from "obsidian";
  * @param filesToWatch - The files to watch.
  * @param callback - The callback to call when one of the changed files is updated.
  * @param fileWatcher - The previously returned file watcher, if any.
- * @param timerClampTime - Defaults at 1000. The time in ms left for obsidians cache to re-compute before applying the callback.
+ * @param timerClampTime - Defaults at 100. The time in ms left for obsidians cache to re-compute before applying the callback.
  * @returns FileWatcher - The new `EventRef` that watches over the files.
  */
 export function watchFiles(
