@@ -1,6 +1,11 @@
 import { SETTINGS_DEFAULT } from "~/settings";
 import { AutoTimelineSettings } from "./types";
-import { isDefined, isDefinedAsBoolean, isDefinedAsString } from "./utils";
+import {
+	isDefined,
+	isDefinedAsBoolean,
+	isDefinedAsString,
+	isDefinedAsNonNaNNumber,
+} from "./utils";
 
 /**
  * Fetches the tags to find and timeline specific settings override.
@@ -36,6 +41,9 @@ type OverridableSettingKey = (typeof acceptedSettingsOverride)[number];
 const acceptedSettingsOverride = [
 	"dateDisplayFormat",
 	"applyAdditonalConditionFormatting",
+	"dateFontSize",
+	"titleFontSize",
+	"bodyFontSize",
 ] as const;
 
 /**
@@ -62,8 +70,13 @@ function formatValueFromKey(
 	key: string,
 	value: string
 ): AutoTimelineSettings[OverridableSettingKey] | undefined {
+	console.log(value);
 	if (!isOverridableSettingsKey(key)) return undefined;
 	if (isDefinedAsString(SETTINGS_DEFAULT[key])) return value;
+	if (isDefinedAsNonNaNNumber(SETTINGS_DEFAULT[key])) {
+		const out = Number(value);
+		return isNaN(out) ? undefined : out;
+	}
 	if (isDefinedAsBoolean(SETTINGS_DEFAULT[key])) {
 		const validBooleanStrings = ["true", "false"];
 

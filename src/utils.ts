@@ -39,6 +39,16 @@ export const isDefined = <T>(argument: T | undefined): argument is T =>
 	argument !== undefined;
 
 /**
+ * Check if a runtime value is defined and is a non NaN number.
+ *
+ * @param argument a possibly undefined argument.
+ * @returns `true` if the element is indeed a non NaN number, `false` if not.
+ */
+export const isDefinedAsNonNaNNumber = (
+	argument: unknown
+): argument is number => typeof argument === "number" && !isNaN(argument);
+
+/**
  * Check if a runtime value is defined and is a string.
  *
  * @param argument a possibly undefined argument.
