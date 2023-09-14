@@ -53,14 +53,24 @@ export function createCardFromBuiltContext(
 		"aat-card-head-wrap"
 	);
 
-	createElementShort(titleWrap, "h2", "aat-card-title", title);
+	const titleElement = createElementShort(
+		titleWrap,
+		"h2",
+		"aat-card-title",
+		title
+	);
+	if (settings.titleFontSize >= 0)
+		titleElement.style.fontSize = `${settings.titleFontSize}px`;
 
-	createElementShort(
+	const dateElement = createElementShort(
 		titleWrap,
 		"h4",
 		"aat-card-start-date",
 		getDateText(cardContent, settings).trim()
 	);
+
+	if (settings.dateFontSize >= 0)
+		dateElement.style.fontSize = `${settings.dateFontSize}px`;
 
 	const markdownTextWrapper = createElementShort(
 		cardTextWraper,
@@ -76,6 +86,8 @@ export function createCardFromBuiltContext(
 		file.path,
 		rendered
 	);
+	if (settings.bodyFontSize > 0)
+		markdownTextWrapper.style.fontSize = `${settings.bodyFontSize}px`;
 }
 
 /**

@@ -32,7 +32,8 @@
       "lookForTagsForTimeline": "Look into note tags",
       "lookForInlineEventsInNotes": "Look for events in note body",
       "advancedDateFormatsTokenConfiguration": "Configure the tokens",
-      "applyAdditonalConditionFormatting": "Apply additonal condition based formatting"
+      "applyAdditonalConditionFormatting": "Apply additonal condition based formatting",
+      "accessibility": "Accessibility settings"
     },
     "label": {
       "dateDisplayFormat": "Date display format",
@@ -52,6 +53,9 @@
       "lookForTagsForTimeline": "Check to include a notes tags into the values used to assign notes to a timeline",
       "lookForInlineEventsInNotes": "Check to ennable the inline event feature. This allows to define events for any timeline from inside a note.",
       "applyAdditonalConditionFormatting": "Toggle on to allow date tokens conditional formatting to be allowed. When set to false this feature will be skipped. This could save you a few milliseconds off every card render.",
+      "dateFontSize": "Override the font size of the date in the timeline cards (value in pixels)",
+      "titleFontSize": "Override the font size of the title in the timeline cards (value in pixels)",
+      "bodyFontSize": "Override the font size of the body in the timeline cards (value in pixels)",
       "configureSingleDateToken": {
         "type": "The type of the token",
         "conditionalFormatting": "Add additional formatting"

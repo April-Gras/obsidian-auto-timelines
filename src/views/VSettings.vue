@@ -4,6 +4,7 @@ import { computed } from "vue";
 import VHeader from "~/components/VHeader.vue";
 import VInput from "~/components/VInput.vue";
 import VCheckbox from "~/components/VCheckbox.vue";
+import VToggleNumber from "~/components/VToggleNumber.vue";
 
 import { SETTINGS_DEFAULT } from "~/settings";
 
@@ -71,6 +72,11 @@ const checkboxKeys: readonly (keyof PickByType<
 	"lookForTagsForTimeline",
 	"applyAdditonalConditionFormatting",
 ];
+
+const fontSizeOverrides: readonly (keyof PickByType<
+	AutoTimelineSettings,
+	number
+>)[] = ["bodyFontSize", "dateFontSize", "titleFontSize"];
 </script>
 
 <template>
@@ -142,6 +148,20 @@ const checkboxKeys: readonly (keyof PickByType<
 					$t("settings.description.fantasyCalendarCheckbox")
 				}}</template>
 			</VCheckbox>
+		</section>
+		<hr />
+		<section class="v-grid-display">
+			<VHeader>{{ $t("settings.title.accessibility") }}</VHeader>
+			<VToggleNumber
+				v-for="key in fontSizeOverrides"
+				:modelValue="value[key]"
+				@update:model-value="emit('update:value', { [key]: $event })"
+				:input-id="key"
+			>
+				<template #checkbox-label>{{
+					$t(`settings.label.${key}`)
+				}}</template>
+			</VToggleNumber>
 		</section>
 	</div>
 </template>

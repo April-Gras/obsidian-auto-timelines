@@ -20,6 +20,7 @@ import {
 	parseAbstractDate,
 	evalNumericalCondition,
 	isDefinedAsBoolean,
+	isDefinedAsNonNaNNumber,
 } from "~/utils";
 import { SETTINGS_DEFAULT } from "~/settings";
 import { Condition, DateTokenConfiguration, DateTokenType } from "~/types";
@@ -178,6 +179,13 @@ describe.concurrent("Utils", () => {
 	test("[isDefinedAsString] - ok/ko", () => {
 		expect(isDefinedAsString("")).toBe(true);
 		expect(isDefinedAsString(45)).toBe(false);
+	});
+
+	test("[isDefinedAsNonNaNNumber] - ok/ko", () => {
+		expect(isDefinedAsNonNaNNumber("")).toBe(false);
+		expect(isDefinedAsNonNaNNumber(isDefinedAsNonNaNNumber)).toBe(false);
+		expect(isDefinedAsNonNaNNumber(43)).toBe(true);
+		expect(isDefinedAsNonNaNNumber(NaN)).toBe(false);
 	});
 
 	test("[isDefinedAsBoolean] - ok/ko", () => {

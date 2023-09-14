@@ -66,4 +66,17 @@ describe.concurrent("Card Markup", () => {
 			"---\n---\n" + bodyMock + timelineTextMock
 		);
 	});
+
+	test("[createCardFromBuiltContext] - font overrides", () => {
+		const context = mockMarkdownCodeBlockTimelineProcessingContext();
+		const cardContent = mockCardContext();
+
+		context.settings.bodyFontSize = 111;
+		context.settings.titleFontSize = 222;
+		context.settings.dateFontSize = 333;
+
+		expect(() =>
+			createCardFromBuiltContext(context, cardContent)
+		).not.toThrowError();
+	});
 });

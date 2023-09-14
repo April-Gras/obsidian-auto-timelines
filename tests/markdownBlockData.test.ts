@@ -21,13 +21,14 @@ describe.concurrent("Markdown block data", () => {
 
 	test("[parseMarkdownBlockSource] - ok settings", () => {
 		const { tagsToFind, settingsOverride } = parseMarkdownBlockSource(
-			"timeline-name\ndateDisplayFormat     :     {year}\n      faultyKey: notValid\ndateTokenConfiguration: this is a valid key but the override is not supported yet\napplyAdditonalConditionFormatting: FaLse\napplyAdditonalConditionFormatting: true"
+			"timeline-name\ndateDisplayFormat     :     {year}\n      faultyKey: notValid\ndateTokenConfiguration: this is a valid key but the override is not supported yet\napplyAdditonalConditionFormatting: FaLse\napplyAdditonalConditionFormatting: true\nbodyFontSize: 43\ndateFontSize: ClearlyNotANumber"
 		);
 
 		expect(tagsToFind).toStrictEqual(["timeline-name"]);
 		expect(settingsOverride).toStrictEqual({
 			dateDisplayFormat: "{year}",
 			applyAdditonalConditionFormatting: true,
+			bodyFontSize: 43,
 		});
 	});
 
