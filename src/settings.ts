@@ -29,6 +29,9 @@ export const SETTINGS_DEFAULT = {
 	lookForTagsForTimeline: false,
 	lookForInlineEventsInNotes: true,
 	applyAdditonalConditionFormatting: true,
+	dateFontSize: -1,
+	titleFontSize: -1,
+	bodyFontSize: -1,
 	dateTokenConfiguration: [
 		createNumberDateTokenConfiguration({ name: "year", minLeght: 4 }),
 		createNumberDateTokenConfiguration({ name: "month" }),

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { Collapse } from "vue-collapsed";
+import { isDefined } from "~/utils";
 
 defineSlots<{
 	summary(props: {}): any;
@@ -9,15 +10,24 @@ defineSlots<{
 const props = withDefaults(
 	defineProps<{
 		startOpened?: boolean;
+		overrideOpen?: boolean;
 	}>(),
 	{ startOpened: false }
 );
-const isOpen = ref(props.startOpened);
+const localIsOpen = ref(props.startOpened);
+const isOpen = computed(() =>
+	isDefined(props.overrideOpen) ? props.overrideOpen : localIsOpen.value
+);
 </script>
 
 <template>
 	<div role="article" class="v-details" :class="{ isOpen }">
-		<div role="heading" aria-level="2" @click="isOpen = !isOpen">
+		<div
+			class="heading"
+			role="heading"
+			aria-level="2"
+			@click="localIsOpen = !localIsOpen"
+		>
 			<span role="icon">▸</span>
 			<span>
 				<slot name="summary" />
@@ -35,7 +45,7 @@ const isOpen = ref(props.startOpened);
 .v-details {
 	> div[role="heading"] {
 		display: flex;
-		gap: 4px;
+		gap: 8px;
 	}
 }
 
