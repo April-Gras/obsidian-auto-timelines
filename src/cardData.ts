@@ -117,11 +117,15 @@ export async function getDataFromNoteBody(
  * @param tagsToFind - The tags to find.
  * @returns `true` if valid.
  */
-function extractedTagsAreValid(
+export function extractedTagsAreValid(
 	timelineTags: string[],
 	tagsToFind: string[]
 ): boolean {
-	return timelineTags.some((tag) => tagsToFind.includes(tag));
+	return timelineTags.some((tagToSplit) =>
+		// Split to accoun for obsidian nested tags
+		// https://help.obsidian.md/Editing+and+formatting/Tags#Nested+tags
+		tagToSplit.split("/").some((tag) => tagsToFind.includes(tag))
+	);
 }
 
 /**

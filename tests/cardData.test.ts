@@ -4,6 +4,7 @@ import {
 	extractCardData,
 	getDataFromNoteMetadata,
 	getDataFromNoteBody,
+	extractedTagsAreValid,
 } from "~/cardData";
 import { SETTINGS_DEFAULT } from "~/settings";
 import {
@@ -151,5 +152,11 @@ describe.concurrent("Card Data", () => {
 		expect(
 			(await getDataFromNoteBody(body, context, ["timeline"])).length
 		).toBe(1);
+	});
+
+	test("[extractedTagsAreValid] - varius sanity checks", () => {
+		expect(extractedTagsAreValid(["tag1", "tag2"], ["tag1"])).toBe(true);
+		expect(extractedTagsAreValid(["tag2"], ["tag1"])).toBe(false);
+		expect(extractedTagsAreValid(["tag1/tag2"], ["tag2"])).toBe(true);
 	});
 });

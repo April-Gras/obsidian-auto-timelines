@@ -16,7 +16,6 @@ const props = withDefaults(
 );
 const localIsOpen = ref(props.startOpened);
 
-console.log(props.overrideOpen);
 const isOpen = computed(() =>
 	isDefined(props.overrideOpen) ? props.overrideOpen : localIsOpen.value
 );
