@@ -104,7 +104,7 @@ export function formatBodyForCard(body?: string | null): string {
 		body
 			.replace(/!\[.*\]\(.*\)/gi, "")
 			// Remove tags
-			.replace(/#[a-zA-Z\d-_]*/gi, "")
+			.replace(/#[a-zA-Z\d-_/]*/gi, "")
 			// Remove internal images ![[Pasted image 20230418232101.png]]
 			.replace(/!\[\[.*\]\]/gi, "")
 			// Remove other timelines to avoid circular dependencies!
