@@ -70,7 +70,6 @@ function formatValueFromKey(
 	key: string,
 	value: string
 ): AutoTimelineSettings[OverridableSettingKey] | undefined {
-	console.log(value);
 	if (!isOverridableSettingsKey(key)) return undefined;
 	if (isDefinedAsString(SETTINGS_DEFAULT[key])) return value;
 	if (isDefinedAsNonNaNNumber(SETTINGS_DEFAULT[key])) {
