@@ -332,3 +332,33 @@ export function evalNumericalCondition(
 			return a <= b;
 	}
 }
+
+/**
+ * Finds a specific subset in a given array supports primitive wildcard selections.
+ *
+ * @param source - Source array. This is where we're checking for a subset.
+ * @param subset - The subset we are looking for.
+ * @author Inspired from https://stackoverflow.com/a/74080372
+ * @returns `true` if we could find the subset in the source array, `false` otherwise
+ */
+export function isOrderedSubArray(source: string[], subset: string[]): boolean {
+	let endsWithWildstar = false;
+	if (!subset.length) return true;
+	const target = subset[0];
+	const builtRegex = target.includes("*")
+		? new RegExp(target.replace(/\*/gi, ".*"))
+		: null;
+	const index = source.findIndex((el) => {
+		if (!builtRegex) return el === target;
+		const hasMatch = builtRegex.test(el);
+
+		if (!hasMatch) return false;
+		if (target[target.length - 1] === "*") endsWithWildstar = true;
+		return true;
+	});
+
+	return index === -1
+		? false
+		: endsWithWildstar ||
+				isOrderedSubArray(source.slice(index + 1), subset.slice(1));
+}

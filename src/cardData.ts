@@ -1,4 +1,9 @@
-import { getMetadataKey, isDefined, isDefinedAsObject } from "~/utils";
+import {
+	getMetadataKey,
+	isDefined,
+	isDefinedAsObject,
+	isOrderedSubArray,
+} from "~/utils";
 
 import type {
 	MarkdownCodeBlockTimelineProcessingContext,
@@ -87,13 +92,13 @@ export async function getDataFromNoteBody(
 		context.cachedMetadata.frontmatter = fakeFrontmatter;
 		if (!isDefinedAsObject(fakeFrontmatter)) continue;
 
-		const timelineTags = getTagsFromMetadataOrTagObject(
+		const noteTags = getTagsFromMetadataOrTagObject(
 			settings,
 			fakeFrontmatter,
 			context.cachedMetadata.tags
 		);
 
-		if (!extractedTagsAreValid(timelineTags, tagsToFind)) continue;
+		if (!extractedTagsAreValid(noteTags, tagsToFind)) continue;
 
 		const matchPositionInBody = body.indexOf(block);
 		output.push({
@@ -113,19 +118,25 @@ export async function getDataFromNoteBody(
 /**
  * Checks if the extracted tags match at least one of the tags to find.
  *
- * @param timelineTags - The extracted tags from the note.
- * @param tagsToFind - The tags to find.
+ * @param noteTags - The extracted tags from the note.
+ * @param tagsToFind - The tags to find for this timeline.
  * @returns `true` if valid.
  */
 export function extractedTagsAreValid(
-	timelineTags: string[],
+	noteTags: string[],
 	tagsToFind: string[]
 ): boolean {
-	return timelineTags.some((tagToSplit) =>
-		// Split to accoun for obsidian nested tags
-		// https://help.obsidian.md/Editing+and+formatting/Tags#Nested+tags
-		tagToSplit.split("/").some((tag) => tagsToFind.includes(tag))
-	);
+	// Split to accoun for obsidian nested tags
+	// https://help.obsidian.md/Editing+and+formatting/Tags#Nested+tags
+	const noteTagCollection = noteTags.map((e) => e.split("/"));
+
+	return tagsToFind.some((tag) => {
+		const timelineTag = tag.split("/");
+
+		return noteTagCollection.some((fileTag) =>
+			isOrderedSubArray(fileTag, timelineTag)
+		);
+	});
 }
 
 /**
