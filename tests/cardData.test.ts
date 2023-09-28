@@ -155,8 +155,13 @@ describe.concurrent("Card Data", () => {
 	});
 
 	test("[extractedTagsAreValid] - varius sanity checks", () => {
-		expect(extractedTagsAreValid(["tag1", "tag2"], ["tag1"])).toBe(true);
-		expect(extractedTagsAreValid(["tag2"], ["tag1"])).toBe(false);
-		expect(extractedTagsAreValid(["tag1/tag2"], ["tag2"])).toBe(true);
+		expect(extractedTagsAreValid(["tag1"], ["tag1"])).toBe(true);
+		expect(extractedTagsAreValid(["tag2", "tag1"], ["tag1"])).toBe(true);
+		expect(extractedTagsAreValid(["tag2/tag1"], ["tag1"])).toBe(true);
+		expect(extractedTagsAreValid(["tag2/tag1"], ["tag1/tag2"])).toBe(false);
+		expect(extractedTagsAreValid(["tag1"], ["tag2/tag1"])).toBe(false);
+		expect(extractedTagsAreValid(["tag1/tag2/tag3"], ["tag1/t*"])).toBe(
+			true
+		);
 	});
 });

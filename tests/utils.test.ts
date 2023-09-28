@@ -20,6 +20,7 @@ import {
 	parseAbstractDate,
 	evalNumericalCondition,
 	isDefinedAsBoolean,
+	isOrderedSubArray,
 	isDefinedAsNonNaNNumber,
 } from "~/utils";
 import { SETTINGS_DEFAULT } from "~/settings";
@@ -368,5 +369,31 @@ describe.concurrent("Utils", () => {
 		expect(fn(Condition.LessOrEqual, 0, 0)).toBe(true);
 		expect(fn(Condition.LessOrEqual, 1, 0)).toBe(false);
 		expect(fn(Condition.LessOrEqual, 0, 1)).toBe(true);
+	});
+
+	test("[isOrderedSubArray] - ok/ko", () => {
+		const bigArray = [
+			"0",
+			"1",
+			"2",
+			"3",
+			"4",
+			"5",
+			"6",
+			"7withsomeflair",
+			"8",
+		];
+
+		expect(isOrderedSubArray(bigArray, ["2", "5", "6"])).toBe(true);
+		expect(isOrderedSubArray(bigArray, ["2", "5", "12"])).toBe(false);
+		expect(isOrderedSubArray(bigArray, ["4", "3", "5"])).toBe(false);
+		expect(isOrderedSubArray(bigArray, ["6", "7"])).toBe(false);
+		expect(isOrderedSubArray(bigArray, ["6", "7*"])).toBe(true);
+		expect(isOrderedSubArray(bigArray, ["6", "7withsome*lai*"])).toBe(true);
+		expect(isOrderedSubArray(bigArray, ["*6", "*"])).toBe(true);
+		expect(isOrderedSubArray(bigArray, ["*6", "*someotherText"])).toBe(
+			false
+		);
+		expect(isOrderedSubArray(bigArray, ["*6", "*w*o*r", "8"])).toBe(true);
 	});
 });
