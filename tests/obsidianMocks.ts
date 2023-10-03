@@ -45,6 +45,12 @@ vi.mock("obsidian", () => {
 		}
 	}
 
+	class EditorSuggest {
+		constructor(app: ObsidianApp) {
+			return;
+		}
+	}
+
 	class Plugin {
 		containerEl: HTMLElement;
 		app: ObsidianApp;
@@ -56,7 +62,7 @@ vi.mock("obsidian", () => {
 		}
 
 		saveData = vi.fn();
-
+		registerEditorSuggest = vi.fn();
 		loadData = vi.fn(async () => ({ someKey: "someValue" }));
 		addSettingTab = vi.fn();
 		registerMarkdownCodeBlockProcessor = vi.fn();
@@ -73,6 +79,7 @@ vi.mock("obsidian", () => {
 
 	return {
 		PluginSettingTab: Plugin,
+		EditorSuggest: EditorSuggest,
 		TFile: TFile,
 		MarkdownRenderer: {
 			async renderMarkdown(

@@ -11,6 +11,8 @@ import type { AutoTimelineSettings, DateTokenConfiguration } from "./types";
 import type { App as VueApp } from "vue";
 import { createNumberDateTokenConfiguration } from "./utils";
 
+export const verticalTimelineToken = "aat-vertical";
+
 /**
  * Default key value relation for obsidian settings object
  */

@@ -5,6 +5,7 @@ import {
 	isDefinedAsBoolean,
 	isDefinedAsString,
 	isDefinedAsNonNaNNumber,
+	isDefinedAsArray,
 } from "./utils";
 
 /**
@@ -13,11 +14,13 @@ import {
  * @param source - The markdown code block source, a.k.a. the content inside the code block.
  * @returns Partial settings to override the global ones.
  */
-export function parseMarkdownBlockSource(source: string): {
+export function parseMarkdownBlockSource(source: string | string[]): {
 	readonly tagsToFind: string[];
 	readonly settingsOverride: Partial<AutoTimelineSettings>;
 } {
-	const sourceEntries = source.split("\n");
+	const sourceEntries = isDefinedAsArray(source)
+		? source
+		: source.split("\n");
 
 	if (!source.length)
 		return { tagsToFind: [] as string[], settingsOverride: {} } as const;
