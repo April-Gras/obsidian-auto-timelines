@@ -16,6 +16,7 @@ import type {
 	FrontMatterCache,
 	TAbstractFile,
 	EventRef,
+	Editor,
 } from "obsidian";
 import type { DeepPartial } from "ts-essentials";
 import type {
@@ -171,17 +172,18 @@ export function mockObsidianApp(): App {
 /**
  * Quickhand function to mock the obsidian TFile class.
  *
+ * @param basename Basename override.
  * @returns - The mocked obsidian TFile.
  */
-export function mockTFile() {
+export function mockTFile(basename = "sample") {
 	return mock<TFile>({
 		vault: {
 			cachedRead: vi.fn(async (file: TFile) => {
 				return "---\n---\n---\nSample file data";
 			}),
 		},
-		basename: "sample",
-		path: "./samplePath",
+		basename,
+		path: `./${basename}Path`,
 	});
 }
 
@@ -288,4 +290,14 @@ export function mockCompleteCardContext(
 	defaultVal: DeepPartial<CompleteCardContext> = {}
 ): CompleteCardContext {
 	return mock<CompleteCardContext>(defaultVal);
+}
+
+/**
+ * Mocks the obsidian editor object.
+ *
+ * @param defaultVal - Value override for user defined cases.
+ * @returns the mock.
+ */
+export function mockObsidianEditor(defaultVal: DeepPartial<Editor> = {}) {
+	return mock<Editor>(defaultVal);
 }
