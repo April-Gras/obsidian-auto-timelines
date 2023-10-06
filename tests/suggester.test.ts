@@ -11,7 +11,8 @@ import {
 } from "./obsidianMocks";
 import manifest from "~/../manifest.json";
 import { mock } from "vitest-mock-extended";
-import type { EditorSuggestContext } from "obsidian";
+import { Editor, type EditorSuggestContext } from "obsidian";
+import { Mock } from "vitest";
 
 /**
  * Quick setup function for this test suite.
@@ -24,6 +25,7 @@ function quickSetup() {
 	plugin.settings = SETTINGS_DEFAULT;
 	const suggester = new TimelineMarkdownSuggester(plugin);
 
+	suggester.close = vi.fn();
 	return { app, plugin, suggester };
 }
 
@@ -227,11 +229,12 @@ describe.concurrent("Suggester", () => {
 		expect(suggester.getSuggestions(context)).toStrictEqual(["false"]);
 	});
 
-	for (const suggestionType of [
+	const sizeOptionTypes = [
 		SuggestionType.FontSizeBodyOption,
 		SuggestionType.FontSizeDateOption,
 		SuggestionType.FontSizeTitleOption,
-	]) {
+	];
+	for (const suggestionType of sizeOptionTypes) {
 		test(`[TimelineMarkdownSuggester] - ok getSuggestions FontSize*Option - enum${suggestionType}`, () => {
 			const { suggester } = quickSetup();
 			const context = mock<EditorSuggestContext>({
@@ -316,5 +319,175 @@ describe.concurrent("Suggester", () => {
 		suggester.renderSuggestion("sample", element);
 		expect(element.createSpan).toHaveBeenCalledOnce();
 		expect(element.createSpan).toHaveBeenCalledWith({ text: "sample" });
+	});
+
+	test("[TimelineMarkdownSuggester] - ko selectSuggestion", () => {
+		const { suggester } = quickSetup();
+
+		expect(
+			suggester.selectSuggestion("", mock<MouseEvent>())
+		).toBeUndefined();
+	});
+
+	/**
+	 * Another setup function for tests.
+	 *
+	 * @param query - the query.
+	 * @param suggester - the suggester class.
+	 * @param type - the type of the suggestion
+	 * @param getLine - the get line function mock applied to the obsidian context.
+	 */
+	function upgradeSuggesterForSelectSuggestionTests(
+		query: string,
+		suggester: TimelineMarkdownSuggester,
+		type: SuggestionType,
+		getLine: Mock
+	): void {
+		suggester.onTriggerParsedContent = {
+			block: {
+				tagsToFind: [],
+				settingsOverride: {},
+			},
+			type,
+		};
+		suggester.context = mock<typeof suggester.context>({
+			query,
+			start: {
+				ch: 0,
+				line: 0,
+			},
+			end: {
+				ch: 0,
+				line: 0,
+			},
+			editor: mock<Editor>({
+				setCursor: vi.fn(),
+				replaceRange: vi.fn(),
+				getLine,
+			}),
+		});
+	}
+
+	test("[TimelineMarkdownSuggester] - ok selectSuggestion TagsToFind", () => {
+		const { suggester } = quickSetup();
+		const query = "tag1, tag2, tag3, ta";
+
+		upgradeSuggesterForSelectSuggestionTests(
+			query,
+			suggester,
+			SuggestionType.TagToFind,
+			vi.fn(() => query + ", tag4")
+		);
+		suggester.selectSuggestion("tag4", mock<MouseEvent>());
+		expect(suggester.context?.editor.replaceRange).toBeCalledWith(
+			"tag1, tag2, tag3, tag4, ",
+			suggester.context?.start,
+			{
+				...(suggester.context?.end || {}),
+				ch: query.length + 0,
+			},
+			"aprils-automatic-timeline"
+		);
+		expect(suggester.context?.editor.setCursor).toHaveBeenCalled();
+	});
+
+	test("[TimelineMarkdownSuggester] - ok selectSuggestion TagsToFind alt", () => {
+		const { suggester } = quickSetup();
+		const query = "tag1, tag2, tag3, ";
+
+		upgradeSuggesterForSelectSuggestionTests(
+			query,
+			suggester,
+			SuggestionType.TagToFind,
+			vi.fn(() => query + ", tag4")
+		);
+		suggester.selectSuggestion("tag4", mock<MouseEvent>());
+		expect(suggester.context?.editor.replaceRange).toBeCalledWith(
+			"tag1, tag2, tag3, tag4, ",
+			suggester.context?.start,
+			{
+				...(suggester.context?.end || {}),
+				ch: query.length + 0,
+			},
+			"aprils-automatic-timeline"
+		);
+		expect(suggester.context?.editor.setCursor).toHaveBeenCalled();
+	});
+
+	test("[TimelineMarkdownSuggester] - ok selectSuggestion AnyOption", () => {
+		const { suggester } = quickSetup();
+		const query = "";
+
+		upgradeSuggesterForSelectSuggestionTests(
+			query,
+			suggester,
+			SuggestionType.AnyOption,
+			vi.fn(() => query + "someCoolKey")
+		);
+
+		suggester.selectSuggestion("someCoolKey", mock<MouseEvent>());
+		expect(suggester.context?.editor.replaceRange).toBeCalledWith(
+			"someCoolKey: ",
+			suggester.context?.start,
+			{
+				...(suggester.context?.end || {}),
+				ch: query.length + 0,
+			},
+			"aprils-automatic-timeline"
+		);
+		expect(suggester.context?.editor.setCursor).toHaveBeenCalled();
+	});
+
+	for (const optionValueType of [
+		...sizeOptionTypes,
+		SuggestionType.ApplyConditionalFormatingOption,
+	]) {
+		test(`[TimelineMarkdownSuggester] - ok selectSuggestion enum${optionValueType}`, () => {
+			const { suggester } = quickSetup();
+			const query = "somecoolkey: ";
+
+			upgradeSuggesterForSelectSuggestionTests(
+				query,
+				suggester,
+				optionValueType,
+				vi.fn(() => query + "a coolValue")
+			);
+
+			suggester.selectSuggestion("a coolValue", mock<MouseEvent>());
+			expect(suggester.context?.editor.replaceRange).toBeCalledWith(
+				" a coolValue\n",
+				suggester.context?.start,
+				{
+					...(suggester.context?.end || {}),
+					ch: query.length + 0,
+				},
+				"aprils-automatic-timeline"
+			);
+			expect(suggester.context?.editor.setCursor).toHaveBeenCalled();
+		});
+	}
+
+	test("[TimelineMarkdownSuggester] - ok selectSuggestion enum${optionValueType}", () => {
+		const { suggester } = quickSetup();
+		const query = "somecoolkey: ";
+
+		upgradeSuggesterForSelectSuggestionTests(
+			query,
+			suggester,
+			SuggestionType.DateFormatOption,
+			vi.fn(() => query + "{aCoolToken}")
+		);
+
+		suggester.selectSuggestion("aCoolToken", mock<MouseEvent>());
+		expect(suggester.context?.editor.replaceRange).toBeCalledWith(
+			"somecoolkey: {aCoolToken}",
+			suggester.context?.start,
+			{
+				...(suggester.context?.end || {}),
+				ch: query.length + 0,
+			},
+			"aprils-automatic-timeline"
+		);
+		expect(suggester.context?.editor.setCursor).toHaveBeenCalled();
 	});
 });
