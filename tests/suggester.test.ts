@@ -92,6 +92,49 @@ describe.concurrent("Suggester", () => {
 		).toStrictEqual(expected);
 	});
 
+	const testArray = [
+		"applyAdditonalConditionFormatting: ",
+		"bodyFontSize:     			 ",
+		"dateDisplayFormat:",
+		"dateFontSize:  ",
+		"titleFontSize:    ",
+		"cringeKey:  ",
+	];
+	const expectArray = [
+		SuggestionType.ApplyConditionalFormatingOption,
+		SuggestionType.FontSizeBodyOption,
+		SuggestionType.DateFormatOption,
+		SuggestionType.FontSizeDateOption,
+		SuggestionType.FontSizeTitleOption,
+		SuggestionType.AnyOption,
+	];
+	for (const index in testArray) {
+		const line = testArray[index];
+		test(`[TimelineMarkdownSuggester] - ok onTrigger enum${expectArray[index]}`, () => {
+			const { suggester } = quickSetup();
+			const editor = mockObsidianEditor();
+
+			// @ts-expect-error
+			editor.getRange = vi.fn(
+				() => `\`\`\`aat-vertical\ntimelineName\n${line}`
+			);
+			// @ts-expect-error
+			editor.getValue = vi.fn(
+				() => `\`\`\`aat-vertical\ntimelineName\n${line}\`\`\``
+			);
+			// @ts-expect-error
+			editor.getLine = vi.fn(() => line);
+			suggester.onTrigger(
+				{ line: 2, ch: line.length - 1 },
+				editor,
+				mockTFile()
+			);
+			expect(suggester.onTriggerParsedContent?.type).toStrictEqual(
+				expectArray[index]
+			);
+		});
+	}
+
 	test("[TimelineMarkdownSuggester] - ok getSuggestions fluke", () => {
 		const { suggester } = quickSetup();
 		const context = mock<EditorSuggestContext>();
@@ -234,4 +277,44 @@ describe.concurrent("Suggester", () => {
 			expect(suggester.getSuggestions(context)).toStrictEqual(defaultSet);
 		});
 	}
+
+	test("[TimelineMarkdownSuggester] - ok getSuggestion DateFormatOption", () => {
+		const { suggester } = quickSetup();
+		const context = mock<EditorSuggestContext>({
+			query: "",
+		});
+
+		suggester.onTriggerParsedContent = {
+			block: {
+				tagsToFind: [],
+				settingsOverride: {},
+			},
+			type: SuggestionType.DateFormatOption,
+		};
+		expect(suggester.getSuggestions(context)).toStrictEqual(
+			SETTINGS_DEFAULT.dateTokenConfiguration.map((e) => e.name).sort()
+		);
+
+		context.query = "{year} {month}";
+		expect(suggester.getSuggestions(context)).toStrictEqual(["day"]);
+	});
+
+	test("[TimelineMarkdownSuggester] - renderSuggestions", () => {
+		const { suggester } = quickSetup();
+		const element = mock<HTMLElement>();
+
+		suggester.renderSuggestion("sample", element);
+		expect(element.createSpan).toHaveBeenCalledTimes(0);
+
+		suggester.onTriggerParsedContent = {
+			block: {
+				tagsToFind: [],
+				settingsOverride: {},
+			},
+			type: SuggestionType.DateFormatOption,
+		};
+		suggester.renderSuggestion("sample", element);
+		expect(element.createSpan).toHaveBeenCalledOnce();
+		expect(element.createSpan).toHaveBeenCalledWith({ text: "sample" });
+	});
 });

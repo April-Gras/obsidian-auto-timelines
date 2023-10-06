@@ -370,6 +370,6 @@ export function isOrderedSubArray(source: string[], subset: string[]): boolean {
  * @param size - The size of the array.
  * @returns the filled array.
  */
-export function generateNumberArray(start = 0, size = 10) {
+export function generateNumberArray(start: number, size = 10) {
 	return [...Array(size).keys()].map((i) => start + i);
 }
