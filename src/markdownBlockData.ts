@@ -5,6 +5,7 @@ import {
 	isDefinedAsBoolean,
 	isDefinedAsString,
 	isDefinedAsNonNaNNumber,
+	isDefinedAsArray,
 } from "./utils";
 
 /**
@@ -13,11 +14,16 @@ import {
  * @param source - The markdown code block source, a.k.a. the content inside the code block.
  * @returns Partial settings to override the global ones.
  */
-export function parseMarkdownBlockSource(source: string): {
+export function parseMarkdownBlockSource(source: string | string[]): {
 	readonly tagsToFind: string[];
-	readonly settingsOverride: Partial<AutoTimelineSettings>;
+	readonly settingsOverride: Pick<
+		Partial<AutoTimelineSettings>,
+		OverridableSettingKey
+	>;
 } {
-	const sourceEntries = source.split("\n");
+	const sourceEntries = isDefinedAsArray(source)
+		? source
+		: source.split("\n");
 
 	if (!source.length)
 		return { tagsToFind: [] as string[], settingsOverride: {} } as const;
@@ -33,12 +39,12 @@ export function parseMarkdownBlockSource(source: string): {
 				...accumulator,
 				...parseSingleLine(element),
 			};
-		}, {} as Partial<AutoTimelineSettings>),
+		}, {} as Pick<Partial<AutoTimelineSettings>, OverridableSettingKey>),
 	} as const;
 }
 
-type OverridableSettingKey = (typeof acceptedSettingsOverride)[number];
-const acceptedSettingsOverride = [
+export type OverridableSettingKey = (typeof acceptedSettingsOverride)[number];
+export const acceptedSettingsOverride = [
 	"dateDisplayFormat",
 	"applyAdditonalConditionFormatting",
 	"dateFontSize",
@@ -52,7 +58,7 @@ const acceptedSettingsOverride = [
  * @param value - A given settings key.
  * @returns the typeguard boolean `true` if the key is indeed overridable.
  */
-function isOverridableSettingsKey(
+export function isOverridableSettingsKey(
 	value: string
 ): value is OverridableSettingKey {
 	// @ts-expect-error
@@ -67,10 +73,9 @@ function isOverridableSettingsKey(
  * @returns Undefined if unvalid or the actual expected value.
  */
 function formatValueFromKey(
-	key: string,
+	key: OverridableSettingKey,
 	value: string
 ): AutoTimelineSettings[OverridableSettingKey] | undefined {
-	if (!isOverridableSettingsKey(key)) return undefined;
 	if (isDefinedAsString(SETTINGS_DEFAULT[key])) return value;
 	if (isDefinedAsNonNaNNumber(SETTINGS_DEFAULT[key])) {
 		const out = Number(value);
@@ -80,7 +85,7 @@ function formatValueFromKey(
 		const validBooleanStrings = ["true", "false"];
 
 		if (!validBooleanStrings.includes(value.toLocaleLowerCase()))
-			throw new Error(`${value} is supposed to be a boolean`);
+			return undefined;
 		return value.toLocaleLowerCase() === "true" ? true : false;
 	}
 	return undefined;
@@ -92,7 +97,9 @@ function formatValueFromKey(
  * @param line - The line to parse.
  * @returns A potencialy partial settings object.
  */
-function parseSingleLine(line: string): Partial<AutoTimelineSettings> {
+function parseSingleLine(
+	line: string
+): Pick<Partial<AutoTimelineSettings>, OverridableSettingKey> {
 	const reg = /((?<key>(\s|\d|[a-z])*):(?<value>.*))/i;
 	const matches = line.match(reg);
 
@@ -105,6 +112,8 @@ function parseSingleLine(line: string): Partial<AutoTimelineSettings> {
 		return {};
 
 	const key = matches.groups.key.trim();
+
+	if (!isOverridableSettingsKey(key)) return {};
 	const value = formatValueFromKey(key, matches.groups.value.trim());
 
 	if (!isDefined(value)) return {};

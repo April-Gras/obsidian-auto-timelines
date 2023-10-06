@@ -362,3 +362,14 @@ export function isOrderedSubArray(source: string[], subset: string[]): boolean {
 		: endsWithWildstar ||
 				isOrderedSubArray(source.slice(index + 1), subset.slice(1));
 }
+
+/**
+ * Utils to generate a array filled with numbers in order.
+ *
+ * @param start - The starting point of the numbers in the array.
+ * @param size - The size of the array.
+ * @returns the filled array.
+ */
+export function generateNumberArray(start: number, size = 10) {
+	return [...Array(size).keys()].map((i) => start + i);
+}

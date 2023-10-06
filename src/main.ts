@@ -7,9 +7,14 @@ import { setupTimelineCreation } from "~/timelineMarkup";
 import { createCardFromBuiltContext } from "~/cardMarkup";
 import { getAllRangeData } from "~/rangeData";
 import { renderRanges } from "~/rangeMarkup";
-import { SETTINGS_DEFAULT, TimelineSettingTab } from "~/settings";
+import {
+	SETTINGS_DEFAULT,
+	TimelineSettingTab,
+	verticalTimelineToken,
+} from "~/settings";
 import { parseMarkdownBlockSource } from "./markdownBlockData";
 import { watchFiles } from "./watchFileChange";
+import { TimelineMarkdownSuggester } from "./suggester";
 
 export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	settings: AutoTimelineSettings;
@@ -25,8 +30,9 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	async onload() {
 		await this.loadSettings();
 
+		this.registerEditorSuggest(new TimelineMarkdownSuggester(this));
 		this.registerMarkdownCodeBlockProcessor(
-			"aat-vertical",
+			verticalTimelineToken,
 			(source, element, context) => {
 				this.run(source, element, context);
 			}

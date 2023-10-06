@@ -33,10 +33,12 @@ describe.concurrent("Markdown block data", () => {
 	});
 
 	test("[parseMarkdownBlockSource] - ko settings - faulty value for boolean type", () => {
-		expect(() =>
+		expect(
 			parseMarkdownBlockSource(
 				"timeline-name\ndateDisplayFormat     :     {year}\n      faultyKey: notValid\ndateTokenConfiguration: this is a valid key but the override is not supported yet\napplyAdditonalConditionFormatting: notValidValue"
-			)
-		).toThrowError("notValidValue is supposed to be a boolean");
+			).settingsOverride
+		).toEqual({
+			dateDisplayFormat: "{year}",
+		});
 	});
 });
