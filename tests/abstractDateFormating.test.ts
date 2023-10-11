@@ -32,19 +32,19 @@ describe.concurrent("Abstract Date Formatting", () => {
 	});
 
 	test("[formatAbstractDate] - abstract date", () => {
-		const absctractDateMock = [1000, 0, 0];
+		const absctractDateMock = [-1000, 0, 0];
 		const settings = { ...SETTINGS_DEFAULT };
 
 		expect(formatAbstractDate(absctractDateMock, settings)).toBe(
-			"00/00/1000"
+			"00/00/-1000"
 		);
 		settings.dateDisplayFormat = "{month}-{year}-{day}";
 		expect(formatAbstractDate(absctractDateMock, settings)).toBe(
-			"00-1000-00"
+			"00--1000-00"
 		);
 		settings.dateDisplayFormat = "{year} hehe test";
 		expect(formatAbstractDate(absctractDateMock, settings)).toBe(
-			"1000 hehe test"
+			"-1000 hehe test"
 		);
 		settings.dateDisplayFormat = "no template in here";
 		expect(formatAbstractDate(absctractDateMock, settings)).toBe(

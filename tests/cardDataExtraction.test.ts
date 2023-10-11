@@ -44,14 +44,14 @@ describe.concurrent("Card Data", () => {
 			throw new Error("Missing frontmatter in mock");
 		context.cachedMetadata.frontmatter[
 			SETTINGS_DEFAULT.metadataKeyEventStartDate
-		] = 1000;
+		] = -1000;
 
 		const date = getAbstractDateFromMetadata(
 			context,
 			SETTINGS_DEFAULT["metadataKeyEventStartDate"]
 		);
 
-		expect(date).toStrictEqual([1000, 0, 0]);
+		expect(date).toStrictEqual([-1000, 0, 0]);
 	});
 
 	test("[getImageUrlFromContextOrDocument] - ok internal", () => {
