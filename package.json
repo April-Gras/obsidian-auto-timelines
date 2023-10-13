@@ -32,7 +32,7 @@
 		"happy-dom": "^12.9.0",
 		"lodash.clonedeep": "^4.5.0",
 		"obsidian": "latest",
-		"sass": "^1.69.0",
+		"sass": "^1.69.3",
 		"ts-essentials": "^9.4.1",
 		"tslib": "2.6.2",
 		"typescript": "5.2.2",
