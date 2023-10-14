@@ -31,7 +31,7 @@
 		"eslint-plugin-jsdoc": "^46.8.2",
 		"happy-dom": "^12.9.1",
 		"lodash.clonedeep": "^4.5.0",
-		"obsidian": "latest",
+		"obsidian": "1.4.11",
 		"sass": "^1.69.3",
 		"ts-essentials": "^9.4.1",
 		"tslib": "2.6.2",
