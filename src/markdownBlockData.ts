@@ -47,6 +47,7 @@ export type OverridableSettingKey = (typeof acceptedSettingsOverride)[number];
 export const acceptedSettingsOverride = [
 	"dateDisplayFormat",
 	"applyAdditonalConditionFormatting",
+	"stylizeDateInline",
 	"dateFontSize",
 	"titleFontSize",
 	"bodyFontSize",

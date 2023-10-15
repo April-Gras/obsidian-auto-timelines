@@ -27,6 +27,7 @@ export enum SuggestionType {
 	FontSizeTitleOption,
 	FontSizeBodyOption,
 	FontSizeDateOption,
+	StylizeDateInlineOption,
 	ApplyConditionalFormatingOption,
 }
 type OnTriggerContext = {
@@ -35,8 +36,8 @@ type OnTriggerContext = {
 };
 
 export class TimelineMarkdownSuggester extends EditorSuggest<string> {
-	private app: App;
 	private pluginSettings: AutoTimelineSettings;
+	app: App;
 	onTriggerParsedContent: null | OnTriggerContext;
 
 	constructor(plugin: AprilsAutomaticTimelinesPlugin) {
@@ -112,6 +113,7 @@ export class TimelineMarkdownSuggester extends EditorSuggest<string> {
 					)
 				);
 			}
+			case SuggestionType.StylizeDateInlineOption:
 			case SuggestionType.ApplyConditionalFormatingOption: {
 				return filterAndSortSuggestionResults(
 					["true", "false"],
@@ -186,6 +188,7 @@ export class TimelineMarkdownSuggester extends EditorSuggest<string> {
 				query = `${value}: `;
 				break;
 			}
+			case SuggestionType.StylizeDateInlineOption:
 			case SuggestionType.ApplyConditionalFormatingOption:
 			case SuggestionType.FontSizeBodyOption:
 			case SuggestionType.FontSizeDateOption:
@@ -252,6 +255,8 @@ function getSuggestionType(
 			return SuggestionType.FontSizeDateOption;
 		case "titleFontSize":
 			return SuggestionType.FontSizeTitleOption;
+		case "stylizeDateInline":
+			return SuggestionType.StylizeDateInlineOption;
 	}
 }
 
@@ -385,6 +390,7 @@ const optionValueSuggestionSet = [
 	SuggestionType.FontSizeBodyOption,
 	SuggestionType.FontSizeDateOption,
 	SuggestionType.FontSizeTitleOption,
+	SuggestionType.StylizeDateInlineOption,
 ] as const;
 
 /**

@@ -91,7 +91,7 @@ h2.aat-card-title {
 	display: -webkit-box;
 }
 
-header.aat-card-head-wrap {
+header.aat-card-head-wrap.inline {
 	display: flex;
 	gap: 16px;
 	justify-content: space-between;
@@ -123,7 +123,10 @@ h4.aat-card-start-date {
 	margin: 0 !important;
 	color: var(--color-muted);
 	font-size: smaller;
-	flex-shrink: 0;
+	overflow: hidden;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	display: -webkit-box;
 }
 
 div.aat-range-element {

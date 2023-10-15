@@ -36,7 +36,6 @@ describe.concurrent("Main", () => {
 		const app = mockObsidianApp();
 		app.metadataCache.getFileCache = mockGetFileCache()
 			.mockImplementationOnce(() => ({
-				// @ts-expect-error
 				frontmatter: {
 					timelines: ["timeline"],
 					"aat-render-enabled": true,

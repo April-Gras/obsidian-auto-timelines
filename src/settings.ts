@@ -28,6 +28,7 @@ export const SETTINGS_DEFAULT = {
 	dateParserRegex: "(?<year>-?[0-9]*)-(?<month>-?[0-9]*)-(?<day>-?[0-9]*)",
 	dateParserGroupPriority: "year,month,day",
 	dateDisplayFormat: "{day}/{month}/{year}",
+	stylizeDateInline: false,
 	lookForTagsForTimeline: false,
 	lookForInlineEventsInNotes: true,
 	applyAdditonalConditionFormatting: true,

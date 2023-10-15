@@ -75,6 +75,14 @@ describe.concurrent("Card Markup", () => {
 		context.settings.titleFontSize = 222;
 		context.settings.dateFontSize = 333;
 
+		context.settings.stylizeDateInline = true;
+
+		expect(() =>
+			createCardFromBuiltContext(context, cardContent)
+		).not.toThrowError();
+
+		context.settings.stylizeDateInline = false;
+
 		expect(() =>
 			createCardFromBuiltContext(context, cardContent)
 		).not.toThrowError();
