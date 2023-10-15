@@ -47,11 +47,10 @@ export function createCardFromBuiltContext(
 		"aat-card-text-wraper"
 	);
 
-	const titleWrap = createElementShort(
-		cardTextWraper,
-		"header",
-		"aat-card-head-wrap"
-	);
+	const titleWrap = createElementShort(cardTextWraper, "header", [
+		"aat-card-head-wrap",
+		...(settings.stylizeDateInline ? ["inline"] : []),
+	]);
 
 	const titleElement = createElementShort(
 		titleWrap,
