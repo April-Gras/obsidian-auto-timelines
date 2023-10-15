@@ -37,6 +37,7 @@ const context = await esbuild.context({
 		"@lezer/lr",
 		...builtins,
 	],
+	minify: prod,
 	format: "cjs",
 	target: "es2018",
 	logLevel: "info",
@@ -53,7 +54,7 @@ const css = await esbuild.context({
 	outfile: "styles.css",
 	bundle: true,
 	allowOverwrite: true,
-	minify: false,
+	minify: prod,
 });
 
 if (prod) {
