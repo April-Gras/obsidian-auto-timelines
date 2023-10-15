@@ -101,6 +101,7 @@ describe.concurrent("Suggester", () => {
 		"dateFontSize:  ",
 		"titleFontSize:    ",
 		"cringeKey:  ",
+		"stylizeDateInline: ",
 	];
 	const expectArray = [
 		SuggestionType.ApplyConditionalFormatingOption,
@@ -109,6 +110,7 @@ describe.concurrent("Suggester", () => {
 		SuggestionType.FontSizeDateOption,
 		SuggestionType.FontSizeTitleOption,
 		SuggestionType.AnyOption,
+		SuggestionType.StylizeDateInlineOption,
 	];
 	for (const index in testArray) {
 		const line = testArray[index];
@@ -197,37 +199,42 @@ describe.concurrent("Suggester", () => {
 		);
 	});
 
-	test("[TimelineMarkdownSuggester] - ok getSuggestions ApplyConditialFormatingOption", () => {
-		const { suggester } = quickSetup();
-		const context = mock<EditorSuggestContext>({
-			query: "",
+	for (const type of [
+		SuggestionType.ApplyConditionalFormatingOption,
+		SuggestionType.StylizeDateInlineOption,
+	]) {
+		test(`[TimelineMarkdownSuggester] - ok getSuggestions enum${type}`, () => {
+			const { suggester } = quickSetup();
+			const context = mock<EditorSuggestContext>({
+				query: "",
+			});
+
+			suggester.onTriggerParsedContent = {
+				block: {
+					tagsToFind: [],
+					settingsOverride: {},
+				},
+				type,
+			};
+
+			expect(suggester.getSuggestions(context)).toStrictEqual([
+				"false",
+				"true",
+			]);
+
+			context.query = "ue";
+			expect(suggester.getSuggestions(context)).toStrictEqual(["true"]);
+
+			context.query = "   UE    ";
+			expect(suggester.getSuggestions(context)).toStrictEqual(["true"]);
+
+			context.query = "t ue";
+			expect(suggester.getSuggestions(context)).toStrictEqual([]);
+
+			context.query = "als";
+			expect(suggester.getSuggestions(context)).toStrictEqual(["false"]);
 		});
-
-		suggester.onTriggerParsedContent = {
-			block: {
-				tagsToFind: [],
-				settingsOverride: {},
-			},
-			type: SuggestionType.ApplyConditionalFormatingOption,
-		};
-
-		expect(suggester.getSuggestions(context)).toStrictEqual([
-			"false",
-			"true",
-		]);
-
-		context.query = "ue";
-		expect(suggester.getSuggestions(context)).toStrictEqual(["true"]);
-
-		context.query = "   UE    ";
-		expect(suggester.getSuggestions(context)).toStrictEqual(["true"]);
-
-		context.query = "t ue";
-		expect(suggester.getSuggestions(context)).toStrictEqual([]);
-
-		context.query = "als";
-		expect(suggester.getSuggestions(context)).toStrictEqual(["false"]);
-	});
+	}
 
 	const sizeOptionTypes = [
 		SuggestionType.FontSizeBodyOption,
@@ -441,6 +448,7 @@ describe.concurrent("Suggester", () => {
 	for (const optionValueType of [
 		...sizeOptionTypes,
 		SuggestionType.ApplyConditionalFormatingOption,
+		SuggestionType.StylizeDateInlineOption,
 	]) {
 		test(`[TimelineMarkdownSuggester] - ok selectSuggestion enum${optionValueType}`, () => {
 			const { suggester } = quickSetup();
