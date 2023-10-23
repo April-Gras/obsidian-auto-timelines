@@ -25,7 +25,7 @@
 		"@vitest/ui": "^0.34.6",
 		"@vue/test-utils": "^2.4.1",
 		"builtin-modules": "3.3.0",
-		"esbuild": "0.19.4",
+		"esbuild": "0.19.5",
 		"esbuild-plugin-vue3": "^0.3.2",
 		"eslint": "^8.51.0",
 		"eslint-plugin-jsdoc": "^46.8.2",
