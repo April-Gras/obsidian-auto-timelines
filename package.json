@@ -27,7 +27,7 @@
 		"builtin-modules": "3.3.0",
 		"esbuild": "0.19.4",
 		"esbuild-plugin-vue3": "^0.3.2",
-		"eslint": "^8.51.0",
+		"eslint": "^8.52.0",
 		"eslint-plugin-jsdoc": "^46.8.2",
 		"happy-dom": "^12.9.1",
 		"lodash.clonedeep": "^4.5.0",
