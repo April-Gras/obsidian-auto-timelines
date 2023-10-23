@@ -42,7 +42,7 @@
 	},
 	"dependencies": {
 		"vue": "^3.3.4",
-		"vue-collapsed": "^1.2.8",
+		"vue-collapsed": "^1.2.9",
 		"vue-i18n": "^9.5.0",
 		"yaml": "^2.3.3"
 	}
