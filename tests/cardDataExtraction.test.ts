@@ -60,7 +60,7 @@ describe.concurrent("Card Data", () => {
 			mockMarkdownCodeBlockTimelineProcessingContext()
 		);
 
-		expect(imageURL).not.toBeNull();
+		expect(imageURL).toBe("sample");
 	});
 
 	test("[getImageUrlFromContextOrDocument] - ok external", () => {
@@ -109,6 +109,24 @@ describe.concurrent("Card Data", () => {
 		);
 
 		expect(imageURL).toBeNull();
+	});
+
+	test("[getImageUrlFromContextOrDocument] - ok has internal and external match - external first", () => {
+		const imageURL = getImageUrlFromContextOrDocument(
+			"![](https://imgur.com/hehe) ![[another.png]]",
+			mockMarkdownCodeBlockTimelineProcessingContext()
+		);
+
+		expect(imageURL).toBe("https://imgur.com/hehe");
+	});
+
+	test("[getImageUrlFromContextOrDocument] - ok has internal and external match - internal first", () => {
+		const imageURL = getImageUrlFromContextOrDocument(
+			"![[Picture.png]]\n![](https://imgur.com/hehe)",
+			mockMarkdownCodeBlockTimelineProcessingContext()
+		);
+
+		expect(imageURL).toBe("sample");
 	});
 
 	test("[getBodyFromContextOrDocument]- ko empty body", () => {
