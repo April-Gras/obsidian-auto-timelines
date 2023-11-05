@@ -102,22 +102,35 @@ export function getImageUrlFromContextOrDocument(
 
 	if (override) return override;
 	const internalLinkMatch = rawFileText.match(/!\[\[(?<src>.*)\]\]/);
-	const matchs =
-		internalLinkMatch || rawFileText.match(/!\[.*\]\((?<src>.*)\)/);
+	const externalPictureMatch = rawFileText.match(/!\[.*\]\((?<src>.*)\)/);
+	let internalLinkIsBeforeExternal = true;
+	let matches: null | RegExpMatchArray;
 
-	if (!matchs || !matchs.groups || !matchs.groups.src) return null;
+	// Check if we got a double match
+	if (internalLinkMatch && externalPictureMatch) {
+		internalLinkIsBeforeExternal =
+			// @ts-expect-error If the regex matches exists then ther emust be an index
+			internalLinkMatch.index < externalPictureMatch.index;
+		matches = internalLinkIsBeforeExternal
+			? internalLinkMatch
+			: externalPictureMatch;
+	} else {
+		matches = internalLinkMatch || externalPictureMatch;
+	}
 
-	if (internalLinkMatch) {
+	if (!matches || !matches.groups || !matches.groups.src) return null;
+
+	if (internalLinkMatch && internalLinkIsBeforeExternal) {
 		// https://github.com/obsidianmd/obsidian-releases/pull/1882#issuecomment-1512952295
 		const file = getFirstLinkpathDest.bind(app.metadataCache)(
-			matchs.groups.src,
+			matches.groups.src,
 			currentFile.path
 		) satisfies TFile | null;
 
 		if (file instanceof TFile) return vault.getResourcePath(file);
 		// Thanks https://github.com/joethei
 		return null;
-	} else return encodeURI(matchs.groups.src);
+	} else return encodeURI(matches.groups.src);
 }
 
 /**
