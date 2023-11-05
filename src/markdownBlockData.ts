@@ -51,6 +51,7 @@ export const acceptedSettingsOverride = [
 	"dateFontSize",
 	"titleFontSize",
 	"bodyFontSize",
+	"flipDateSort",
 ] as const;
 
 /**

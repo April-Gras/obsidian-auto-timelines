@@ -98,6 +98,7 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 				);
 			}
 		);
+		if (finalSettings.flipDateSort) events.reverse();
 		cardDataTime();
 
 		const cardRenderTime = measureTime("Card Render");
