@@ -32,6 +32,7 @@ export const SETTINGS_DEFAULT = {
 	lookForTagsForTimeline: false,
 	lookForInlineEventsInNotes: true,
 	applyAdditonalConditionFormatting: true,
+	flipDateSort: false,
 	dateFontSize: -1,
 	titleFontSize: -1,
 	bodyFontSize: -1,

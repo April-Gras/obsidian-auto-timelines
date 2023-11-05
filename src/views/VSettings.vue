@@ -72,6 +72,7 @@ const checkboxKeys: readonly (keyof PickByType<
 	"lookForTagsForTimeline",
 	"applyAdditonalConditionFormatting",
 	"stylizeDateInline",
+	"flipDateSort",
 ];
 
 const fontSizeOverrides: readonly (keyof PickByType<
