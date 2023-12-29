@@ -2,7 +2,8 @@ import { type EventRef, MarkdownPostProcessorContext, Plugin } from "obsidian";
 
 import type { AutoTimelineSettings, CompleteCardContext } from "~/types";
 import { compareAbstractDates, isDefined, measureTime } from "~/utils";
-import { getDataFromNoteMetadata, getDataFromNoteBody } from "~/cardData";
+import { getDataFromNoteMetadata } from "~/cardData";
+import { getInlineEventData } from "~/inlineEventData";
 import { setupTimelineCreation } from "~/timelineMarkup";
 import { createCardFromBuiltContext } from "~/cardMarkup";
 import { getAllRangeData } from "~/rangeData";
@@ -80,7 +81,7 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 				baseData?.cardData.body ||
 				(await context.file.vault.cachedRead(context.file));
 			const inlineEvents = (
-				await getDataFromNoteBody(body, context, tagsToFind)
+				await getInlineEventData(body, context, tagsToFind)
 			).filter(isDefined);
 
 			if (!inlineEvents.length) continue;
