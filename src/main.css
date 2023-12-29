@@ -98,10 +98,11 @@ header.aat-card-head-wrap.inline {
 	align-items: center;
 }
 
-img.aat-card-image {
+a.aat-card > img.aat-card-image {
 	height: 100%;
 	width: 168px;
 	object-fit: cover;
+	margin: 0;
 	object-position: center;
 	border-radius: 8px;
 	box-shadow: var(--panel-shadow);
@@ -147,7 +148,7 @@ div.aat-range-element:hover {
 		grid-template-columns: 1fr !important;
 	}
 
-	img.aat-card-image {
+	a.aat-card > img.aat-card-image {
 		transform: none !important;
 		width: 100% !important;
 	}
