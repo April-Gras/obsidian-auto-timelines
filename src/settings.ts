@@ -31,6 +31,7 @@ export const SETTINGS_DEFAULT = {
 	stylizeDateInline: false,
 	lookForTagsForTimeline: false,
 	lookForInlineEventsInNotes: true,
+	lookForCalendariumSpanEvents: true,
 	applyAdditonalConditionFormatting: true,
 	dateFontSize: -1,
 	titleFontSize: -1,

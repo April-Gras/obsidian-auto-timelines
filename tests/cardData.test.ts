@@ -3,14 +3,10 @@ import "./obsidianMocks";
 import {
 	extractCardData,
 	getDataFromNoteMetadata,
-	getDataFromNoteBody,
 	extractedTagsAreValid,
 } from "~/cardData";
 import { SETTINGS_DEFAULT } from "~/settings";
-import {
-	mockCompleteCardContext,
-	mockMarkdownCodeBlockTimelineProcessingContext,
-} from "./obsidianMocks";
+import { mockMarkdownCodeBlockTimelineProcessingContext } from "./obsidianMocks";
 
 describe.concurrent("Card Data", () => {
 	test("[extractCardData] - ok no title override", async () => {
@@ -93,65 +89,6 @@ describe.concurrent("Card Data", () => {
 		expect(
 			await getDataFromNoteMetadata(context, ["timline"])
 		).not.toBeUndefined();
-	});
-
-	test("[getDataFromNoteBody] - ok empty", async () => {
-		const {
-			context,
-			cardData: { body },
-		} = mockCompleteCardContext();
-
-		expect(
-			await getDataFromNoteBody(body, context, ["timeline"])
-		).toStrictEqual([]);
-	});
-
-	test("[getDataFromNoteBody] - ok nothing to parse", async () => {
-		const {
-			context,
-			cardData: { body },
-		} = mockCompleteCardContext({
-			context: mockMarkdownCodeBlockTimelineProcessingContext(),
-			cardData: {
-				body: "%%aat-inline-event\n%%\nsampletext",
-			},
-		});
-
-		expect(
-			await getDataFromNoteBody(body, context, ["timeline"])
-		).toStrictEqual([]);
-	});
-
-	test("[getDataFromNoteBody] - ok tags are not valid", async () => {
-		const {
-			context,
-			cardData: { body },
-		} = mockCompleteCardContext({
-			context: mockMarkdownCodeBlockTimelineProcessingContext(),
-			cardData: {
-				body: "'%%aat-inline-event\naat-event-start-date: 54\naat-event-end-date: true\naat-render-enabled: true\ntimelines: [nottimeline]\n%%",
-			},
-		});
-
-		expect(
-			await getDataFromNoteBody(body, context, ["timeline"])
-		).toStrictEqual([]);
-	});
-
-	test("[getDataFromNoteBody] - ok tags are valid", async () => {
-		const {
-			context,
-			cardData: { body },
-		} = mockCompleteCardContext({
-			context: mockMarkdownCodeBlockTimelineProcessingContext(),
-			cardData: {
-				body: "'%%aat-inline-event\naat-event-start-date: 54\naat-event-end-date: true\naat-render-enabled: true\ntimelines: [timeline]\n%%",
-			},
-		});
-
-		expect(
-			(await getDataFromNoteBody(body, context, ["timeline"])).length
-		).toBe(1);
 	});
 
 	test("[extractedTagsAreValid] - varius sanity checks", () => {

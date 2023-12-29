@@ -52,7 +52,7 @@ const keysAreCompliantWithFcPreset = computed(() => {
 	);
 });
 
-const handleUpdateValueFantasyCalendarCheckbox = () => {
+function handleUpdateValueFantasyCalendarCheckbox() {
 	if (keysAreCompliantWithFcPreset.value)
 		emit(
 			"update:value",
@@ -62,7 +62,7 @@ const handleUpdateValueFantasyCalendarCheckbox = () => {
 			}, {} as Partial<AutoTimelineSettings>)
 		);
 	else emit("update:value", fantasyCalendarPreset);
-};
+}
 
 const checkboxKeys: readonly (keyof PickByType<
 	AutoTimelineSettings,
@@ -138,15 +138,49 @@ const fontSizeOverrides: readonly (keyof PickByType<
 				</i18n-t>
 			</VHeader>
 			<VCheckbox
-				input-id="fantasy-calendar-checkbox"
+				input-id="fantasy-calendar-preset-keys"
 				:value="keysAreCompliantWithFcPreset"
 				@update:value="handleUpdateValueFantasyCalendarCheckbox"
 			>
 				<template #label>{{
-					$t("settings.label.fantasyCalendarCheckbox")
+					$t("settings.label.fantasyCalendarPresetKeys")
 				}}</template>
 				<template #description>{{
-					$t("settings.description.fantasyCalendarCheckbox")
+					$t("settings.description.fantasyCalendarPresetKeys")
+				}}</template>
+			</VCheckbox>
+			<VCheckbox
+				input-id="fantasy-calendar-span-events"
+				:value="value.lookForCalendariumSpanEvents"
+				@update:value="
+					emit('update:value', {
+						lookForCalendariumSpanEvents: $event,
+					})
+				"
+			>
+				<template #label>
+					<i18n-t
+						keypath="settings.label.fantasyCalendarSpanEvents.text"
+						scope="global"
+					>
+						<template #link>
+							<b
+								><a
+									href="https://plugins.javalent.com/calendarium/events/automatic#Span+tag+event+creation"
+									target="_blank"
+								>
+									{{
+										$t(
+											"settings.label.fantasyCalendarSpanEvents.link"
+										)
+									}}
+								</a></b
+							>
+						</template>
+					</i18n-t>
+				</template>
+				<template #description>{{
+					$t("settings.description.fantasyCalendarSpanEvents")
 				}}</template>
 			</VCheckbox>
 		</section>

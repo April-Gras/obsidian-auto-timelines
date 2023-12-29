@@ -41,7 +41,7 @@
       "noteInlineEventKey": "The note inline event key",
       "dateParserGroupPriority": "Date parser group priority",
       "dateParserRegex": "Date parser regex",
-      "fantasyCalendarCheckbox": "Enable fantasy calendar integration",
+      "fantasyCalendarPresetKeys": "Use fantady calendar keys",
       "metadataKeyEventBodyOverride": "Event body override",
       "metadataKeyEventTimelineTag": "Event timelines tags",
       "metadataKeyEventEndDate": "Event end key",
@@ -69,6 +69,10 @@
       "configureSingleDateTokenConditionalFormatting": {
         "conditionsAreExclusive": "Condtions are exclusive",
         "format": "The template format to apply"
+      },
+      "fantasyCalendarSpanEvents": {
+        "text": "Look for {link}",
+        "link": "Span Events"
       }
     },
     "button": {
@@ -81,7 +85,7 @@
       "dateFormatFlowOnboarding": "For this plugin to work it needs to be fed a couple of informations regarding dates and how to sort them.Right now token priority is as follow {dateParserGroupPriority} and output is formated using {dateDisplayFormat}. To customize this you can either use the more user friendly flow by pressing start or just edit the values yourself by hand. Worst case scenario you can also reset to default in the advanced section.",
       "dateParserGroupPriority": "No spaces and make sure to separate every entry with a \",\". This value is used to order the parsed tokens. For example if your custom regex pulls the year month and day out of a date, the natural order should be \"year,month,day\". Note that you should have as many entries as your regex has capture groups. See presets for inspiration.",
       "dateParserRegex": "The regex used to parse your date. It needs to include the same amount of capture group as the next setting input. If you're unfamilliar with regexes and / or capture groups I would recommend to stick to the preset.",
-      "fantasyCalendarCheckbox": "This will preset all relevant keys in the settings to watch fantasy calendar uses. Namely the title override, the start date and end date keys",
+      "fantasyCalendarPresetKeys": "This will preset all relevant keys in the settings to watch fantasy calendar uses. Namely the title override, the start date and end date keys",
       "metadataKeyEventBodyOverride": "The key for the body override in each notes metadata",
       "metadataKeyEventTimelineTag": "The key looked for when assigning timelines to an event",
       "metadataKeyEventEndDate": "The key that determines the end of an event in a note",
@@ -105,7 +109,8 @@
       "configureSingleDateTokenConditionalFormatting": {
         "conditionsAreExclusive": "When checked only one condition need to be true for the format to apply. If it's unchecked all conditions need to be true.",
         "format": "Use `{value}` to include the formated token in the template."
-      }
+      },
+      "fantasyCalendarSpanEvents": "Allow the plugin to look for span events inside the notes, this have a performance impact but furthers the compatibility with fantasy calendar"
     },
     "linkValue": {
       "lookForInlineEventsInNotes": "https://github.com/April-Gras/obsidian-auto-timelines#in-line-events",
