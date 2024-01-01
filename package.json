@@ -21,7 +21,7 @@
 		"@types/node": "^18.19.3",
 		"@typescript-eslint/eslint-plugin": "6.16.0",
 		"@typescript-eslint/parser": "6.16.0",
-		"@vitejs/plugin-vue": "^5.0.1",
+		"@vitejs/plugin-vue": "^5.0.2",
 		"@vitest/coverage-istanbul": "^1.1.0",
 		"@vitest/ui": "^1.1.0",
 		"@vue/test-utils": "^2.4.3",
