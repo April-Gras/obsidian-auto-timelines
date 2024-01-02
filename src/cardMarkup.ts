@@ -16,6 +16,7 @@ import { formatAbstractDate } from "./abstractDateFormatting";
  * @param param0.elements.cardListRootElement - The right side of the timeline, this is where the carads are spawned.
  * @param param0.file - The target note file.
  * @param param0.settings - The plugin's settings.
+ * @param param0.app - The Obsidian App object.
  * @param cardContent - The content of a single timeline card.
  */
 export function createCardFromBuiltContext(
@@ -23,6 +24,7 @@ export function createCardFromBuiltContext(
 		elements: { cardListRootElement },
 		file,
 		settings,
+		app,
 	}: MarkdownCodeBlockTimelineProcessingContext,
 	cardContent: CardContent
 ): void {
@@ -79,8 +81,9 @@ export function createCardFromBuiltContext(
 	const rendered = new MarkdownRenderChild(markdownTextWrapper);
 
 	rendered.containerEl = markdownTextWrapper;
-	MarkdownRenderer.renderMarkdown(
-		formatBodyForCard(body),
+	MarkdownRenderer.render(
+		app,
+		formatBodyForCard(settings, body),
 		markdownTextWrapper,
 		file.path,
 		rendered
@@ -92,12 +95,21 @@ export function createCardFromBuiltContext(
 /**
  * Format the body string of the note data for a single card.
  *
+ * @param settings - The plugins settings.
  * @param body - The body string parsed earlier.
  * @returns The formated string ready to be displayed.
  */
-export function formatBodyForCard(body?: string | null): string {
+export function formatBodyForCard(
+	settings: AutoTimelineSettings,
+	body?: string | null
+): string {
 	if (!body) return "No body for this note :(";
 
+	const endOfEventMarkerIndex = body.indexOf(
+		settings.inlineEventEndOfBodyMarker
+	);
+
+	if (endOfEventMarkerIndex > 0) body = body.slice(0, endOfEventMarkerIndex);
 	// Remove external image links
 	return (
 		body

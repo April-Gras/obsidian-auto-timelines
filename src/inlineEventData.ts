@@ -1,6 +1,10 @@
 import { parse } from "yaml";
 
-import { isDefined, isDefinedAsObject } from "~/utils";
+import {
+	cloneMarkdownCodeBlockTimelineProcessingContext,
+	isDefined,
+	isDefinedAsObject,
+} from "~/utils";
 import { extractedTagsAreValid, extractCardData } from "~/cardData";
 import { getTagsFromMetadataOrTagObject } from "~/cardDataExtraction";
 
@@ -50,14 +54,15 @@ export async function getDataFromNoteBody(
 	context: MarkdownCodeBlockTimelineProcessingContext,
 	tagsToFind: string[]
 ): Promise<CompleteCardContext[]> {
-	const { settings } = context;
 	if (!body) return [];
+	const clonedContext =
+		cloneMarkdownCodeBlockTimelineProcessingContext(context);
+	const { settings } = clonedContext;
 	const inlineEventBlockRegExp = new RegExp(
 		// eslint-disable-next-line no-useless-escape
 		`%%${settings.noteInlineEventKey}\n\s*(((\\s|\\d|[a-z]|-)*):(.*)\n\s*)*%%`,
 		"gi"
 	);
-	const originalFrontmatter = context.cachedMetadata.frontmatter;
 	const matches = body.match(inlineEventBlockRegExp);
 
 	if (!matches) return [];
@@ -72,13 +77,13 @@ export async function getDataFromNoteBody(
 
 		const fakeFrontmatter = parse(sanitizedBlock.join("\n")); // this actually works lmao
 		// Replace frontmatter with newly built fake one. Just to re-use all the existing code.
-		context.cachedMetadata.frontmatter = fakeFrontmatter;
+		clonedContext.cachedMetadata.frontmatter = fakeFrontmatter;
 		if (!isDefinedAsObject(fakeFrontmatter)) continue;
 
 		const noteTags = getTagsFromMetadataOrTagObject(
 			settings,
 			fakeFrontmatter,
-			context.cachedMetadata.tags
+			clonedContext.cachedMetadata.tags
 		);
 
 		if (!extractedTagsAreValid(noteTags, tagsToFind)) continue;
@@ -86,15 +91,14 @@ export async function getDataFromNoteBody(
 		const matchPositionInBody = body.indexOf(block);
 		output.push({
 			cardData: await extractCardData(
-				context,
+				clonedContext,
 				matchPositionInBody !== -1
 					? body.slice(matchPositionInBody + block.length)
 					: undefined
 			),
-			context,
+			context: clonedContext,
 		});
 	}
-	context.cachedMetadata.frontmatter = originalFrontmatter;
 	return output;
 }
 
@@ -122,7 +126,9 @@ export async function getDataFromFantasyCalendarSpanEvents(
 
 	if (!nodeList.length) return [];
 
-	const { settings } = context;
+	const clonedContext =
+		cloneMarkdownCodeBlockTimelineProcessingContext(context);
+	const { settings } = clonedContext;
 	// Please refer to https://github.com/javalent/the-calendarium
 	// And https://plugins.javalent.com/calendarium/events/automatic#Span+tag+event+creation
 	// For more details one these keys
@@ -135,7 +141,6 @@ export async function getDataFromFantasyCalendarSpanEvents(
 	const attributesToLookFor = Object.keys(
 		attributeDictionary
 	) as (keyof typeof attributeDictionary)[];
-	const originalFrontmatter = context.cachedMetadata.frontmatter;
 	const output: CompleteCardContext[] = [];
 
 	for (const element of nodeList) {
@@ -153,6 +158,9 @@ export async function getDataFromFantasyCalendarSpanEvents(
 				context
 			) || [];
 
+		fakeFrontmatter[settings.metadataKeyEventBodyOverride] =
+			element.textContent;
+
 		const noteTags = getTagsFromMetadataOrTagObject(
 			settings,
 			fakeFrontmatter,
@@ -164,17 +172,16 @@ export async function getDataFromFantasyCalendarSpanEvents(
 			element.outerHTML
 		);
 
-		context.cachedMetadata.frontmatter = fakeFrontmatter;
+		clonedContext.cachedMetadata.frontmatter = fakeFrontmatter;
 		output.push({
 			cardData: await extractCardData(
-				context,
+				clonedContext,
 				matchPositionInBody !== -1
 					? body.slice(matchPositionInBody + element.outerHTML.length)
 					: undefined
 			),
-			context,
+			context: clonedContext,
 		});
-		context.cachedMetadata.frontmatter = originalFrontmatter;
 	}
 
 	return output;

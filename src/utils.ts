@@ -1,3 +1,4 @@
+import cloneDeep from "lodash.clonedeep";
 import {
 	AbstractDate,
 	DateTokenConfiguration,
@@ -372,4 +373,23 @@ export function isOrderedSubArray(source: string[], subset: string[]): boolean {
  */
 export function generateNumberArray(start: number, size = 10) {
 	return [...Array(size).keys()].map((i) => start + i);
+}
+
+/**
+ * Clones what needs to be cloned from the context object.
+ *
+ * @param src - The context to clone.
+ * @returns a new object that shares a couple a referrences.
+ */
+export function cloneMarkdownCodeBlockTimelineProcessingContext(
+	src: MarkdownCodeBlockTimelineProcessingContext
+): MarkdownCodeBlockTimelineProcessingContext {
+	return {
+		app: src.app,
+		cachedMetadata: cloneDeep(src.cachedMetadata),
+		elements: src.elements,
+		file: src.file,
+		settings: src.settings,
+		timelineFile: src.timelineFile,
+	};
 }
