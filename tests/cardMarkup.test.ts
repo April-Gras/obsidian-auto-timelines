@@ -61,10 +61,25 @@ describe.concurrent("Card Markup", () => {
 		const timelineTextMock = "\n```aat-vertical\nother timeline\n```";
 
 		expect(
-			formatBodyForCard,
 			// Add fake note metadata block
-			"---\n---\n" + bodyMock + timelineTextMock
-		);
+			formatBodyForCard(
+				SETTINGS_DEFAULT,
+				"---\n---\n" + bodyMock + timelineTextMock
+			)
+		).toContain(bodyMock);
+	});
+
+	test("[formatBodyForCard] - ok end of body", () => {
+		const bodyMock = `Some sample ${SETTINGS_DEFAULT.inlineEventEndOfBodyMarker} body data`;
+		const timelineTextMock = "\n```aat-vertical\nother timeline\n```";
+
+		expect(
+			// Add fake note metadata block
+			formatBodyForCard(
+				SETTINGS_DEFAULT,
+				`---\n---\n${bodyMock}${timelineTextMock}`
+			)
+		).not.toContain("body data");
 	});
 
 	test("[createCardFromBuiltContext] - font overrides", () => {

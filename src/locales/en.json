@@ -39,6 +39,7 @@
     "label": {
       "dateDisplayFormat": "Date display format",
       "noteInlineEventKey": "The note inline event key",
+      "inlineEventEndOfBodyMarker": "End of event body token",
       "dateParserGroupPriority": "Date parser group priority",
       "dateParserRegex": "Date parser regex",
       "fantasyCalendarPresetKeys": "Use fantady calendar keys",
@@ -82,6 +83,7 @@
     "description": {
       "dateDisplayFormat": "This is the end format the date should be displayed as in the actual timeline cards. You don't actually need to include every parsed member here.",
       "noteInlineEventKey": "Used to detect inline events. This is the key written after the \"%%\" signs to open an inline event block.",
+      "inlineEventEndOfBodyMarker": "Used to mark the line where the body parsing will stop",
       "dateFormatFlowOnboarding": "For this plugin to work it needs to be fed a couple of informations regarding dates and how to sort them.Right now token priority is as follow {dateParserGroupPriority} and output is formated using {dateDisplayFormat}. To customize this you can either use the more user friendly flow by pressing start or just edit the values yourself by hand. Worst case scenario you can also reset to default in the advanced section.",
       "dateParserGroupPriority": "No spaces and make sure to separate every entry with a \",\". This value is used to order the parsed tokens. For example if your custom regex pulls the year month and day out of a date, the natural order should be \"year,month,day\". Note that you should have as many entries as your regex has capture groups. See presets for inspiration.",
       "dateParserRegex": "The regex used to parse your date. It needs to include the same amount of capture group as the next setting input. If you're unfamilliar with regexes and / or capture groups I would recommend to stick to the preset.",

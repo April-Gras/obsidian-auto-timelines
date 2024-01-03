@@ -17,25 +17,30 @@ export const verticalTimelineToken = "aat-vertical";
  * Default key value relation for obsidian settings object
  */
 export const SETTINGS_DEFAULT = {
-	metadataKeyEventStartDate: "aat-event-start-date",
-	metadataKeyEventEndDate: "aat-event-end-date",
-	metadataKeyEventTitleOverride: "aat-event-title",
-	metadataKeyEventBodyOverride: "aat-event-body",
-	metadataKeyEventPictureOverride: "aat-event-picture",
-	metadataKeyEventTimelineTag: "timelines",
-	noteInlineEventKey: "aat-inline-event",
-	markdownBlockTagsToFindSeparator: ",",
-	dateParserRegex: "(?<year>-?[0-9]*)-(?<month>-?[0-9]*)-(?<day>-?[0-9]*)",
-	dateParserGroupPriority: "year,month,day",
+	// string
 	dateDisplayFormat: "{day}/{month}/{year}",
-	stylizeDateInline: false,
-	lookForTagsForTimeline: false,
-	lookForInlineEventsInNotes: true,
-	lookForCalendariumSpanEvents: true,
+	dateParserGroupPriority: "year,month,day",
+	dateParserRegex: "(?<year>-?[0-9]*)-(?<month>-?[0-9]*)-(?<day>-?[0-9]*)",
+	inlineEventEndOfBodyMarker: "%%aat-event-end-of-body%%",
+	markdownBlockTagsToFindSeparator: ",",
+	metadataKeyEventBodyOverride: "aat-event-body",
+	metadataKeyEventEndDate: "aat-event-end-date",
+	metadataKeyEventPictureOverride: "aat-event-picture",
+	metadataKeyEventStartDate: "aat-event-start-date",
+	metadataKeyEventTimelineTag: "timelines",
+	metadataKeyEventTitleOverride: "aat-event-title",
+	noteInlineEventKey: "aat-inline-event",
+	// bool
 	applyAdditonalConditionFormatting: true,
+	lookForCalendariumSpanEvents: true,
+	lookForInlineEventsInNotes: true,
+	lookForTagsForTimeline: false,
+	stylizeDateInline: false,
+	// number
+	bodyFontSize: -1,
 	dateFontSize: -1,
 	titleFontSize: -1,
-	bodyFontSize: -1,
+	// complex
 	dateTokenConfiguration: [
 		createNumberDateTokenConfiguration({ name: "year", minLeght: 4 }),
 		createNumberDateTokenConfiguration({ name: "month" }),

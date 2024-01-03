@@ -76,7 +76,11 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 			const baseData = await getDataFromNoteMetadata(context, tagsToFind);
 
 			if (isDefined(baseData)) events.push(baseData);
-			if (!finalSettings.lookForInlineEventsInNotes) continue;
+			if (
+				!finalSettings.lookForInlineEventsInNotes &&
+				!finalSettings.lookForCalendariumSpanEvents
+			)
+				continue;
 			const body =
 				baseData?.cardData.body ||
 				(await context.file.vault.cachedRead(context.file));
