@@ -83,7 +83,7 @@ vi.mock("obsidian", () => {
 		EditorSuggest: EditorSuggest,
 		TFile: TFile,
 		MarkdownRenderer: {
-			async renderMarkdown(
+			async render(
 				markdown: string,
 				el: HTMLElement,
 				sourcePath: string,
