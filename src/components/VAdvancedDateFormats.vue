@@ -12,11 +12,11 @@ import VHeader from "./VHeader.vue";
 import VWarningBlock from "./VWarningBlock.vue";
 
 const props = defineProps<{
-	value: AutoTimelineSettings;
+	modelValue: AutoTimelineSettings;
 }>();
 
 const emit = defineEmits<{
-	"update:value": [payload: Partial<AutoTimelineSettings>];
+	"update:modelValue": [payload: Partial<AutoTimelineSettings>];
 }>();
 
 const targetKeys = [
@@ -26,20 +26,20 @@ const targetKeys = [
 ] satisfies (keyof PickByType<AutoTimelineSettings, string>)[];
 
 const unconfiguredTokens = computed(() => {
-	return props.value.dateParserGroupPriority
+	return props.modelValue.dateParserGroupPriority
 		.split(",")
 		.filter(
 			(tokenName) =>
-				!props.value.dateTokenConfiguration.some(
+				!props.modelValue.dateTokenConfiguration.some(
 					({ name }) => name === tokenName
 				)
 		);
 });
 
 function handleTokenResync() {
-	emit("update:value", {
+	emit("update:modelValue", {
 		dateTokenConfiguration: [
-			...props.value.dateTokenConfiguration,
+			...props.modelValue.dateTokenConfiguration,
 			...unconfiguredTokens.value.map((name) =>
 				createNumberDateTokenConfiguration({ name })
 			),
@@ -48,7 +48,7 @@ function handleTokenResync() {
 }
 
 function handleResetToDefault(): void {
-	emit("update:value", {
+	emit("update:modelValue", {
 		...targetKeys.reduce((accumulator, key) => {
 			accumulator[key] = SETTINGS_DEFAULT[key];
 			return accumulator;
@@ -69,8 +69,8 @@ function handleResetToDefault(): void {
 		<VInput
 			type="text"
 			v-for="key in targetKeys"
-			:value="value[key]"
-			@update:value="emit('update:value', { [key]: $event })"
+			:model-value="modelValue[key]"
+			@update:model-value="emit('update:modelValue', { [key]: $event })"
 			:input-id="key"
 		>
 			<template #label>{{ $t(`settings.label.${key}`) }}</template>
@@ -102,10 +102,10 @@ function handleResetToDefault(): void {
 			$t("settings.title.advancedDateFormatsTokenConfiguration")
 		}}</VHeader>
 		<VConfigureDateTokenArray
-			:model-value="value.dateTokenConfiguration"
+			:model-value="modelValue.dateTokenConfiguration"
 			display-delete-option
 			@update:model-value="
-				emit('update:value', { dateTokenConfiguration: $event })
+				emit('update:modelValue', { dateTokenConfiguration: $event })
 			"
 		/>
 	</section>

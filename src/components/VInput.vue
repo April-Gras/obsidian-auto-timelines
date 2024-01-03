@@ -7,7 +7,7 @@ import type { TranslateResult } from "vue-i18n";
 type V = T extends "number" ? number : string;
 
 const props = defineProps<{
-	value: V;
+	modelValue: V;
 	inputId: string;
 	type: T;
 	placeholder?: string | TranslateResult;
@@ -16,7 +16,7 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-	(e: "update:value", payload: V): void;
+	(e: "update:modelValue", payload: V): void;
 }>();
 
 defineSlots<{
@@ -28,14 +28,14 @@ function handleInputEvent(event: Event) {
 	switch (props.type) {
 		case "number": {
 			return emit(
-				"update:value",
+				"update:modelValue",
 				// @ts-expect-error
 				Number((event.target as HTMLInputElement).value)
 			);
 		}
 		case "text":
 			return emit(
-				"update:value",
+				"update:modelValue",
 				// @ts-expect-error
 				(event.target as HTMLInputElement).value
 			);
@@ -56,7 +56,7 @@ const typedType = computed(() => props.type.toString());
 			:min="min"
 			:max="max"
 			:placeholder="placeholder"
-			:value="value"
+			:model-value="modelValue"
 			:type="typedType"
 			@input="handleInputEvent"
 		/>

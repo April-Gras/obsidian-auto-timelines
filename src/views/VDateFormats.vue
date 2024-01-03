@@ -9,11 +9,11 @@ import VHeader from "~/components/VHeader.vue";
 import type { AutoTimelineSettings } from "~/types";
 
 defineProps<{
-	value: AutoTimelineSettings;
+	modelValue: AutoTimelineSettings;
 }>();
 
 const emit = defineEmits<{
-	"update:value": [payload: Partial<AutoTimelineSettings>];
+	"update:modelValue": [payload: Partial<AutoTimelineSettings>];
 }>();
 
 const useAdvancedMode = ref(false);
@@ -22,7 +22,10 @@ const useAdvancedMode = ref(false);
 <template>
 	<article class="v-grid-display">
 		<VHeader>{{ $t("settings.title.date-formats") }}</VHeader>
-		<VCheckbox v-model:value="useAdvancedMode" input-id="use-advanced-mode">
+		<VCheckbox
+			v-model:model-value="useAdvancedMode"
+			input-id="use-advanced-mode"
+		>
 			<template #label>{{
 				$t("settings.label.useAdvancedMode")
 			}}</template>
@@ -30,14 +33,14 @@ const useAdvancedMode = ref(false);
 		<Transition mode="out-in">
 			<KeepAlive>
 				<VAdvancedDateFormats
-					:value="value"
-					@update:value="emit('update:value', $event)"
+					:model-value="value"
+					@update:model-value="emit('update:modelValue', $event)"
 					v-if="useAdvancedMode"
 				/>
 				<VCreateDateFormatFlow
 					v-else
-					:value="value"
-					@update:value="emit('update:value', $event)"
+					:model-value="value"
+					@update:model-value="emit('update:modelValue', $event)"
 				/>
 			</KeepAlive>
 		</Transition>

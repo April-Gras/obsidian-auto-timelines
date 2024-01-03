@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, useSlots } from "vue";
+import { useSlots } from "vue";
 import { hasSlot } from "~/composable/hasSlot";
 
 defineProps<{

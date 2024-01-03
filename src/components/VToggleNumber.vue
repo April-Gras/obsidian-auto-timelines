@@ -34,9 +34,9 @@ function handleOptInNumberUpdate(value: boolean) {
 	<VDetails :override-open="optInNumber">
 		<template #summary>
 			<VCheckbox
-				:value="optInNumber"
+				:model-value="optInNumber"
 				:input-id="`${inputId}-checkbox`"
-				@update:value="handleOptInNumberUpdate"
+				@update:model-value="handleOptInNumberUpdate"
 			>
 				<template #description
 					><slot name="checkbox-description"
@@ -46,10 +46,10 @@ function handleOptInNumberUpdate(value: boolean) {
 		</template>
 		<template #details>
 			<VInput
-				:value="modelValue"
+				:model-value="modelValue"
 				type="number"
 				:min="0"
-				@update:value="emit('update:modelValue', $event)"
+				@update:model-value="emit('update:modelValue', $event)"
 				:input-id="`${inputId}-number-input`"
 			>
 				<template #description

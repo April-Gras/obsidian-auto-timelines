@@ -3,10 +3,10 @@ const navigationTargets = ["index", "date-formats"] as const;
 export type NavigationTarget = (typeof navigationTargets)[number];
 
 defineProps<{
-	value: NavigationTarget;
+	modelValue: NavigationTarget;
 }>();
 const emit = defineEmits<{
-	(e: "update:value", payload: NavigationTarget): void;
+	(e: "update:modelValue", payload: NavigationTarget): void;
 }>();
 </script>
 
@@ -16,7 +16,7 @@ const emit = defineEmits<{
 			<li
 				v-for="navigationTarget in navigationTargets"
 				:class="{ 'v-nav-selected-route': navigationTarget === value }"
-				@click="emit('update:value', navigationTarget)"
+				@click="emit('update:modelValue', navigationTarget)"
 			>
 				{{ $t(`nav.title.${navigationTarget}`) }}
 			</li>

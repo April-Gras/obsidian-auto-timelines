@@ -7,7 +7,7 @@ import { parseAbstractDate } from "~/utils";
 import type { DateTokenConfiguration } from "~/types";
 
 const props = defineProps<{
-	value: string;
+	modelValue: string;
 	tokenConfigurations: DateTokenConfiguration[];
 }>();
 
@@ -44,21 +44,21 @@ const tryOutResults = computed(() => {
 });
 
 function updateParentWithRegex() {
-	emit("update:value", generateInputRegex() ?? "");
+	emit("update:modelValue", generateInputRegex() ?? "");
 }
 
 updateParentWithRegex();
 watch(template, updateParentWithRegex);
 
 const emit = defineEmits<{
-	"update:value": [payload: string];
+	"update:modelValue": [payload: string];
 }>();
 </script>
 
 <template>
 	<section class="v-grid-display">
 		<VInput
-			v-model:value="template"
+			v-model:model-value="template"
 			input-id="create-date-output-format"
 			type="text"
 		>
@@ -66,7 +66,11 @@ const emit = defineEmits<{
 			<template #description> Sample description </template>
 		</VInput>
 		<hr />
-		<VInput v-model:value="tryoutInput" input-id="tryout-input" type="text">
+		<VInput
+			v-model:model-value="tryoutInput"
+			input-id="tryout-input"
+			type="text"
+		>
 			<template #label>{{
 				$t("settings.label.tryYourInputFormat")
 			}}</template>

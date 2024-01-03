@@ -12,11 +12,11 @@ import { createNumberDateTokenConfiguration } from "~/utils";
 import VConfigureDateTokenArray from "./VConfigureDateTokenArray.vue";
 
 defineProps<{
-	value: AutoTimelineSettings;
+	modelValue: AutoTimelineSettings;
 }>();
 
 const emit = defineEmits<{
-	"update:value": [payload: Partial<AutoTimelineSettings>];
+	"update:modelValue": [payload: Partial<AutoTimelineSettings>];
 }>();
 
 enum FlowState {
@@ -70,7 +70,7 @@ function handleNextClick() {
 }
 
 function handleSave() {
-	emit("update:value", {
+	emit("update:modelValue", {
 		dateDisplayFormat: outputFormat.value,
 		dateParserGroupPriority: tokenConfigurations.value
 			.map(({ name }) => name)
@@ -92,7 +92,7 @@ function handleSave() {
 				tag="div"
 				scope="global"
 			>
-				<template v-for="(propValue, key) in value" #[key]>
+				<template v-for="(propValue, key) in modelValue" #[key]>
 					<b>{{ propValue }}</b>
 				</template>
 			</i18n-t>
@@ -117,12 +117,12 @@ function handleSave() {
 					v-else-if="flowProgress == FlowState['token-configuration']"
 				/>
 				<VCreateInputFormat
-					v-model:value="inputRegex"
+					v-model:model-value="inputRegex"
 					:token-configurations="tokenConfigurations"
 					v-else-if="flowProgress === FlowState['input-format']"
 				/>
 				<VCreateOutputFormat
-					v-model:value="outputFormat"
+					v-model:model-value="outputFormat"
 					:token-configurations="tokenConfigurations"
 					v-else-if="flowProgress === FlowState['output-format']"
 				/>

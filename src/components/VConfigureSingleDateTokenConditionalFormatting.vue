@@ -120,8 +120,8 @@ const moreThanOneEntry = computed(() => props.modelValue.formatting.length > 1);
 				<div class="v-grid-display slim">
 					<VCheckbox
 						:input-id="`configure-single-date-token-format-condition-are-exclusive-${index}`"
-						:value="conditionsAreExclusive"
-						@update:value="
+						:model-value="conditionsAreExclusive"
+						@update:model-value="
 							editFormattingAtIndex(index, {
 								conditionsAreExclusive: $event,
 							})
@@ -140,9 +140,9 @@ const moreThanOneEntry = computed(() => props.modelValue.formatting.length > 1);
 					</VCheckbox>
 					<VInput
 						:input-id="`configure-single-date-token-format-condition-are-exclusive-${index}`"
-						:value="format"
+						:model-value="format"
 						type="text"
-						@update:value="
+						@update:model-value="
 							editFormattingAtIndex(index, {
 								format: $event,
 							})
@@ -157,7 +157,7 @@ const moreThanOneEntry = computed(() => props.modelValue.formatting.length > 1);
 							$t(
 								"settings.description.configureSingleDateTokenConditionalFormatting.format",
 								// This is ridiculous but didn't find any way to escape the {value} without vue-i18n spawning an error.
-								{ value: "{value}" }
+								{ modelValue: "{value}" }
 							)
 						}}</template>
 					</VInput>
@@ -178,7 +178,7 @@ const moreThanOneEntry = computed(() => props.modelValue.formatting.length > 1);
 								evaluationIndex
 							)
 						"
-						@update:modelValue="
+						@update:model-value="
 							editEvaluationAtIndexFromFormatAtIndex(
 								index,
 								evaluationIndex,
