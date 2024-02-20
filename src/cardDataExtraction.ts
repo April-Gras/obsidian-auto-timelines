@@ -152,7 +152,7 @@ export function getAbstractDateFromMetadata(
 	if (isDefined(numberValue)) {
 		const additionalContentForNumberOnlydate = [
 			...Array(Math.max(0, groupsToCheck.length - 1)),
-		].map(() => 0);
+		].map(() => 1);
 
 		return [numberValue, ...additionalContentForNumberOnlydate];
 	}

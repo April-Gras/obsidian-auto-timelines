@@ -40,6 +40,7 @@ export const verboseDayDatePreset: DateFormatCreationFunction = ({ t }) => ({
 			}),
 			createNumberDateTokenConfiguration({
 				name: "day",
+				minLeght: 1,
 				formatting: [
 					{
 						conditionsAreExclusive: true,
