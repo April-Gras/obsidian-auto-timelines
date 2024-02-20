@@ -21,6 +21,7 @@ export const SETTINGS_DEFAULT = {
 	dateDisplayFormat: "{day}/{month}/{year}",
 	dateParserGroupPriority: "year,month,day",
 	dateParserRegex: "(?<year>-?[0-9]*)-(?<month>-?[0-9]*)-(?<day>-?[0-9]*)",
+	eventRenderToggleKey: "aat-render-enabled",
 	inlineEventEndOfBodyMarker: "%%aat-event-end-of-body%%",
 	markdownBlockTagsToFindSeparator: ",",
 	metadataKeyEventBodyOverride: "aat-event-body",
