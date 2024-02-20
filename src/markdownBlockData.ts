@@ -50,7 +50,6 @@ export const acceptedSettingsOverride = [
 	"stylizeDateInline",
 	"dateFontSize",
 	"titleFontSize",
-
 	"bodyFontSize",
 ] satisfies (keyof AutoTimelineSettings)[];
 
