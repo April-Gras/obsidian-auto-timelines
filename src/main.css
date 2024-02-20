@@ -182,6 +182,11 @@ div.aat-range-element:hover {
 	gap: 8px;
 }
 
+.v-grid-display.clickable,
+.v-grid-display-2.clickable {
+	cursor: pointer;
+}
+
 .v-grid-display-2 {
 	grid-template-columns: 1fr 1fr;
 }
@@ -190,7 +195,7 @@ div.aat-range-element:hover {
 	display: flex;
 	gap: 8px;
 	align-items: center;
-	justify-content: justify-start;
+	justify-content: start;
 }
 
 .v-input-wrap {
@@ -261,4 +266,8 @@ div.aat-range-element:hover {
 
 h2.v-header {
 	margin: 0px !important;
+}
+
+.v-pre-wrap {
+	white-space: pre-wrap;
 }

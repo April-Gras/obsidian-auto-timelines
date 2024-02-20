@@ -6,13 +6,20 @@
     "add": "Add",
     "confirm": "Confirm my changes!",
     "remove": "Remove",
-    "formatCount": "Format #{count}"
+    "formatCount": "Format #{count}",
+    "input": "Input",
+    "output": "Output"
   },
   "nav": {
     "title": {
       "index": "Generic settings",
       "date-formats": "Date format settings"
     }
+  },
+  "dateFormatsNav": {
+    "wizzard": "Setup wizzard",
+    "presets": "Presets",
+    "advanced": "Advanced"
   },
   "settings": {
     "text": {
@@ -51,7 +58,6 @@
       "metadataKeyEventTitleOverride": "Event title override",
       "markdownBlockTagsToFindSeparator": "Markdown Code Block \"Tags To Find\" Separator",
       "tryYourInputFormat": "Try your input format out",
-      "useAdvancedMode": "Use advanced mode / edit regexes",
       "lookForTagsForTimeline": "Check to include a notes tags into the values used to assign notes to a timeline",
       "lookForInlineEventsInNotes": "Check to ennable the inline event feature. This allows to define events for any timeline from inside a note.",
       "applyAdditonalConditionFormatting": "Toggle on to allow date tokens conditional formatting to be allowed. When set to false this feature will be skipped. This could save you a few milliseconds off every card render.",
@@ -153,5 +159,45 @@
     "NOTEQUAL": "Not equal to",
     "GREATEROREQUAL": "Greater or equal to",
     "LESSOREQUAL": "Less or equal to"
+  },
+  "datePreset": {
+    "title": {
+      "normal": "Normal (The default)",
+      "imperial": "Imperial",
+      "verbose-day": "Verbose day",
+      "dnd-calendar-of-harptos-dalereckoning": "D&D - Calendar of harptos (dalereckoning)"
+    },
+    "description": {
+      "normal": "The most vanilla way to display a date.",
+      "imperial": "The true american way of displaying a date.",
+      "verbose-day": "For when you enjoy adding silly leters at the end of numbers. This format will append the st nd rd th particles after the days.",
+      "dnd-calendar-of-harptos-dalereckoning": "Good for D&D session notes - The Calendar of Harptos was the calendar used across most of Faerûn. It was created by the wizard Harptos of Kaalinth, although most people associate the word \"Harptos\" with the calendar. It was split into twelve months, each lasting three tendays (or thirty days). There were an additional five days that fell between months, bringing the total number of days in most years to 365. - Dalereckoning is taken from the Year of Sunrise, 1 DR, when the Standing Stone was raised by the elves of Cormanthyr and the humans of the Dalelands. Since this time, humans were permitted by the Elven Court to settle in the more open regions of the forests. In some texts, primarily those which do not have direct ties to Dalesfolk history, Dalereckoning is called Freeman's Reckoning (FR). The calendar is widely used in Faerûn but has not spread beyond its shores."
+    },
+    "sampleInput": {
+      "normal": "1996-2-16",
+      "imperial": "1996-2-16",
+      "verbose-day": "1996-2-16",
+      "dnd-calendar-of-harptos-dalereckoning": "1996-2-16-20-24"
+    },
+    "sampleOutput": {
+      "normal": "16/02/1996",
+      "imperial": "02/16/1996",
+      "verbose-day": "1st February 1996",
+      "dnd-calendar-of-harptos-dalereckoning": "1996D.R. Alturiak 16 20:24"
+    }
+  },
+  "months": {
+    "january": "January",
+    "february": "February",
+    "march": "March",
+    "april": "April",
+    "may": "May",
+    "june": "June",
+    "july": "July",
+    "august": "August",
+    "september": "September",
+    "october": "October",
+    "november": "November",
+    "december": "December"
   }
 }

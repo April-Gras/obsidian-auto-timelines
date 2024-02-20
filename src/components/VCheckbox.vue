@@ -1,15 +1,15 @@
 <script setup lang="ts">
 const props = defineProps<{
-	value: boolean;
+	modelValue: boolean;
 	inputId: string;
 }>();
 
 const emit = defineEmits<{
-	(e: "update:value", payload: boolean): void;
+	(e: "update:modelValue", payload: boolean): void;
 }>();
 
 function handleInputEvent() {
-	emit("update:value", !props.value);
+	emit("update:modelValue", !props.modelValue);
 }
 </script>
 
@@ -34,9 +34,9 @@ function handleInputEvent() {
 		<div
 			class="checkbox-container"
 			@click="handleInputEvent"
-			:class="{ 'is-enabled': value }"
+			:class="{ 'is-enabled': modelValue }"
 		>
-			<input :id="inputId" :value="value" type="checkbox" />
+			<input :id="inputId" :value="modelValue" type="checkbox" />
 		</div>
 	</div>
 </template>

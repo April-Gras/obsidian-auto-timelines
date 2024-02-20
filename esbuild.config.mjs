@@ -19,7 +19,11 @@ const context = await esbuild.context({
 		js: banner,
 	},
 	entryPoints: ["./src/main.ts"],
-	plugins: [Vue({ isProd: prod })],
+	plugins: [
+		Vue({
+			isProd: prod,
+		}),
+	],
 	bundle: true,
 	external: [
 		"obsidian",

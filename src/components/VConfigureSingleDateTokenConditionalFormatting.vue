@@ -95,8 +95,6 @@ function removeEvaluationAtIndexFromFormatAtIndex(
 	);
 	emit("update:modelValue", clonedModelValue);
 }
-
-const moreThanOneEntry = computed(() => props.modelValue.formatting.length > 1);
 </script>
 <template>
 	<div class="v-grid-display">
@@ -108,9 +106,7 @@ const moreThanOneEntry = computed(() => props.modelValue.formatting.length > 1);
 		>
 			<div class="v-grid-display">
 				<div class="v-inline-flex-display">
-					<VButton
-						@click.native="removeFormattingAtIndex(index)"
-						v-if="moreThanOneEntry"
+					<VButton @click.native="removeFormattingAtIndex(index)"
 						>X</VButton
 					>
 					<VHeader>{{
@@ -120,8 +116,8 @@ const moreThanOneEntry = computed(() => props.modelValue.formatting.length > 1);
 				<div class="v-grid-display slim">
 					<VCheckbox
 						:input-id="`configure-single-date-token-format-condition-are-exclusive-${index}`"
-						:value="conditionsAreExclusive"
-						@update:value="
+						:model-value="conditionsAreExclusive"
+						@update:model-value="
 							editFormattingAtIndex(index, {
 								conditionsAreExclusive: $event,
 							})
@@ -140,9 +136,9 @@ const moreThanOneEntry = computed(() => props.modelValue.formatting.length > 1);
 					</VCheckbox>
 					<VInput
 						:input-id="`configure-single-date-token-format-condition-are-exclusive-${index}`"
-						:value="format"
+						:model-value="format"
 						type="text"
-						@update:value="
+						@update:model-value="
 							editFormattingAtIndex(index, {
 								format: $event,
 							})
@@ -178,7 +174,7 @@ const moreThanOneEntry = computed(() => props.modelValue.formatting.length > 1);
 								evaluationIndex
 							)
 						"
-						@update:modelValue="
+						@update:model-value="
 							editEvaluationAtIndexFromFormatAtIndex(
 								index,
 								evaluationIndex,

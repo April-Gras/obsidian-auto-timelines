@@ -17,12 +17,12 @@ const emit = defineEmits<{
 }>();
 
 function handleUpdateModelValueAtIndex(
-	value: DateTokenConfiguration,
+	modelValue: DateTokenConfiguration,
 	index: number
 ) {
 	const clone = [...props.modelValue];
 
-	clone[index] = value;
+	clone[index] = modelValue;
 	emit("update:modelValue", clone);
 }
 

@@ -47,9 +47,9 @@ function editTokenAtIndex(index: number, value: string) {
 			<VButton @click="handleRemoveAtIndex(index)">-</VButton>
 			<VInput
 				type="text"
-				:value="token.name"
+				:model-value="token.name"
 				:input-id="`create-date-token-${index}`"
-				@update:value="editTokenAtIndex(index, $event)"
+				@update:model-value="editTokenAtIndex(index, $event)"
 			/>
 		</div>
 		<VButton @click="handleAddAtEnd">{{ $t("common.add") }}</VButton>

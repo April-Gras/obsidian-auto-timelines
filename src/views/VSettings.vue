@@ -11,11 +11,11 @@ import { SETTINGS_DEFAULT } from "~/settings";
 import type { AutoTimelineSettings, PickByType } from "~/types";
 
 const props = defineProps<{
-	value: AutoTimelineSettings;
+	modelValue: AutoTimelineSettings;
 }>();
 
 const emit = defineEmits<{
-	"update:value": [payload: Partial<AutoTimelineSettings>];
+	"update:modelValue": [payload: Partial<AutoTimelineSettings>];
 }>();
 
 const generalSettingKeys = [
@@ -49,20 +49,20 @@ const fantasyCalendarKeys = Object.keys(
 
 const keysAreCompliantWithFcPreset = computed(() => {
 	return fantasyCalendarKeys.every(
-		(key) => props.value[key] === fantasyCalendarPreset[key]
+		(key) => props.modelValue[key] === fantasyCalendarPreset[key]
 	);
 });
 
 function handleUpdateValueFantasyCalendarCheckbox() {
 	if (keysAreCompliantWithFcPreset.value)
 		emit(
-			"update:value",
+			"update:modelValue",
 			fantasyCalendarKeys.reduce((acc, key) => {
 				acc[key] = SETTINGS_DEFAULT[key];
 				return acc;
 			}, {} as Partial<AutoTimelineSettings>)
 		);
-	else emit("update:value", fantasyCalendarPreset);
+	else emit("update:modelValue", fantasyCalendarPreset);
 }
 
 const checkboxKeys: readonly (keyof PickByType<
@@ -87,8 +87,10 @@ const fontSizeOverrides: readonly (keyof PickByType<
 			<VInput
 				type="text"
 				v-for="key in generalSettingKeys"
-				:value="value[key]"
-				@update:value="emit('update:value', { [key]: $event.trim() })"
+				:model-value="modelValue[key]"
+				@update:model-value="
+					emit('update:modelValue', { [key]: $event.trim() })
+				"
 				:input-id="key"
 			>
 				<template #label>{{ $t(`settings.label.${key}`) }}</template>
@@ -101,9 +103,11 @@ const fontSizeOverrides: readonly (keyof PickByType<
 		<section class="v-grid-display slim" v-for="key in checkboxKeys">
 			<VHeader>{{ $t(`settings.title.${key}`) }}</VHeader>
 			<VCheckbox
-				:value="value[key]"
+				:model-value="modelValue[key]"
 				:input-id="key"
-				@update:value="emit('update:value', { [key]: $event })"
+				@update:model-value="
+					emit('update:modelValue', { [key]: $event })
+				"
 			>
 				<template #label>{{ $t(`settings.label.${key}`) }}</template>
 				<template #description>
@@ -140,8 +144,8 @@ const fontSizeOverrides: readonly (keyof PickByType<
 			</VHeader>
 			<VCheckbox
 				input-id="fantasy-calendar-preset-keys"
-				:value="keysAreCompliantWithFcPreset"
-				@update:value="handleUpdateValueFantasyCalendarCheckbox"
+				:model-value="keysAreCompliantWithFcPreset"
+				@update:model-value="handleUpdateValueFantasyCalendarCheckbox"
 			>
 				<template #label>{{
 					$t("settings.label.fantasyCalendarPresetKeys")
@@ -152,9 +156,9 @@ const fontSizeOverrides: readonly (keyof PickByType<
 			</VCheckbox>
 			<VCheckbox
 				input-id="fantasy-calendar-span-events"
-				:value="value.lookForCalendariumSpanEvents"
-				@update:value="
-					emit('update:value', {
+				:model-value="modelValue.lookForCalendariumSpanEvents"
+				@update:model-value="
+					emit('update:modelValue', {
 						lookForCalendariumSpanEvents: $event,
 					})
 				"
@@ -190,8 +194,10 @@ const fontSizeOverrides: readonly (keyof PickByType<
 			<VHeader>{{ $t("settings.title.accessibility") }}</VHeader>
 			<VToggleNumber
 				v-for="key in fontSizeOverrides"
-				:modelValue="value[key]"
-				@update:model-value="emit('update:value', { [key]: $event })"
+				:model-value="modelValue[key]"
+				@update:model-value="
+					emit('update:modelValue', { [key]: $event })
+				"
 				:input-id="key"
 			>
 				<template #checkbox-label>{{
