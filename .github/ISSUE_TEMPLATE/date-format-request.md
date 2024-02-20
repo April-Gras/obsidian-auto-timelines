@@ -11,8 +11,8 @@ assignees: April-Gras
 > Name your date format
 
 ## Type
-[] New date format
-[] Existing date format - (it's in the list already, but you want to edit something about it)
+- [ ] New date format
+- [ ] Existing date format - (it's in the list already, but you want to edit something about it)
 
 ## Request
 > Make requests about said date format
