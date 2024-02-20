@@ -95,8 +95,6 @@ function removeEvaluationAtIndexFromFormatAtIndex(
 	);
 	emit("update:modelValue", clonedModelValue);
 }
-
-const moreThanOneEntry = computed(() => props.modelValue.formatting.length > 1);
 </script>
 <template>
 	<div class="v-grid-display">
@@ -108,9 +106,7 @@ const moreThanOneEntry = computed(() => props.modelValue.formatting.length > 1);
 		>
 			<div class="v-grid-display">
 				<div class="v-inline-flex-display">
-					<VButton
-						@click.native="removeFormattingAtIndex(index)"
-						v-if="moreThanOneEntry"
+					<VButton @click.native="removeFormattingAtIndex(index)"
 						>X</VButton
 					>
 					<VHeader>{{
@@ -157,7 +153,7 @@ const moreThanOneEntry = computed(() => props.modelValue.formatting.length > 1);
 							$t(
 								"settings.description.configureSingleDateTokenConditionalFormatting.format",
 								// This is ridiculous but didn't find any way to escape the {value} without vue-i18n spawning an error.
-								{ modelValue: "{value}" }
+								{ value: "{value}" }
 							)
 						}}</template>
 					</VInput>

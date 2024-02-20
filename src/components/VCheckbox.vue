@@ -36,7 +36,7 @@ function handleInputEvent() {
 			@click="handleInputEvent"
 			:class="{ 'is-enabled': modelValue }"
 		>
-			<input :id="inputId" :model-value="modelValue" type="checkbox" />
+			<input :id="inputId" :value="modelValue" type="checkbox" />
 		</div>
 	</div>
 </template>

@@ -117,12 +117,12 @@ function handleSave() {
 					v-else-if="flowProgress == FlowState['token-configuration']"
 				/>
 				<VCreateInputFormat
-					v-model:model-value="inputRegex"
+					v-model="inputRegex"
 					:token-configurations="tokenConfigurations"
 					v-else-if="flowProgress === FlowState['input-format']"
 				/>
 				<VCreateOutputFormat
-					v-model:model-value="outputFormat"
+					v-model="outputFormat"
 					:token-configurations="tokenConfigurations"
 					v-else-if="flowProgress === FlowState['output-format']"
 				/>

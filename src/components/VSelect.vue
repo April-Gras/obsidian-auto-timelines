@@ -31,8 +31,8 @@ function handleSelectInput({ target }: Event) {
 			<template #label><slot name="label" /></template>
 			<template #description><slot name="description" /></template>
 		</VLabel>
-		<select :model-value="modelValue" @input="handleSelectInput">
-			<option v-for="option in options" :model-value="option">
+		<select :value="modelValue" @input="handleSelectInput">
+			<option v-for="option in options" :value="option">
 				{{ $t(`${translationKey}.${option}`) }}
 			</option>
 		</select>

@@ -15,7 +15,9 @@ const emit = defineEmits<{
 		<ol>
 			<li
 				v-for="navigationTarget in navigationTargets"
-				:class="{ 'v-nav-selected-route': navigationTarget === value }"
+				:class="{
+					'v-nav-selected-route': navigationTarget === modelValue,
+				}"
 				@click="emit('update:modelValue', navigationTarget)"
 			>
 				{{ $t(`nav.title.${navigationTarget}`) }}

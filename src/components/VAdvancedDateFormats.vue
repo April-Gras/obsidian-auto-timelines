@@ -3,13 +3,14 @@ import { computed } from "vue";
 
 import VInput from "./VInput.vue";
 import VButton from "./VButton.vue";
-import { SETTINGS_DEFAULT } from "~/settings";
-
-import type { AutoTimelineSettings, PickByType } from "~/types";
-import { createNumberDateTokenConfiguration } from "~/utils";
 import VConfigureDateTokenArray from "./VConfigureDateTokenArray.vue";
 import VHeader from "./VHeader.vue";
 import VWarningBlock from "./VWarningBlock.vue";
+
+import { SETTINGS_DEFAULT } from "~/settings";
+import { createNumberDateTokenConfiguration } from "~/utils";
+
+import type { AutoTimelineSettings, PickByType } from "~/types";
 
 const props = defineProps<{
 	modelValue: AutoTimelineSettings;

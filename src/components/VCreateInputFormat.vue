@@ -58,7 +58,7 @@ const emit = defineEmits<{
 <template>
 	<section class="v-grid-display">
 		<VInput
-			v-model:model-value="template"
+			v-model="template"
 			input-id="create-date-output-format"
 			type="text"
 		>
@@ -66,11 +66,7 @@ const emit = defineEmits<{
 			<template #description> Sample description </template>
 		</VInput>
 		<hr />
-		<VInput
-			v-model:model-value="tryoutInput"
-			input-id="tryout-input"
-			type="text"
-		>
+		<VInput v-model="tryoutInput" input-id="tryout-input" type="text">
 			<template #label>{{
 				$t("settings.label.tryYourInputFormat")
 			}}</template>

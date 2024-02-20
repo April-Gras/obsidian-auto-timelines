@@ -71,7 +71,7 @@ export class TimelineSettingTab extends PluginSettingTab {
 		this.vueApp = createApp({
 			components: { VApp },
 			template:
-				"<VApp :model-value='value' @update:model-value='save' />",
+				"<VApp :model-value='modelValue' @update:model-value='save' />",
 			setup: () => {
 				const modelValue = ref(this.plugin.settings);
 

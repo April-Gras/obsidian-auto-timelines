@@ -49,7 +49,7 @@ const fantasyCalendarKeys = Object.keys(
 
 const keysAreCompliantWithFcPreset = computed(() => {
 	return fantasyCalendarKeys.every(
-		(key) => props.value[key] === fantasyCalendarPreset[key]
+		(key) => props.modelValue[key] === fantasyCalendarPreset[key]
 	);
 });
 
@@ -87,7 +87,7 @@ const fontSizeOverrides: readonly (keyof PickByType<
 			<VInput
 				type="text"
 				v-for="key in generalSettingKeys"
-				:model-value="value[key]"
+				:model-value="modelValue[key]"
 				@update:model-value="
 					emit('update:modelValue', { [key]: $event.trim() })
 				"
@@ -103,7 +103,7 @@ const fontSizeOverrides: readonly (keyof PickByType<
 		<section class="v-grid-display slim" v-for="key in checkboxKeys">
 			<VHeader>{{ $t(`settings.title.${key}`) }}</VHeader>
 			<VCheckbox
-				:model-value="value[key]"
+				:model-value="modelValue[key]"
 				:input-id="key"
 				@update:model-value="
 					emit('update:modelValue', { [key]: $event })
@@ -156,7 +156,7 @@ const fontSizeOverrides: readonly (keyof PickByType<
 			</VCheckbox>
 			<VCheckbox
 				input-id="fantasy-calendar-span-events"
-				:model-value="value.lookForCalendariumSpanEvents"
+				:model-value="modelValue.lookForCalendariumSpanEvents"
 				@update:model-value="
 					emit('update:modelValue', {
 						lookForCalendariumSpanEvents: $event,
@@ -194,7 +194,7 @@ const fontSizeOverrides: readonly (keyof PickByType<
 			<VHeader>{{ $t("settings.title.accessibility") }}</VHeader>
 			<VToggleNumber
 				v-for="key in fontSizeOverrides"
-				:model-value="value[key]"
+				:model-value="modelValue[key]"
 				@update:model-value="
 					emit('update:modelValue', { [key]: $event })
 				"

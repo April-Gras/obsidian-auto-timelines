@@ -3,11 +3,14 @@ defineSlots<{
 	default(props: {}): any;
 }>();
 
-withDefaults(defineProps<{ slim?: boolean }>(), { slim: false });
+withDefaults(defineProps<{ slim?: boolean; clickable?: false }>(), {
+	slim: false,
+	clickable: false,
+});
 </script>
 
 <template>
-	<article class="v-card" :class="{ slim }">
+	<article class="v-card" :class="{ slim, clickable }">
 		<slot />
 	</article>
 </template>
@@ -26,6 +29,10 @@ withDefaults(defineProps<{ slim?: boolean }>(), { slim: false });
 
 	&.slim {
 		padding: 8px;
+	}
+
+	&.clickable {
+		cursor: pointer;
 	}
 }
 </style>

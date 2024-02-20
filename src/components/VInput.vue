@@ -56,7 +56,7 @@ const typedType = computed(() => props.type.toString());
 			:min="min"
 			:max="max"
 			:placeholder="placeholder"
-			:model-value="modelValue"
+			:value="modelValue"
 			:type="typedType"
 			@input="handleInputEvent"
 		/>

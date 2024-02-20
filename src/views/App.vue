@@ -7,7 +7,7 @@ import VDateFormats from "./VDateFormats.vue";
 import type { NavigationTarget } from "~/components/VNav.vue";
 import type { AutoTimelineSettings } from "~/types";
 
-const props = defineProps<{
+defineProps<{
 	modelValue: AutoTimelineSettings;
 }>();
 
@@ -28,12 +28,12 @@ const currentComponent = computed(() => {
 
 <template>
 	<div>
-		<VNav v-model:model-value="currentRoute" />
+		<VNav v-model="currentRoute" />
 		<Transition mode="out-in">
 			<component
 				:is="currentComponent"
 				@update:model-value="emit('update:modelValue', $event)"
-				:model-value="props.modelValue"
+				:model-value="modelValue"
 			></component>
 		</Transition>
 	</div>
