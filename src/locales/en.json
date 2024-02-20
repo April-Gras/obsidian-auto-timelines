@@ -65,6 +65,7 @@
       "dateFontSize": "Override the font size of the date in the timeline cards (value in pixels)",
       "titleFontSize": "Override the font size of the title in the timeline cards (value in pixels)",
       "bodyFontSize": "Override the font size of the body in the timeline cards (value in pixels)",
+      "eventRenderToggleKey": "Render toggle key",
       "configureSingleDateToken": {
         "type": "The type of the token",
         "conditionalFormatting": "Add additional formatting"
@@ -106,6 +107,7 @@
       "lookForInlineEventsInNotes": "Check {linkText} on how to create inline events.",
       "applyAdditonalConditionFormatting": "Toggle on to allow date tokens conditional formatting to be allowed. When set to false this feature will be skipped. This could save you a few milliseconds off every card render.",
       "stylizeDateInline": "Turn on for a more compact display in your timeline event cards. Or turn off for more space.",
+      "eventRenderToggleKey": "The key used to control if a perculiar event is rendered or not",
       "configureSingleDateToken": {
         "STRING": "A string typed date token represents something akin to our months. tl;dr, they are written using letter and not numbers",
         "NUMBER": "A numerical typed date token is your stardard number representing a date. Just make sure to configure it's mininal lengh. For example a minimal length set to 2 will result in the 6th day being written as \"06\""

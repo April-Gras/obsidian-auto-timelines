@@ -50,8 +50,9 @@ export const acceptedSettingsOverride = [
 	"stylizeDateInline",
 	"dateFontSize",
 	"titleFontSize",
+
 	"bodyFontSize",
-] as const;
+] satisfies (keyof AutoTimelineSettings)[];
 
 /**
  * Checks if a given string is part of the settings keys that can be overriden.

@@ -28,6 +28,7 @@ const generalSettingKeys = [
 	"markdownBlockTagsToFindSeparator",
 	"noteInlineEventKey",
 	"inlineEventEndOfBodyMarker",
+	"eventRenderToggleKey",
 ] satisfies (keyof PickByType<AutoTimelineSettings, string>)[];
 
 const fantasyCalendarPreset: Record<
