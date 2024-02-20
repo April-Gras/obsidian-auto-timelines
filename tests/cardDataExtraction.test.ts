@@ -51,7 +51,7 @@ describe.concurrent("Card Data", () => {
 			SETTINGS_DEFAULT["metadataKeyEventStartDate"]
 		);
 
-		expect(date).toStrictEqual([-1000, 0, 0]);
+		expect(date).toStrictEqual([-1000, 1, 1]);
 	});
 
 	test("[getImageUrlFromContextOrDocument] - ok internal", () => {
