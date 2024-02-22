@@ -8,7 +8,7 @@ This plugins allows you to tag notes to generate timelines. It's designed with s
 
 ## Sample vault with basic examples
 
-[TimelineSampleVault.zip](https://github.com/April-Gras/obsidian-auto-timelines/files/12358993/TimelineSampleVault.zip)
+[TimelineSampleVault.zip](https://github.com/April-Gras/obsidian-auto-timelines/files/14350147/TimelineSampleVault.zip)
 
 Here's a zip file of a obsidian vault with various basic examples to help you build timelines.
 Alternatively [Josh Plunkett](https://www.youtube.com/@JoshPlunkett) did [a tutorial video](https://www.youtube.com/watch?v=992o1j8zRSk) covering the basics

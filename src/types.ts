@@ -4,6 +4,7 @@ import { FnExtractCardData, getDataFromNoteMetadata } from "~/cardData";
 
 import type { App, CachedMetadata, TFile } from "obsidian";
 import type { Merge } from "ts-essentials";
+import type { ComposerTranslation } from "vue-i18n";
 
 /**
  * @author https://stackoverflow.com/a/69756175
@@ -152,3 +153,20 @@ type StringSpecific = Merge<
 		dictionary: string[];
 	}
 >;
+
+export type DateFormatPreset = {
+	name: string;
+	icon: string;
+	settings: Pick<
+		AutoTimelineSettings,
+		| "dateDisplayFormat"
+		| "dateParserGroupPriority"
+		| "dateParserRegex"
+		| "applyAdditonalConditionFormatting"
+		| "dateTokenConfiguration"
+	>;
+};
+
+export type DateFormatCreationFunction = (context: {
+	t: ComposerTranslation;
+}) => DateFormatPreset;

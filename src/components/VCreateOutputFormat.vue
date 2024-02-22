@@ -8,30 +8,31 @@ import { formatAbstractDate } from "~/abstractDateFormatting";
 import type { DateTokenConfiguration } from "~/types";
 
 const props = defineProps<{
-	value: string;
+	modelValue: string;
 	tokenConfigurations: DateTokenConfiguration[];
 }>();
 
 const emit = defineEmits<{
-	"update:value": [payload: string];
+	"update:modelValue": [payload: string];
 }>();
 
 const abstractDate = ref(props.tokenConfigurations.map(() => 25));
 
 onMounted(() =>
 	emit(
-		"update:value",
+		"update:modelValue",
 		props.tokenConfigurations.map(({ name }) => `{${name}}`).join("/")
 	)
 );
 
 const outputTryout = computed(() => {
 	return formatAbstractDate(abstractDate.value, {
-		dateDisplayFormat: props.value,
+		dateDisplayFormat: props.modelValue,
 		dateParserGroupPriority: props.tokenConfigurations
 			.map((e) => e.name)
 			.join(","),
 		dateTokenConfiguration: props.tokenConfigurations,
+		applyAdditonalConditionFormatting: false,
 	});
 });
 
@@ -44,8 +45,8 @@ function handleAbstractDateMemberUpdate(index: number, $event: number) {
 	<section class="v-grid-display">
 		<VInput
 			type="text"
-			:value="value"
-			@update:value="emit('update:value', $event)"
+			:model-value="modelValue"
+			@update:model-value="emit('update:modelValue', $event)"
 			input-id="create-date-output-format"
 		>
 			<template #label>
@@ -59,9 +60,11 @@ function handleAbstractDateMemberUpdate(index: number, $event: number) {
 		<section class="v-grid-display-2">
 			<VInput
 				v-for="(number, index) in abstractDate"
-				:value="number"
+				:model-value="number"
 				type="number"
-				@update:value="handleAbstractDateMemberUpdate(index, $event)"
+				@update:model-value="
+					handleAbstractDateMemberUpdate(index, $event)
+				"
 				:input-id="`tryout-output-${index}`"
 			>
 				<template #label>{{

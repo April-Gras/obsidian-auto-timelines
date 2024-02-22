@@ -72,7 +72,7 @@ function handleDictionaryUpdateAtIndex(
 			:model-value="modelValue.type"
 			:input-id="`configure-date-token-${modelValue.name}`"
 			:options="availableDateTokenTypeArray"
-			@update:modelValue="handleUpdateType"
+			@update:model-value="handleUpdateType"
 			translation-key="dateTokens.configure"
 		>
 			<template #description>
@@ -91,8 +91,8 @@ function handleDictionaryUpdateAtIndex(
 			>
 				<VInput
 					:input-id="`configure-single-date-token-min-length-edit-${modelValue.name}`"
-					:value="modelValue.minLeght"
-					@update:value="
+					:model-value="modelValue.minLeght"
+					@update:model-value="
 						emit('update:modelValue', {
 							...modelValue,
 							minLeght: $event,
@@ -115,8 +115,8 @@ function handleDictionaryUpdateAtIndex(
 				</VInput>
 				<VCheckbox
 					:input-id="`configure-single-date-token-hide-sign-edit-${modelValue.name}`"
-					:value="modelValue.hideSign || false"
-					@update:value="
+					:model-value="modelValue.hideSign || false"
+					@update:model-value="
 						emit('update:modelValue', {
 							...modelValue,
 							hideSign: $event,
@@ -155,11 +155,11 @@ function handleDictionaryUpdateAtIndex(
 					<VInput
 						type="text"
 						:inputId="`update-${modelValue.name}-dictionary-value-at-index-${index}`"
-						:value="entry"
+						:model-value="entry"
 						:placeholder="
 							$t('settings.placeholder.stringTokenDctionaryEntry')
 						"
-						@update:value="
+						@update:model-value="
 							handleDictionaryUpdateAtIndex(index, $event)
 						"
 					/>

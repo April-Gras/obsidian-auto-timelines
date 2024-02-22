@@ -21,6 +21,7 @@ export const SETTINGS_DEFAULT = {
 	dateDisplayFormat: "{day}/{month}/{year}",
 	dateParserGroupPriority: "year,month,day",
 	dateParserRegex: "(?<year>-?[0-9]*)-(?<month>-?[0-9]*)-(?<day>-?[0-9]*)",
+	eventRenderToggleKey: "aat-render-enabled",
 	inlineEventEndOfBodyMarker: "%%aat-event-end-of-body%%",
 	markdownBlockTagsToFindSeparator: ",",
 	metadataKeyEventBodyOverride: "aat-event-body",
@@ -71,17 +72,19 @@ export class TimelineSettingTab extends PluginSettingTab {
 
 		this.vueApp = createApp({
 			components: { VApp },
-			template: "<VApp :value='value' @update:value='save' />",
+			template:
+				"<VApp :model-value='modelValue' @update:model-value='save' />",
 			setup: () => {
-				const value = ref(this.plugin.settings);
+				const modelValue = ref(this.plugin.settings);
+
 				return {
-					value,
+					modelValue,
 					save: async (payload: Partial<AutoTimelineSettings>) => {
 						this.plugin.settings = {
 							...this.plugin.settings,
 							...payload,
 						};
-						value.value = this.plugin.settings;
+						modelValue.value = this.plugin.settings;
 						await this.plugin.saveSettings();
 					},
 				};

@@ -1,15 +1,12 @@
 <script setup lang="ts">
-defineProps({
-	hasAccent: {
-		type: Boolean,
-		required: false,
-		default: false,
-	},
-	disabled: {
-		type: Boolean,
-		required: false,
-		default: false,
-	},
+export type VButtonProps = {
+	hasAccent?: boolean;
+	disabled?: boolean;
+};
+
+withDefaults(defineProps<VButtonProps>(), {
+	hasAccent: false,
+	disabled: false,
 });
 </script>
 <template>

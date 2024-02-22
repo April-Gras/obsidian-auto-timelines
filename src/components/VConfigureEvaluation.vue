@@ -26,7 +26,7 @@ const emit = defineEmits<{
 				:model-value="modelValue.condition"
 				:input-id="`configure-single-date-token-format-condition-${inputId}`"
 				translation-key="conditions"
-				@update:modelValue="
+				@update:model-value="
 					emit('update:modelValue', {
 						...modelValue,
 						condition: $event,
@@ -35,10 +35,13 @@ const emit = defineEmits<{
 			/>
 			<VInput
 				type="number"
-				:value="modelValue.value"
+				:model-value="modelValue.value"
 				:input-id="`configure-single-date-token-format-value-${inputId}`"
-				@update:value="
-					emit('update:modelValue', { ...modelValue, value: $event })
+				@update:model-value="
+					emit('update:modelValue', {
+						...modelValue,
+						value: $event,
+					})
 				"
 			/>
 		</div>
