@@ -42,7 +42,7 @@
       "inlineEventEndOfBodyMarker": "End of event body token",
       "dateParserGroupPriority": "Date parser group priority",
       "dateParserRegex": "Date parser regex",
-      "fantasyCalendarPresetKeys": "Use fantady calendar keys",
+      "fantasyCalendarPresetKeys": "Use fantasy calendar keys",
       "metadataKeyEventBodyOverride": "Event body override",
       "metadataKeyEventTimelineTag": "Event timelines tags",
       "metadataKeyEventEndDate": "Event end key",
@@ -74,7 +74,8 @@
       "fantasyCalendarSpanEvents": {
         "text": "Look for {link}",
         "link": "Span Events"
-      }
+      },
+      "showNoteHeadersInCardBody": "Check to include header text from note body in card data"
     },
     "button": {
       "resetToDefault": "Reset to default",
@@ -112,7 +113,8 @@
         "conditionsAreExclusive": "When checked only one condition need to be true for the format to apply. If it's unchecked all conditions need to be true.",
         "format": "Use `{value}` to include the formated token in the template."
       },
-      "fantasyCalendarSpanEvents": "Allow the plugin to look for span events inside the notes, this have a performance impact but furthers the compatibility with fantasy calendar"
+      "fantasyCalendarSpanEvents": "Allow the plugin to look for span events inside the notes, this have a performance impact but furthers the compatibility with fantasy calendar",
+      "showNoteHeadersInCardBody": "Check to include header text from note body in card data"                 
     },
     "linkValue": {
       "lookForInlineEventsInNotes": "https://github.com/April-Gras/obsidian-auto-timelines#in-line-events",
