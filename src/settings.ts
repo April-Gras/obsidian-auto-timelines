@@ -36,6 +36,7 @@ export const SETTINGS_DEFAULT = {
 	lookForInlineEventsInNotes: true,
 	lookForTagsForTimeline: false,
 	stylizeDateInline: false,
+        showNoteHeadersInCardBody: true,
 	// number
 	bodyFontSize: -1,
 	dateFontSize: -1,
