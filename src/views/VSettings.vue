@@ -74,7 +74,7 @@ const checkboxKeys: readonly (keyof PickByType<
 	"lookForTagsForTimeline",
 	"applyAdditonalConditionFormatting",
 	"stylizeDateInline",
-	"showNoteHeadersInCardBody",
+        "showNoteHeadersInCardBody",
 ];
 
 const fontSizeOverrides: readonly (keyof PickByType<
