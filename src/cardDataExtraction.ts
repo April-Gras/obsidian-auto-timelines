@@ -101,7 +101,7 @@ export function getImageUrlFromContextOrDocument(
 	const override = metadata?.[metadataKeyEventPictureOverride];
 
 	if (override) return override;
-	const internalLinkMatch = rawFileText.match(/!\[\[(?<src>[^|]*).*\]\]/); // Allow for size and CSS modifiers on the image
+	const internalLinkMatch = rawFileText.match(/!\[\[(?<src>[^|\]]*).*\]\]/); // Allow for size and CSS modifiers on the image
 	const externalPictureMatch = rawFileText.match(/!\[.*\]\((?<src>.*)\)/);
 	let internalLinkIsBeforeExternal = true;
 	let matches: null | RegExpMatchArray;
