@@ -197,7 +197,6 @@ export function mockVault(): Vault {
 		getResourcePath: vi.fn((file: TFile) => {
 			return "sample";
 		}),
-		// @ts-expect-error this should do for now.
 		on: vi.fn(
 			(
 				name: "create" | "delete" | "modify" | "rename" | "closed",
