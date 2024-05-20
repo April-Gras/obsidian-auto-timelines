@@ -28,7 +28,7 @@
 		"esbuild": "0.20.2",
 		"esbuild-plugin-vue3": "^0.4.2",
 		"eslint": "^8.57.0",
-		"eslint-plugin-jsdoc": "^48.2.3",
+		"eslint-plugin-jsdoc": "^48.2.5",
 		"happy-dom": "^14.7.1",
 		"lodash.clonedeep": "^4.5.0",
 		"obsidian": "1.5.7-1",
