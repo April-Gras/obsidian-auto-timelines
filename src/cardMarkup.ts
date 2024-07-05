@@ -111,11 +111,14 @@ export function formatBodyForCard(
 
 	if (endOfEventMarkerIndex > 0) body = body.slice(0, endOfEventMarkerIndex);
 	// Remove external image links
+        body = body.replace(/!\[.*\]\(.*\)/gi, "");
+        // Remove tags
+        if ( settings.showNoteHeadersInCardBody )
+            body = body.replace(/#[a-zA-Z\d-_/]*/gi, "");
+        else
+            body = body.replace(/#.*/gi, ""); // remove markup headers
 	return (
-		body
-			.replace(/!\[.*\]\(.*\)/gi, "")
-			// Remove tags
-			.replace(/#[a-zA-Z\d-_/]*/gi, "")
+		body			
 			// Remove internal images ![[Pasted image 20230418232101.png]]
 			.replace(/!\[\[.*\]\]/gi, "")
 			// Remove other timelines to avoid circular dependencies!
