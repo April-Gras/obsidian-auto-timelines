@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-auto-timelines",
-	"version": "0.13.3",
+	"version": "0.13.4",
 	"description": "This Obsidian (https://obsidian.md) plugin aims to simplify creating and maintaining timelines in different a project",
 	"main": "main.js",
 	"type": "module",
@@ -19,34 +19,34 @@
 	"devDependencies": {
 		"@types/lodash.clonedeep": "^4.5.9",
 		"@types/lodash.isequal": "^4.5.8",
-		"@types/node": "^18.19.31",
+		"@types/node": "^18.19.41",
 		"@typescript-eslint/eslint-plugin": "7.8.0",
 		"@typescript-eslint/parser": "7.8.0",
-		"@vitejs/plugin-vue": "^5.0.4",
-		"@vitest/ui": "^1.6.0",
+		"@vitejs/plugin-vue": "^5.0.5",
+		"@vitest/ui": "^2.0.3",
 		"builtin-modules": "4.0.0",
-		"esbuild": "0.20.2",
+		"esbuild": "0.23.0",
 		"esbuild-plugin-vue3": "^0.4.2",
 		"eslint": "^8.57.0",
-		"eslint-plugin-jsdoc": "^48.2.3",
+		"eslint-plugin-jsdoc": "^48.7.0",
 		"happy-dom": "^14.7.1",
 		"lodash.clonedeep": "^4.5.0",
-		"obsidian": "1.5.7-1",
-		"sass": "^1.76.0",
-		"ts-essentials": "^10.0.0",
-		"tslib": "2.6.2",
-		"typescript": "5.4.5",
+		"obsidian": "1.6.6",
+		"sass": "^1.77.8",
+		"ts-essentials": "^10.0.1",
+		"tslib": "2.6.3",
+		"typescript": "5.5.3",
 		"vite-tsconfig-paths": "^4.3.2",
-		"vitest": "^1.6.0",
-		"vitest-mock-extended": "^1.3.1"
+		"vitest": "^2.0.3",
+		"vitest-mock-extended": "^1.3.2"
 	},
 	"dependencies": {
-		"@vitest/coverage-v8": "^1.6.0",
+		"@vitest/coverage-v8": "^2.0.3",
 		"lodash.isequal": "^4.5.0",
-		"vue": "^3.4.26",
+		"vue": "^3.4.32",
 		"vue-collapsed": "^1.3.3",
 		"vue-feather": "^2.0.0",
 		"vue-i18n": "^9.13.1",
-		"yaml": "^2.4.2"
+		"yaml": "^2.4.5"
 	}
 }
