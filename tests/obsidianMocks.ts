@@ -87,7 +87,7 @@ vi.mock("obsidian", () => {
 				markdown: string,
 				el: HTMLElement,
 				sourcePath: string,
-				component: ObsidianComponent
+				component: ObsidianComponent,
 			): Promise<void> {
 				return;
 			},
@@ -103,7 +103,6 @@ vi.mock("obsidian", () => {
  * @returns - The mocked native HTMLElement object.
  */
 export function mockHTMLElement(): HTMLElement {
-	// @ts-expect-error
 	return mock<HTMLElement>({
 		children: {
 			item: vi
@@ -115,15 +114,14 @@ export function mockHTMLElement(): HTMLElement {
 		}),
 		offsetTop: 0,
 		innerHeight: 0,
-		// @ts-expect-error
 		createEl: vi.fn(
 			<K extends keyof HTMLElementTagNameMap>(
 				_: K,
 				__?: DomElementInfo | string,
-				___?: (el: HTMLElementTagNameMap[K]) => void
+				___?: (el: HTMLElementTagNameMap[K]) => void,
 			): HTMLElementTagNameMap[K] => {
 				return mockHTMLElement() as HTMLElementTagNameMap[K];
-			}
+			},
 		),
 		addClass: vi.fn(() => {
 			return;
@@ -142,7 +140,7 @@ export function mockHTMLElement(): HTMLElement {
  * @returns - The mocked obsidian `mockGetFileCache` function.
  */
 export function mockGetFileCache() {
-	return vi.fn<[], CachedMetadata | null>(() => {
+	return vi.fn<() => CachedMetadata | null>(() => {
 		return {
 			frontmatter: {
 				...mock<FrontMatterCache>(),
@@ -201,10 +199,10 @@ export function mockVault(): Vault {
 			(
 				name: "create" | "delete" | "modify" | "rename" | "closed",
 				cb: (file: TAbstractFile) => unknown,
-				ctx?: unknown
+				ctx?: unknown,
 			) => {
 				return {} as EventRef;
-			}
+			},
 		) as Vault["on"],
 		cachedRead: vi.fn(async (file: TFile) => {
 			return "---\n---\n---\nSample file data";
@@ -229,7 +227,7 @@ export function mockMarkdownCodeBlockTimelineProcessingContext(): MarkdownCodeBl
 				getFirstLinkpathDest: vi.fn(
 					(linkpath: string, sourcePath: string): TFile | null => {
 						return new TFileClass();
-					}
+					},
 				),
 			},
 		},
@@ -286,7 +284,7 @@ export function mockRange(defaultVal: DeepPartial<Range> = {}): Range {
  * @returns -  The complete card context mock object.
  */
 export function mockCompleteCardContext(
-	defaultVal: DeepPartial<CompleteCardContext> = {}
+	defaultVal: DeepPartial<CompleteCardContext> = {},
 ): CompleteCardContext {
 	return mock<CompleteCardContext>(defaultVal);
 }
