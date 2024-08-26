@@ -79,6 +79,7 @@ export async function getDataFromNoteBody(
 		// Replace frontmatter with newly built fake one. Just to re-use all the existing code.
 		clonedContext.cachedMetadata.frontmatter = fakeFrontmatter;
 		if (!isDefinedAsObject(fakeFrontmatter)) continue;
+		if (fakeFrontmatter[settings.eventRenderToggleKey] !== true) continue;
 
 		const noteTags = getTagsFromMetadataOrTagObject(
 			settings,
