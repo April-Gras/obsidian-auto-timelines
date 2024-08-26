@@ -27,17 +27,13 @@ export function getAllRangeData(collection: CompleteCardContext[]) {
 				cardData: { startDate, endDate },
 			} = relatedCardData;
 
-			if (!isDefined(startDate) || !isDefined(endDate))
-				return accumulator;
-			if (
-				endDate !== true &&
-				compareAbstractDates(endDate, startDate) < 0
-			)
+			if (!isDefined(startDate) || !isDefined(endDate)) return accumulator;
+			if (endDate !== true && compareAbstractDates(endDate, startDate) < 0)
 				return accumulator;
 
 			const timelineLength = timelineRootElement.offsetHeight;
 			const targetCard = cardListRootElement.children.item(
-				index
+				index,
 			) as HTMLElement | null;
 
 			// Error handling but should not happen
@@ -53,7 +49,7 @@ export function getAllRangeData(collection: CompleteCardContext[]) {
 					collection.slice(index),
 					timelineLength,
 					cardListRootElement,
-					index
+					index,
 				);
 
 			accumulator.push({
@@ -81,7 +77,7 @@ export function getAllRangeData(collection: CompleteCardContext[]) {
 			readonly index: number;
 			readonly targetPosition: number;
 			readonly cardRelativeTopPosition: number;
-		}[]
+		}[],
 	);
 }
 export type FnGetRangeData = typeof getAllRangeData;
@@ -101,7 +97,7 @@ export function findEndPositionForDate(
 	collection: CompleteCardContext[],
 	timelineLength: number,
 	rootElement: HTMLElement,
-	indexOffset: number
+	indexOffset: number,
 ): number {
 	if (collection.length <= 1) return timelineLength;
 
@@ -110,16 +106,17 @@ export function findEndPositionForDate(
 			date,
 			collection,
 			rootElement,
-			indexOffset
+			indexOffset,
 		);
 		const [inLerpStart, inLerpEnd, targetInLerpDate] = getInLerpValues(
 			start.date,
 			end.date,
-			date
+			date,
 		);
 		const t = inLerp(inLerpStart, inLerpEnd, targetInLerpDate);
 
 		return lerp(start.top, end.top, t);
+		// eslint-disable-next-line no-unused-vars
 	} catch (_) {
 		return timelineLength;
 	}
@@ -136,7 +133,7 @@ export function findEndPositionForDate(
 export function getInLerpValues(
 	a: AbstractDate,
 	b: AbstractDate,
-	c: AbstractDate
+	c: AbstractDate,
 ): [number, number, number] {
 	for (let index = 0; index < a.length; index++) {
 		if (a[index] === b[index]) continue;
@@ -159,70 +156,65 @@ export function findBoundaries(
 	date: AbstractDate,
 	collection: CompleteCardContext[],
 	rootElement: HTMLElement,
-	indexOffset: number
+	indexOffset: number,
 ): { start: Boundary; end: Boundary } {
 	const firstOverIndex = collection.findIndex(({ cardData: { startDate } }) =>
-		isDefined(startDate) ? compareAbstractDates(startDate, date) > 0 : false
+		isDefined(startDate) ? compareAbstractDates(startDate, date) > 0 : false,
 	);
 
 	if (firstOverIndex === -1)
 		throw new Error(
-			"No first over found - Can't draw range since there are no other two start date to referrence it's position"
+			"No first over found - Can't draw range since there are no other two start date to referrence it's position",
 		);
 
 	const firstLastUnderIndex = findLastIndex(
 		collection,
 		({ cardData: { startDate } }) =>
-			isDefined(startDate)
-				? compareAbstractDates(startDate, date) <= 0
-				: false
+			isDefined(startDate) ? compareAbstractDates(startDate, date) <= 0 : false,
 	);
 
 	if (firstLastUnderIndex === -1)
 		throw new Error(
-			"Could not find a firstLastUnderIndex, this means this function was called with un rangeable members"
+			"Could not find a firstLastUnderIndex, this means this function was called with un rangeable members",
 		);
 
 	const lastUnderIndex = collection.findIndex(
-		({ cardData: { startDate } }, index) => {
+		({ cardData: { startDate } }, _) => {
 			return (
 				compareAbstractDates(
 					startDate,
-					collection[firstLastUnderIndex].cardData.startDate
+					collection[firstLastUnderIndex].cardData.startDate,
 				) === 0
 			);
-		}
+		},
 	);
 
 	if (lastUnderIndex === -1)
 		throw new Error(
-			"No last under found - Can't draw range since there are no other two start date to referrence it's position"
+			"No last under found - Can't draw range since there are no other two start date to referrence it's position",
 		);
 
 	const startElement = getChildAtIndexInHTMLElement(
 		rootElement,
-		lastUnderIndex + indexOffset
+		lastUnderIndex + indexOffset,
 	);
 	const startDate = collection[lastUnderIndex].cardData
 		.startDate as AbstractDate;
 	const startIsMoreThanOneCardAway = lastUnderIndex > 1;
 	const shouldOffsetStartToBottomOfCard =
-		startIsMoreThanOneCardAway &&
-		compareAbstractDates(startDate, date) !== 0;
+		startIsMoreThanOneCardAway && compareAbstractDates(startDate, date) !== 0;
 
 	return {
 		start: {
 			top:
 				startElement.offsetTop +
-				(shouldOffsetStartToBottomOfCard
-					? startElement.innerHeight
-					: 0),
+				(shouldOffsetStartToBottomOfCard ? startElement.innerHeight : 0),
 			date: startDate,
 		},
 		end: {
 			top: getChildAtIndexInHTMLElement(
 				rootElement,
-				firstOverIndex + indexOffset
+				firstOverIndex + indexOffset,
 			).offsetTop,
 			date: collection[firstOverIndex].cardData.startDate as AbstractDate,
 		},

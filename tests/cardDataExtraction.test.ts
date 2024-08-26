@@ -15,7 +15,7 @@ describe.concurrent("Card Data", () => {
 	test("[getAbstractDateFromMetadata] - ok", () => {
 		const date = getAbstractDateFromMetadata(
 			mockMarkdownCodeBlockTimelineProcessingContext(),
-			SETTINGS_DEFAULT["metadataKeyEventStartDate"]
+			SETTINGS_DEFAULT["metadataKeyEventStartDate"],
 		);
 		expect(date).toStrictEqual([1000, 1000, 1000]);
 	});
@@ -31,7 +31,7 @@ describe.concurrent("Card Data", () => {
 
 		const date = getAbstractDateFromMetadata(
 			context,
-			SETTINGS_DEFAULT["metadataKeyEventStartDate"]
+			SETTINGS_DEFAULT["metadataKeyEventStartDate"],
 		);
 
 		expect(date).toBeUndefined();
@@ -48,7 +48,7 @@ describe.concurrent("Card Data", () => {
 
 		const date = getAbstractDateFromMetadata(
 			context,
-			SETTINGS_DEFAULT["metadataKeyEventStartDate"]
+			SETTINGS_DEFAULT["metadataKeyEventStartDate"],
 		);
 
 		expect(date).toStrictEqual([-1000, 1, 1]);
@@ -57,7 +57,7 @@ describe.concurrent("Card Data", () => {
 	test("[getImageUrlFromContextOrDocument] - ok internal", () => {
 		const imageURL = getImageUrlFromContextOrDocument(
 			"![[Picture.png]]",
-			mockMarkdownCodeBlockTimelineProcessingContext()
+			mockMarkdownCodeBlockTimelineProcessingContext(),
 		);
 
 		expect(imageURL).toBe("sample");
@@ -66,7 +66,7 @@ describe.concurrent("Card Data", () => {
 	test("[getImageUrlFromContextOrDocument] - ok external", () => {
 		const imageURL = getImageUrlFromContextOrDocument(
 			"![](https://imgur.com/hehe)",
-			mockMarkdownCodeBlockTimelineProcessingContext()
+			mockMarkdownCodeBlockTimelineProcessingContext(),
 		);
 
 		expect(imageURL).not.toBeNull();
@@ -75,7 +75,7 @@ describe.concurrent("Card Data", () => {
 	test("[getImageUrlFromContextOrDocument] - ko no picture", () => {
 		const imageURL = getImageUrlFromContextOrDocument(
 			"no pictures to be found in here",
-			mockMarkdownCodeBlockTimelineProcessingContext()
+			mockMarkdownCodeBlockTimelineProcessingContext(),
 		);
 
 		expect(imageURL).toBeNull();
@@ -91,7 +91,7 @@ describe.concurrent("Card Data", () => {
 		] = "picture.png";
 		const imageURL = getImageUrlFromContextOrDocument(
 			"no pictures to be found in here",
-			context
+			context,
 		);
 
 		expect(imageURL).not.toBeNull();
@@ -101,11 +101,11 @@ describe.concurrent("Card Data", () => {
 		const context = mockMarkdownCodeBlockTimelineProcessingContext();
 
 		context.app.metadataCache.getFirstLinkpathDest = vi.fn(
-			(linkpath: string, sourcePath: string): TFile | null => null
+			(_: string, __: string): TFile | null => null,
 		);
 		const imageURL = getImageUrlFromContextOrDocument(
 			"![[Picture.png]]",
-			context
+			context,
 		);
 
 		expect(imageURL).toBeNull();
@@ -114,7 +114,7 @@ describe.concurrent("Card Data", () => {
 	test("[getImageUrlFromContextOrDocument] - ok has internal and external match - external first", () => {
 		const imageURL = getImageUrlFromContextOrDocument(
 			"![](https://imgur.com/hehe) ![[another.png]]",
-			mockMarkdownCodeBlockTimelineProcessingContext()
+			mockMarkdownCodeBlockTimelineProcessingContext(),
 		);
 
 		expect(imageURL).toBe("https://imgur.com/hehe");
@@ -123,7 +123,7 @@ describe.concurrent("Card Data", () => {
 	test("[getImageUrlFromContextOrDocument] - ok has internal and external match - internal first", () => {
 		const imageURL = getImageUrlFromContextOrDocument(
 			"![[Picture.png]]\n![](https://imgur.com/hehe)",
-			mockMarkdownCodeBlockTimelineProcessingContext()
+			mockMarkdownCodeBlockTimelineProcessingContext(),
 		);
 
 		expect(imageURL).toBe("sample");
@@ -132,7 +132,7 @@ describe.concurrent("Card Data", () => {
 	test("[getBodyFromContextOrDocument]- ko empty body", () => {
 		const body = getBodyFromContextOrDocument(
 			"",
-			mockMarkdownCodeBlockTimelineProcessingContext()
+			mockMarkdownCodeBlockTimelineProcessingContext(),
 		);
 
 		expect(body).toBeNull();
@@ -173,7 +173,7 @@ describe.concurrent("Card Data", () => {
 		const body = getBodyFromContextOrDocument(
 			// Add fake note metadata block
 			"---\n---\n" + bodyMock,
-			context
+			context,
 		);
 
 		expect(body).toBe(bodyMock);
@@ -187,8 +187,8 @@ describe.concurrent("Card Data", () => {
 			getTagsFromMetadataOrTagObject(
 				context.settings,
 				context.cachedMetadata.frontmatter,
-				undefined
-			)
+				undefined,
+			),
 		).toStrictEqual([]);
 	});
 
@@ -203,8 +203,8 @@ describe.concurrent("Card Data", () => {
 			getTagsFromMetadataOrTagObject(
 				context.settings,
 				context.cachedMetadata.frontmatter,
-				undefined
-			)
+				undefined,
+			),
 		).toStrictEqual(["sample"]);
 	});
 
@@ -224,48 +224,48 @@ describe.concurrent("Card Data", () => {
 			getTagsFromMetadataOrTagObject(
 				context.settings,
 				context.cachedMetadata.frontmatter,
-				tags
-			)
+				tags,
+			),
 		).toStrictEqual(["sample"]);
 		context.settings.lookForTagsForTimeline = true;
 		expect(
 			getTagsFromMetadataOrTagObject(
 				context.settings,
 				context.cachedMetadata.frontmatter,
-				tags
-			)
+				tags,
+			),
 		).toStrictEqual(["sample", "sample 2"]);
 		context.cachedMetadata.frontmatter.tags = ["sample 3"];
 		expect(
 			getTagsFromMetadataOrTagObject(
 				context.settings,
 				context.cachedMetadata.frontmatter,
-				tags
-			)
+				tags,
+			),
 		).toStrictEqual(["sample", "sample 2", "sample 3"]);
 		context.cachedMetadata.frontmatter.tags = "sample 3";
 		expect(
 			getTagsFromMetadataOrTagObject(
 				context.settings,
 				context.cachedMetadata.frontmatter,
-				tags
-			)
+				tags,
+			),
 		).toStrictEqual(["sample", "sample 2", "sample 3"]);
 		context.cachedMetadata.frontmatter.tags = undefined;
 		expect(
 			getTagsFromMetadataOrTagObject(
 				context.settings,
 				context.cachedMetadata.frontmatter,
-				tags
-			)
+				tags,
+			),
 		).toStrictEqual(["sample", "sample 2"]);
 		context.settings.lookForTagsForTimeline = false;
 		expect(
 			getTagsFromMetadataOrTagObject(
 				context.settings,
 				context.cachedMetadata.frontmatter,
-				tags
-			)
+				tags,
+			),
 		).toStrictEqual(["sample"]);
 	});
 });
