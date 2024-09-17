@@ -30,7 +30,6 @@ export default class AprilsAutomaticTimelinesPlugin extends Plugin {
 	 */
 	async onload() {
 		await this.loadSettings();
-
 		this.registerEditorSuggest(new TimelineMarkdownSuggester(this));
 		this.registerMarkdownCodeBlockProcessor(
 			verticalTimelineToken,

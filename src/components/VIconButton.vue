@@ -25,7 +25,7 @@ defineSlots<{
 	</VButton>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 button.iconButton {
 	position: relative;
 	display: flex;
