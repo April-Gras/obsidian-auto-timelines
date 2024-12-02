@@ -3,6 +3,7 @@ import { parse } from "yaml";
 import {
 	cloneMarkdownCodeBlockTimelineProcessingContext,
 	isDefined,
+	isDefinedAsArray,
 	isDefinedAsObject,
 } from "~/utils";
 import { extractedTagsAreValid, extractCardData } from "~/cardData";
@@ -86,6 +87,22 @@ export async function getDataFromNoteBody(
 			fakeFrontmatter,
 			clonedContext.cachedMetadata.tags
 		);
+
+		// In this special edge case we make sure the image override parsed by YAML is flatten to a Obsidian internal link
+		if (
+			isDefinedAsArray(
+				clonedContext.cachedMetadata?.frontmatter?.[
+					settings.metadataKeyEventPictureOverride
+				]
+			)
+		)
+			clonedContext.cachedMetadata.frontmatter[
+				settings.metadataKeyEventPictureOverride
+			] = `[[${
+				clonedContext.cachedMetadata.frontmatter[
+					settings.metadataKeyEventPictureOverride
+				]
+			}]]`;
 
 		if (!extractedTagsAreValid(noteTags, tagsToFind)) continue;
 
