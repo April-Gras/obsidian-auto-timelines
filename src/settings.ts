@@ -31,6 +31,7 @@ export const SETTINGS_DEFAULT = {
 	metadataKeyEventTimelineTag: "timelines",
 	metadataKeyEventTitleOverride: "aat-event-title",
 	noteInlineEventKey: "aat-inline-event",
+	ignoreLineCommentToken: "aat-ignore-line",
 	// bool
 	applyAdditonalConditionFormatting: true,
 	lookForCalendariumSpanEvents: true,
@@ -72,8 +73,7 @@ export class TimelineSettingTab extends PluginSettingTab {
 
 		this.vueApp = createApp({
 			components: { VApp },
-			template:
-				"<VApp :model-value='modelValue' @update:model-value='save' />",
+			template: "<VApp :model-value='modelValue' @update:model-value='save' />",
 			setup: () => {
 				const modelValue = ref(this.plugin.settings);
 

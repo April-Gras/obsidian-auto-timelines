@@ -88,7 +88,7 @@ describe.concurrent("Card Data", () => {
 			throw new Error("Missing frontmatter in mock");
 		context.cachedMetadata.frontmatter[
 			SETTINGS_DEFAULT.metadataKeyEventPictureOverride
-		] = "picture.png";
+		] = "[[picture.png]]";
 		const imageURL = getImageUrlFromContextOrDocument(
 			"no pictures to be found in here",
 			context
@@ -101,7 +101,7 @@ describe.concurrent("Card Data", () => {
 		const context = mockMarkdownCodeBlockTimelineProcessingContext();
 
 		context.app.metadataCache.getFirstLinkpathDest = vi.fn(
-			(linkpath: string, sourcePath: string): TFile | null => null
+			(_: string, __: string): TFile | null => null
 		);
 		const imageURL = getImageUrlFromContextOrDocument(
 			"![[Picture.png]]",

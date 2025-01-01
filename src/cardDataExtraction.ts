@@ -98,19 +98,23 @@ export function getImageUrlFromContextOrDocument(
 		vault,
 		metadataCache: { getFirstLinkpathDest },
 	} = app;
-	const override = metadata?.[metadataKeyEventPictureOverride];
+	const override: string = metadata?.[metadataKeyEventPictureOverride];
 
-	if (override) return override;
-	const internalLinkMatch = rawFileText.match(/!\[\[(?<src>[^|\]]*).*\]\]/); // Allow for size and CSS modifiers on the image
-	const externalPictureMatch = rawFileText.match(/!\[.*\]\((?<src>.*)\)/);
+	const text = override || rawFileText;
+	const internalLinkMatch = text.match(/!?\[\[(?<src>[^|\]]*).*\]\]/); // Allow for size and CSS modifiers on the image
+	const externalPictureMatch = text.match(/!\[.*\]\((?<src>.*)\)/);
+	const directLinkMatch = text.match(
+		/(?<scr>^https?:\/\/.*\/.*\.(png|gif|webp|jpeg|jpg)\??.*$)/
+	);
 	let internalLinkIsBeforeExternal = true;
 	let matches: null | RegExpMatchArray;
 
+	if (!internalLinkMatch && !externalPictureMatch && directLinkMatch)
+		return directLinkMatch?.groups?.src || null;
 	// Check if we got a double match
 	if (internalLinkMatch && externalPictureMatch) {
 		internalLinkIsBeforeExternal =
-			// @ts-expect-error If the regex matches exists then ther emust be an index
-			internalLinkMatch.index < externalPictureMatch.index;
+			(internalLinkMatch.index ?? 0) < (externalPictureMatch.index ?? 0);
 		matches = internalLinkIsBeforeExternal
 			? internalLinkMatch
 			: externalPictureMatch;

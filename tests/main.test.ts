@@ -50,7 +50,7 @@ describe.concurrent("Main", () => {
 
 		inlineEventFile.vault.cachedRead = vi.fn(
 			async () =>
-				"---\n---\n---\nSample file data%%aat-inline-event\naat-event-start-date: 54\naat-event-end-date: true\naat-render-enabled: true\ntimelines: [timeline]\n%%"
+				"---\n---\n---\nSample file data%%aat-inline-event\naat-event-start-date: 54\naat-event-end-date: true\naat-render-enabled: true\ntimelines: [timeline]\n%%",
 		);
 		app.vault.getMarkdownFiles = vi.fn(() => [
 			mockTFile(),
@@ -67,19 +67,17 @@ describe.concurrent("Main", () => {
 		expect(() => promise).not.toThrowError();
 
 		await promise;
-		expect(
-			plugin.registerMarkdownCodeBlockProcessor
-		).toHaveBeenCalledOnce();
+		expect(plugin.registerMarkdownCodeBlockProcessor).toHaveBeenCalledOnce();
 
 		const { mock } = plugin.registerMarkdownCodeBlockProcessor as Mock;
 
-		expect(mock.lastCall[0]).toBe("aat-vertical");
-		expect(mock.lastCall[1]).toBeTypeOf("function");
+		expect(mock.lastCall?.[0]).toBe("aat-vertical");
+		expect(mock.lastCall?.[1]).toBeTypeOf("function");
 
 		expect(() =>
-			mock.lastCall[1]("timeline", mockHTMLElement(), {
+			mock.lastCall?.[1]("timeline", mockHTMLElement(), {
 				sourcePath: "sample",
-			})
+			}),
 		).not.toThrowError();
 		expect(spy).toHaveBeenCalledOnce();
 	});

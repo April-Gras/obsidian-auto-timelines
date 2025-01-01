@@ -28,6 +28,7 @@ const generalSettingKeys = [
 	"markdownBlockTagsToFindSeparator",
 	"noteInlineEventKey",
 	"inlineEventEndOfBodyMarker",
+	"ignoreLineCommentToken",
 	"eventRenderToggleKey",
 ] satisfies (keyof PickByType<AutoTimelineSettings, string>)[];
 
@@ -45,12 +46,12 @@ const fantasyCalendarPreset: Record<
 	metadataKeyEventTitleOverride: "fc-display-name",
 };
 const fantasyCalendarKeys = Object.keys(
-	fantasyCalendarPreset
+	fantasyCalendarPreset,
 ) as (keyof typeof fantasyCalendarPreset)[];
 
 const keysAreCompliantWithFcPreset = computed(() => {
 	return fantasyCalendarKeys.every(
-		(key) => props.modelValue[key] === fantasyCalendarPreset[key]
+		(key) => props.modelValue[key] === fantasyCalendarPreset[key],
 	);
 });
 
@@ -61,7 +62,7 @@ function handleUpdateValueFantasyCalendarCheckbox() {
 			fantasyCalendarKeys.reduce((acc, key) => {
 				acc[key] = SETTINGS_DEFAULT[key];
 				return acc;
-			}, {} as Partial<AutoTimelineSettings>)
+			}, {} as Partial<AutoTimelineSettings>),
 		);
 	else emit("update:modelValue", fantasyCalendarPreset);
 }
@@ -178,7 +179,7 @@ const fontSizeOverrides: readonly (keyof PickByType<
 								>
 									{{
 										$t(
-											"settings.label.fantasyCalendarSpanEvents.link"
+											"settings.label.fantasyCalendarSpanEvents.link",
 										)
 									}}
 								</a></b

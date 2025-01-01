@@ -2,7 +2,10 @@
 coverage
 
 # vscode
-.vscode 
+.vscode
+
+# zed
+.zed
 
 # Intellij
 *.iml

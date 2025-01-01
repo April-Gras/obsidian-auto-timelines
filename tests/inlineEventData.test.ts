@@ -19,7 +19,7 @@ describe.concurrent("Inline Event Data", () => {
 		} = mockCompleteCardContext();
 
 		expect(
-			await getDataFromNoteBody(body, context, ["timeline"])
+			await getDataFromNoteBody(body, context, ["timeline"]),
 		).toStrictEqual([]);
 	});
 
@@ -35,7 +35,7 @@ describe.concurrent("Inline Event Data", () => {
 		});
 
 		expect(
-			await getDataFromNoteBody(body, context, ["timeline"])
+			await getDataFromNoteBody(body, context, ["timeline"]),
 		).toStrictEqual([]);
 	});
 
@@ -51,7 +51,7 @@ describe.concurrent("Inline Event Data", () => {
 		});
 
 		expect(
-			await getDataFromNoteBody(body, context, ["timeline"])
+			await getDataFromNoteBody(body, context, ["timeline"]),
 		).toStrictEqual([]);
 	});
 
@@ -67,7 +67,23 @@ describe.concurrent("Inline Event Data", () => {
 		});
 
 		expect(
-			await getDataFromNoteBody(body, context, ["timeline"])
+			await getDataFromNoteBody(body, context, ["timeline"]),
+		).toStrictEqual([]);
+	});
+
+	test("[getDataFromNoteBody] - ko missing render key with true", async () => {
+		const {
+			context,
+			cardData: { body },
+		} = mockCompleteCardContext({
+			context: mockMarkdownCodeBlockTimelineProcessingContext(),
+			cardData: {
+				body: "'%%aat-inline-event\naat-event-start-date: 54\naat-event-end-date: true\naat-render-enabled: false\ntimelines: [nottimeline]\n%%",
+			},
+		});
+
+		expect(
+			await getDataFromNoteBody(body, context, ["timeline"]),
 		).toStrictEqual([]);
 	});
 
@@ -83,7 +99,7 @@ describe.concurrent("Inline Event Data", () => {
 		});
 
 		expect(
-			(await getDataFromNoteBody(body, context, ["timeline"])).length
+			(await getDataFromNoteBody(body, context, ["timeline"])).length,
 		).toBe(1);
 	});
 
@@ -100,9 +116,7 @@ describe.concurrent("Inline Event Data", () => {
 		});
 
 		expect(
-			await getDataFromFantasyCalendarSpanEvents(body, context, [
-				"timeline",
-			])
+			await getDataFromFantasyCalendarSpanEvents(body, context, ["timeline"]),
 		).toStrictEqual([]);
 	});
 
@@ -118,9 +132,7 @@ describe.concurrent("Inline Event Data", () => {
 		});
 
 		expect(
-			await getDataFromFantasyCalendarSpanEvents(body, context, [
-				"timeline",
-			])
+			await getDataFromFantasyCalendarSpanEvents(body, context, ["timeline"]),
 		).toStrictEqual([]);
 	});
 
@@ -136,9 +148,7 @@ describe.concurrent("Inline Event Data", () => {
 		});
 
 		expect(
-			await getDataFromFantasyCalendarSpanEvents(body, context, [
-				"timeline",
-			])
+			await getDataFromFantasyCalendarSpanEvents(body, context, ["timeline"]),
 		).toStrictEqual([]);
 	});
 
@@ -154,9 +164,7 @@ describe.concurrent("Inline Event Data", () => {
 		});
 
 		expect(
-			await getDataFromFantasyCalendarSpanEvents(body, context, [
-				"timeline",
-			])
+			await getDataFromFantasyCalendarSpanEvents(body, context, ["timeline"]),
 		).toStrictEqual([]);
 	});
 
@@ -180,11 +188,8 @@ describe.concurrent("Inline Event Data", () => {
 		});
 
 		expect(
-			(
-				await getDataFromFantasyCalendarSpanEvents(body, context, [
-					"timeline",
-				])
-			).length
+			(await getDataFromFantasyCalendarSpanEvents(body, context, ["timeline"]))
+				.length,
 		).toBe(1);
 	});
 
@@ -204,7 +209,7 @@ describe.concurrent("Inline Event Data", () => {
 						nottimelines
 					]'
 				/>
-				
+
 				%%aat-inline-event
 				aat-event-start-date: 54
 				aat-event-end-date: true
@@ -217,17 +222,17 @@ describe.concurrent("Inline Event Data", () => {
 
 		context.settings.lookForCalendariumSpanEvents = false;
 		context.settings.lookForInlineEventsInNotes = false;
-		expect(
-			(await getInlineEventData(body, context, ["timeine"])).length
-		).toBe(0);
+		expect((await getInlineEventData(body, context, ["timeine"])).length).toBe(
+			0,
+		);
 
 		context.settings.lookForInlineEventsInNotes = true;
-		expect(
-			(await getInlineEventData(body, context, ["timeine"])).length
-		).toBe(0);
+		expect((await getInlineEventData(body, context, ["timeine"])).length).toBe(
+			0,
+		);
 		context.settings.lookForCalendariumSpanEvents = true;
-		expect(
-			(await getInlineEventData(body, context, ["timeine"])).length
-		).toBe(0);
+		expect((await getInlineEventData(body, context, ["timeine"])).length).toBe(
+			0,
+		);
 	});
 });

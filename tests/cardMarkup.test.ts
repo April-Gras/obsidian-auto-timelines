@@ -16,8 +16,8 @@ describe.concurrent("Card Markup", () => {
 		expect(
 			getDateText(
 				{ startDate: undefined, endDate: undefined },
-				SETTINGS_DEFAULT
-			)
+				SETTINGS_DEFAULT,
+			),
 		).toBe("Start date missing");
 	});
 
@@ -25,17 +25,14 @@ describe.concurrent("Card Markup", () => {
 		expect(
 			getDateText(
 				{ startDate: [1000, 0, 0], endDate: undefined },
-				SETTINGS_DEFAULT
-			)
+				SETTINGS_DEFAULT,
+			),
 		).toBe("00/00/1000");
 	});
 
 	test("[getDateText] - missing end", () => {
 		expect(
-			getDateText(
-				{ startDate: [1000, 0, 0], endDate: true },
-				SETTINGS_DEFAULT
-			)
+			getDateText({ startDate: [1000, 0, 0], endDate: true }, SETTINGS_DEFAULT),
 		).toBe("From 00/00/1000 to now");
 	});
 
@@ -44,7 +41,7 @@ describe.concurrent("Card Markup", () => {
 		const cardContent = mockCardContext();
 
 		expect(() =>
-			createCardFromBuiltContext(context, cardContent)
+			createCardFromBuiltContext(context, cardContent),
 		).not.toThrowError();
 
 		// @ts-expect-error
@@ -52,7 +49,7 @@ describe.concurrent("Card Markup", () => {
 		// @ts-expect-error
 		cardContent.imageURL = undefined;
 		expect(() =>
-			createCardFromBuiltContext(context, cardContent)
+			createCardFromBuiltContext(context, cardContent),
 		).not.toThrowError();
 	});
 
@@ -64,8 +61,8 @@ describe.concurrent("Card Markup", () => {
 			// Add fake note metadata block
 			formatBodyForCard(
 				SETTINGS_DEFAULT,
-				"---\n---\n" + bodyMock + timelineTextMock
-			)
+				"---\n---\n" + bodyMock + timelineTextMock,
+			),
 		).toContain(bodyMock);
 	});
 
@@ -77,10 +74,11 @@ describe.concurrent("Card Markup", () => {
 			// Add fake note metadata block
 			formatBodyForCard(
 				SETTINGS_DEFAULT,
-				`---\n---\n${bodyMock}${timelineTextMock}`
-			)
+				`---\n---\n${bodyMock}${timelineTextMock}`,
+			),
 		).not.toContain("body data");
 	});
+
 
         test("[formatBodyForCard] - showNoteHeadersInCardBody True", () => {
 		const bodyMock = `Some sample ## Header Title\n body data`;
@@ -106,6 +104,21 @@ describe.concurrent("Card Markup", () => {
 				`---\n---\n${bodyMock}${timelineTextMock}`
 			)
 		).not.toContain("Header Title");
+	test("[formatBodyForCard] - ok removes lines flaged as non displayable", () => {
+		const removeThisLine =
+			"This line would be ignored in the preview %%aat-ignore-line%%";
+		const bodyMock = `
+			${removeThisLine}
+			In-line events are enabled by default but if you don't need them you can always disable them to shave a couple processing cycles off each note. With this feature you can define events from inside a note. The event will ignore anything above it's position in a note, and parse the note from there on.
+		`;
+
+		expect(
+			// Add fake note metadata block
+			formatBodyForCard(SETTINGS_DEFAULT, `---\n---\n${bodyMock}`),
+		).not.toContain(
+			"This line would be ignored in the preview %%aat-ignore-line%%",
+		);
+
 	});
 
 	test("[createCardFromBuiltContext] - font overrides", () => {
@@ -119,13 +132,13 @@ describe.concurrent("Card Markup", () => {
 		context.settings.stylizeDateInline = true;
 
 		expect(() =>
-			createCardFromBuiltContext(context, cardContent)
+			createCardFromBuiltContext(context, cardContent),
 		).not.toThrowError();
 
 		context.settings.stylizeDateInline = false;
 
 		expect(() =>
-			createCardFromBuiltContext(context, cardContent)
+			createCardFromBuiltContext(context, cardContent),
 		).not.toThrowError();
 	});
 });
