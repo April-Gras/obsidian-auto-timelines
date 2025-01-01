@@ -110,6 +110,12 @@ export function formatBodyForCard(
 	);
 
 	if (endOfEventMarkerIndex > 0) body = body.slice(0, endOfEventMarkerIndex);
+        // Remove markup header tags
+        if ( !settings.showNoteHeadersInCardBody )
+            body = body.replace(/#[a-zA-Z\d-_/]*/gi, "");
+        
+		
+
 	return (
 		body
 			// Remove any need to remove lines
@@ -121,6 +127,7 @@ export function formatBodyForCard(
 			.replace(/!\[.*\]\(.*\)/gi, "")
 			// Remove tags
 			.replace(/#[a-zA-Z\d-_/]*/gi, "")
+
 			// Remove internal images ![[Pasted image 20230418232101.png]]
 			.replace(/!\[\[.*\]\]/gi, "")
 			// Remove other timelines to avoid circular dependencies!

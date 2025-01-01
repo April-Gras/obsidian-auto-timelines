@@ -79,6 +79,31 @@ describe.concurrent("Card Markup", () => {
 		).not.toContain("body data");
 	});
 
+
+        test("[formatBodyForCard] - showNoteHeadersInCardBody True", () => {
+		const bodyMock = `Some sample ## Header Title\n body data`;
+		const timelineTextMock = "\n```aat-vertical\nother timeline\n```";
+
+		expect(
+			// Add fake note metadata block
+			formatBodyForCard(
+				SETTINGS_DEFAULT,
+				`---\n---\n${bodyMock}${timelineTextMock}`
+			)
+		).toContain("Header Title");
+	});
+        
+        test("[formatBodyForCard] - showNoteHeadersInCardBody False", () => {
+		const bodyMock = `Some sample ## Header Title\n body data`;
+		const timelineTextMock = "\n```aat-vertical\nother timeline\n```";
+                SETTINGS_DEFAULT.showNoteHeadersInCardBody = false;
+		expect(
+			// Add fake note metadata block                        
+			formatBodyForCard(
+				SETTINGS_DEFAULT,
+				`---\n---\n${bodyMock}${timelineTextMock}`
+			)
+		).not.toContain("Header Title");
 	test("[formatBodyForCard] - ok removes lines flaged as non displayable", () => {
 		const removeThisLine =
 			"This line would be ignored in the preview %%aat-ignore-line%%";
@@ -93,6 +118,7 @@ describe.concurrent("Card Markup", () => {
 		).not.toContain(
 			"This line would be ignored in the preview %%aat-ignore-line%%",
 		);
+
 	});
 
 	test("[createCardFromBuiltContext] - font overrides", () => {
