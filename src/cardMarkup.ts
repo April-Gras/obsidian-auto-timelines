@@ -2,9 +2,9 @@ import { MarkdownRenderChild, MarkdownRenderer } from "obsidian";
 import { isDefined, createElementShort } from "~/utils";
 
 import type {
-	MarkdownCodeBlockTimelineProcessingContext,
-	CardContent,
-	AutoTimelineSettings,
+  MarkdownCodeBlockTimelineProcessingContext,
+  CardContent,
+  AutoTimelineSettings,
 } from "~/types";
 import { formatAbstractDate } from "./abstractDateFormatting";
 
@@ -20,76 +20,76 @@ import { formatAbstractDate } from "./abstractDateFormatting";
  * @param cardContent - The content of a single timeline card.
  */
 export function createCardFromBuiltContext(
-	{
-		elements: { cardListRootElement },
-		file,
-		settings,
-		app,
-	}: MarkdownCodeBlockTimelineProcessingContext,
-	cardContent: CardContent,
+  {
+    elements: { cardListRootElement },
+    file,
+    settings,
+    app,
+  }: MarkdownCodeBlockTimelineProcessingContext,
+  cardContent: CardContent,
 ): void {
-	const { body, title, imageURL } = cardContent;
-	const cardBaseDiv = createElementShort(cardListRootElement, "a", [
-		"internal-link",
-		"aat-card",
-	]);
-	cardBaseDiv.setAttribute("href", file.path);
+  const { body, title, imageURL } = cardContent;
+  const cardBaseDiv = createElementShort(cardListRootElement, "a", [
+    "internal-link",
+    "aat-card",
+  ]);
+  cardBaseDiv.setAttribute("href", file.path);
 
-	if (imageURL) {
-		createElementShort(cardBaseDiv, "img", "aat-card-image").setAttribute(
-			"src",
-			imageURL,
-		);
-		cardBaseDiv.addClass("aat-card-has-image");
-	}
+  if (imageURL) {
+    createElementShort(cardBaseDiv, "img", "aat-card-image").setAttribute(
+      "src",
+      imageURL,
+    );
+    cardBaseDiv.addClass("aat-card-has-image");
+  }
 
-	const cardTextWraper = createElementShort(
-		cardBaseDiv,
-		"div",
-		"aat-card-text-wraper",
-	);
+  const cardTextWraper = createElementShort(
+    cardBaseDiv,
+    "div",
+    "aat-card-text-wraper",
+  );
 
-	const titleWrap = createElementShort(cardTextWraper, "header", [
-		"aat-card-head-wrap",
-		...(settings.stylizeDateInline ? ["inline"] : []),
-	]);
+  const titleWrap = createElementShort(cardTextWraper, "header", [
+    "aat-card-head-wrap",
+    ...(settings.stylizeDateInline ? ["inline"] : []),
+  ]);
 
-	const titleElement = createElementShort(
-		titleWrap,
-		"h2",
-		"aat-card-title",
-		title,
-	);
-	if (settings.titleFontSize >= 0)
-		titleElement.style.fontSize = `${settings.titleFontSize}px`;
+  const titleElement = createElementShort(
+    titleWrap,
+    "h2",
+    "aat-card-title",
+    title,
+  );
+  if (settings.titleFontSize >= 0)
+    titleElement.style.fontSize = `${settings.titleFontSize}px`;
 
-	const dateElement = createElementShort(
-		titleWrap,
-		"h4",
-		"aat-card-start-date",
-		getDateText(cardContent, settings).trim(),
-	);
+  const dateElement = createElementShort(
+    titleWrap,
+    "h4",
+    "aat-card-start-date",
+    getDateText(cardContent, settings).trim(),
+  );
 
-	if (settings.dateFontSize >= 0)
-		dateElement.style.fontSize = `${settings.dateFontSize}px`;
+  if (settings.dateFontSize >= 0)
+    dateElement.style.fontSize = `${settings.dateFontSize}px`;
 
-	const markdownTextWrapper = createElementShort(
-		cardTextWraper,
-		"div",
-		"aat-card-body",
-	);
-	const rendered = new MarkdownRenderChild(markdownTextWrapper);
+  const markdownTextWrapper = createElementShort(
+    cardTextWraper,
+    "div",
+    "aat-card-body",
+  );
+  const rendered = new MarkdownRenderChild(markdownTextWrapper);
 
-	rendered.containerEl = markdownTextWrapper;
-	MarkdownRenderer.render(
-		app,
-		formatBodyForCard(settings, body),
-		markdownTextWrapper,
-		file.path,
-		rendered,
-	);
-	if (settings.bodyFontSize > 0)
-		markdownTextWrapper.style.fontSize = `${settings.bodyFontSize}px`;
+  rendered.containerEl = markdownTextWrapper;
+  MarkdownRenderer.render(
+    app,
+    formatBodyForCard(settings, body),
+    markdownTextWrapper,
+    file.path,
+    rendered,
+  );
+  if (settings.bodyFontSize > 0)
+    markdownTextWrapper.style.fontSize = `${settings.bodyFontSize}px`;
 }
 
 /**
@@ -100,34 +100,34 @@ export function createCardFromBuiltContext(
  * @returns The formated string ready to be displayed.
  */
 export function formatBodyForCard(
-	settings: AutoTimelineSettings,
-	body?: string | null,
+  settings: AutoTimelineSettings,
+  body?: string | null,
 ): string {
-	if (!body) return "No body for this note :(";
+  if (!body) return "No body for this note :(";
 
-	const endOfEventMarkerIndex = body.indexOf(
-		settings.inlineEventEndOfBodyMarker,
-	);
+  const endOfEventMarkerIndex = body.indexOf(
+    settings.inlineEventEndOfBodyMarker,
+  );
 
-	if (endOfEventMarkerIndex > 0) body = body.slice(0, endOfEventMarkerIndex);
-	return (
-		body
-			// Remove any need to remove lines
-			.replace(
-				new RegExp(`.*%%.*${settings.ignoreLineCommentToken}.*%%.*?\n`, "gi"),
-				"",
-			)
-			// Remove external image links
-			.replace(/!\[.*\]\(.*\)/gi, "")
-			// Remove tags
-			.replace(/#[a-zA-Z\d-_/]*/gi, "")
-			// Remove internal images ![[Pasted image 20230418232101.png]]
-			.replace(/!\[\[.*\]\]/gi, "")
-			// Remove other timelines to avoid circular dependencies!
-			.replace(/```aat-vertical\n(.|\n)*\n```/gi, "")
-			// Trim the text
-			.trim()
-	);
+  if (endOfEventMarkerIndex > 0) body = body.slice(0, endOfEventMarkerIndex);
+  return (
+    body
+      // Remove any need to remove lines
+      .replace(
+        new RegExp(`.*%%.*${settings.ignoreLineCommentToken}.*%%.*?\n`, "gi"),
+        "",
+      )
+      // Remove external image links
+      .replace(/!\[.*\]\(.*\)/gi, "")
+      // Remove tags
+      .replace(/#[a-zA-Z\d-_/]*/gi, "")
+      // Remove internal images ![[Pasted image 20230418232101.png]]
+      .replace(/!\[\[.*\]\]/gi, "")
+      // Remove other timelines to avoid circular dependencies!
+      .replace(/```aat-vertical\n(.|\n)*\n```/gi, "")
+      // Trim the text
+      .trim()
+  );
 }
 
 /**
@@ -140,12 +140,12 @@ export function formatBodyForCard(
  * @returns a formated string representation of the dates included in the card content based off the settings.
  */
 export function getDateText(
-	{ startDate, endDate }: Pick<CardContent, "startDate" | "endDate">,
-	settings: AutoTimelineSettings,
+  { startDate, endDate }: Pick<CardContent, "startDate" | "endDate">,
+  settings: AutoTimelineSettings,
 ): string {
-	if (!isDefined(startDate)) return "Start date missing";
-	const formatedStart = formatAbstractDate(startDate, settings);
-	if (!isDefined(endDate)) return formatedStart;
+  if (!isDefined(startDate)) return "Start date missing";
+  const formatedStart = formatAbstractDate(startDate, settings);
+  if (!isDefined(endDate)) return formatedStart;
 
-	return `From ${formatedStart} to ${formatAbstractDate(endDate, settings)}`;
+  return `From ${formatedStart} to ${formatAbstractDate(endDate, settings)}`;
 }

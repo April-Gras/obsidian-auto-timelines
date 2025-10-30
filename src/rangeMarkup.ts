@@ -1,8 +1,8 @@
 import {
-	createElementShort,
-	isDefined,
-	getChildAtIndexInHTMLElement,
-	compareAbstractDates,
+  createElementShort,
+  isDefined,
+  getChildAtIndexInHTMLElement,
+  compareAbstractDates,
 } from "~/utils";
 
 import type { Range } from "~/types";
@@ -12,14 +12,14 @@ import type { Range } from "~/types";
  * Useful for applying colors to elements programatically.
  */
 const AVAILABLE_COLORS = [
-	"red",
-	"orange",
-	"yellow",
-	"green",
-	"cyan",
-	"blue",
-	"purple",
-	"pink",
+  "red",
+  "orange",
+  "yellow",
+  "green",
+  "cyan",
+  "blue",
+  "purple",
+  "pink",
 ] as const;
 
 /**
@@ -29,29 +29,29 @@ const AVAILABLE_COLORS = [
  * @param rootElement - The root of all elements for this complete timeline.
  */
 export function renderRanges(ranges: Range[], rootElement: HTMLElement) {
-	const endDates: (number[] | true | undefined)[] = AVAILABLE_COLORS.map(
-		() => undefined
-	);
+  const endDates: (number[] | true | undefined)[] = AVAILABLE_COLORS.map(
+    () => undefined,
+  );
 
-	ranges.forEach((range) => {
-		const {
-			relatedCardData: {
-				cardData: { startDate, endDate },
-			},
-		} = range;
+  ranges.forEach((range) => {
+    const {
+      relatedCardData: {
+        cardData: { startDate, endDate },
+      },
+    } = range;
 
-		const offsetIndex = endDates.findIndex(
-			(date) =>
-				!isDefined(date) ||
-				(date !== true && compareAbstractDates(startDate, date) > 0)
-		);
+    const offsetIndex = endDates.findIndex(
+      (date) =>
+        !isDefined(date) ||
+        (date !== true && compareAbstractDates(startDate, date) > 0),
+    );
 
-		// Over the color limit
-		if (offsetIndex === -1) return;
+    // Over the color limit
+    if (offsetIndex === -1) return;
 
-		renderSingleRange(range, offsetIndex, rootElement);
-		endDates[offsetIndex] = endDate;
-	});
+    renderSingleRange(range, offsetIndex, rootElement);
+    endDates[offsetIndex] = endDate;
+  });
 }
 
 /**
@@ -72,64 +72,64 @@ export function renderRanges(ranges: Range[], rootElement: HTMLElement) {
  * @returns Nothing, but it renders a single range inside it's target element.
  */
 export function renderSingleRange(
-	{
-		relatedCardData: {
-			context: {
-				elements: { timelineRootElement, cardListRootElement },
-			},
-		},
-		targetPosition,
-		cardRelativeTopPosition,
-		index,
-	}: Range,
-	offset: number,
-	rootElelement: HTMLElement
+  {
+    relatedCardData: {
+      context: {
+        elements: { timelineRootElement, cardListRootElement },
+      },
+    },
+    targetPosition,
+    cardRelativeTopPosition,
+    index,
+  }: Range,
+  offset: number,
+  rootElelement: HTMLElement,
 ) {
-	const el = createElementShort(
-		timelineRootElement,
-		"div",
-		"aat-range-element"
-	);
+  const el = createElementShort(
+    timelineRootElement,
+    "div",
+    "aat-range-element",
+  );
 
-	el.style.height = `${targetPosition - cardRelativeTopPosition}px`;
-	el.style.top = `${cardRelativeTopPosition}px`;
-	el.style.left = `${offset * 12}px`;
-	el.style.backgroundColor = `var(--color-${AVAILABLE_COLORS[offset]})`;
+  el.style.height = `${targetPosition - cardRelativeTopPosition}px`;
+  el.style.top = `${cardRelativeTopPosition}px`;
+  el.style.left = `${offset * 12}px`;
+  el.style.backgroundColor = `var(--color-${AVAILABLE_COLORS[offset]})`;
 
-	// Setup highlight link
-	const relativeCardClassName = "aat-highlight-relative-card-to-range";
+  // Setup highlight link
+  const relativeCardClassName = "aat-highlight-relative-card-to-range";
 
-	el.onmouseenter = () => {
-		const relativeCard = getChildAtIndexInHTMLElement(
-			cardListRootElement,
-			index
-		);
+  el.onmouseenter = () => {
+    const relativeCard = getChildAtIndexInHTMLElement(
+      cardListRootElement,
+      index,
+    );
 
-		relativeCard.classList.add(relativeCardClassName);
-	};
+    relativeCard.classList.add(relativeCardClassName);
+  };
 
-	el.onmouseleave = () => {
-		const relativeCard = getChildAtIndexInHTMLElement(
-			cardListRootElement,
-			index
-		);
+  el.onmouseleave = () => {
+    const relativeCard = getChildAtIndexInHTMLElement(
+      cardListRootElement,
+      index,
+    );
 
-		relativeCard.classList.remove(relativeCardClassName);
-	};
+    relativeCard.classList.remove(relativeCardClassName);
+  };
 
-	// Setup click event
-	el.onclick = () => {
-		const el = window.document.querySelector(
-			".markdown-reading-view > .markdown-preview-view"
-		);
+  // Setup click event
+  el.onclick = () => {
+    const el = window.document.querySelector(
+      ".markdown-reading-view > .markdown-preview-view",
+    );
 
-		if (!el) return;
+    if (!el) return;
 
-		el.scrollTo({
-			top: cardRelativeTopPosition + rootElelement.offsetTop - 8,
-			behavior: "smooth",
-		});
-	};
+    el.scrollTo({
+      top: cardRelativeTopPosition + rootElelement.offsetTop - 8,
+      behavior: "smooth",
+    });
+  };
 
-	return el;
+  return el;
 }

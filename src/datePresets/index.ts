@@ -9,8 +9,8 @@ export { imperialDatePreset } from "./imperial";
 export { normalDatePreset } from "./normal";
 
 export const allFormats = [
-	normalDatePreset,
-	imperialDatePreset,
-	verboseDayDatePreset,
-	dndCalendarOfHarptosDalereckoningDatePreset,
+  normalDatePreset,
+  imperialDatePreset,
+  verboseDayDatePreset,
+  dndCalendarOfHarptosDalereckoningDatePreset,
 ] as const;

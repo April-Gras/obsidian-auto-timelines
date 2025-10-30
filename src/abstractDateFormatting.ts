@@ -1,15 +1,15 @@
 import {
-	dateTokenConfigurationIsTypeNumber,
-	dateTokenConfigurationIsTypeString,
-	evalNumericalCondition,
+  dateTokenConfigurationIsTypeNumber,
+  dateTokenConfigurationIsTypeString,
+  evalNumericalCondition,
 } from "~/utils";
 
 import type {
-	AutoTimelineSettings,
-	AbstractDate,
-	DateTokenConfiguration,
-	DateTokenType,
-	AdditionalDateFormatting,
+  AutoTimelineSettings,
+  AbstractDate,
+  DateTokenConfiguration,
+  DateTokenType,
+  AdditionalDateFormatting,
 } from "~/types";
 
 /**
@@ -24,46 +24,46 @@ import type {
  * @returns the formated representation of a given date based off the plugins settings.
  */
 export function formatAbstractDate(
-	date: AbstractDate | boolean,
-	{
-		dateDisplayFormat,
-		dateParserGroupPriority,
-		dateTokenConfiguration,
-		applyAdditonalConditionFormatting,
-	}: Pick<
-		AutoTimelineSettings,
-		| "dateDisplayFormat"
-		| "dateParserGroupPriority"
-		| "dateTokenConfiguration"
-		| "applyAdditonalConditionFormatting"
-	>
+  date: AbstractDate | boolean,
+  {
+    dateDisplayFormat,
+    dateParserGroupPriority,
+    dateTokenConfiguration,
+    applyAdditonalConditionFormatting,
+  }: Pick<
+    AutoTimelineSettings,
+    | "dateDisplayFormat"
+    | "dateParserGroupPriority"
+    | "dateTokenConfiguration"
+    | "applyAdditonalConditionFormatting"
+  >,
 ): string {
-	if (typeof date === "boolean") return "now";
-	const prioArray = dateParserGroupPriority.split(",");
-	let output = dateDisplayFormat.toString();
+  if (typeof date === "boolean") return "now";
+  const prioArray = dateParserGroupPriority.split(",");
+  let output = dateDisplayFormat.toString();
 
-	prioArray.forEach((token, index) => {
-		const configuration = dateTokenConfiguration.find(
-			({ name }) => name === token
-		);
+  prioArray.forEach((token, index) => {
+    const configuration = dateTokenConfiguration.find(
+      ({ name }) => name === token,
+    );
 
-		if (!configuration)
-			throw new Error(
-				`[April's not so automatic timelines] - No date token configuration found for ${token}, please setup your date tokens correctly`
-			);
+    if (!configuration)
+      throw new Error(
+        `[April's not so automatic timelines] - No date token configuration found for ${token}, please setup your date tokens correctly`,
+      );
 
-		output = output.replace(
-			`{${token}}`,
-			applyConditionBasedFormatting(
-				formatDateToken(date[index], configuration),
-				date[index],
-				configuration,
-				applyAdditonalConditionFormatting
-			)
-		);
-	});
+    output = output.replace(
+      `{${token}}`,
+      applyConditionBasedFormatting(
+        formatDateToken(date[index], configuration),
+        date[index],
+        configuration,
+        applyAdditonalConditionFormatting,
+      ),
+    );
+  });
 
-	return output;
+  return output;
 }
 
 /**
@@ -74,16 +74,16 @@ export function formatAbstractDate(
  * @returns the formated token.
  */
 export function formatDateToken(
-	datePart: number,
-	configuration: DateTokenConfiguration
+  datePart: number,
+  configuration: DateTokenConfiguration,
 ): string {
-	if (dateTokenConfigurationIsTypeNumber(configuration))
-		return formatNumberDateToken(datePart, configuration);
-	if (dateTokenConfigurationIsTypeString(configuration))
-		return formatStringDateToken(datePart, configuration);
-	throw new Error(
-		`[April's not so automatic timelines] - Corrupted date token configuration, please reset settings`
-	);
+  if (dateTokenConfigurationIsTypeNumber(configuration))
+    return formatNumberDateToken(datePart, configuration);
+  if (dateTokenConfigurationIsTypeString(configuration))
+    return formatStringDateToken(datePart, configuration);
+  throw new Error(
+    `[April's not so automatic timelines] - Corrupted date token configuration, please reset settings`,
+  );
 }
 
 /**
@@ -97,30 +97,30 @@ export function formatDateToken(
  * @returns the fully formated token ready to be inserted in the output string.
  */
 export function applyConditionBasedFormatting(
-	formatedDate: string,
-	date: number,
-	{ formatting }: DateTokenConfiguration,
-	applyAdditonalConditionFormatting: AutoTimelineSettings["applyAdditonalConditionFormatting"]
+  formatedDate: string,
+  date: number,
+  { formatting }: DateTokenConfiguration,
+  applyAdditonalConditionFormatting: AutoTimelineSettings["applyAdditonalConditionFormatting"],
 ): string {
-	if (!applyAdditonalConditionFormatting) return formatedDate;
+  if (!applyAdditonalConditionFormatting) return formatedDate;
 
-	return formatting.reduce(
-		(output, { format, conditionsAreExclusive, evaluations }) => {
-			const evaluationRestult = (
-				conditionsAreExclusive ? evaluations.some : evaluations.every
-			).bind(evaluations)(
-				({
-					condition,
-					value,
-				}: AdditionalDateFormatting["evaluations"][number]) =>
-					evalNumericalCondition(condition, date, value)
-			);
+  return formatting.reduce(
+    (output, { format, conditionsAreExclusive, evaluations }) => {
+      const evaluationRestult = (
+        conditionsAreExclusive ? evaluations.some : evaluations.every
+      ).bind(evaluations)(
+        ({
+          condition,
+          value,
+        }: AdditionalDateFormatting["evaluations"][number]) =>
+          evalNumericalCondition(condition, date, value),
+      );
 
-			if (evaluationRestult) return format.replace("{value}", output);
-			return output;
-		},
-		formatedDate
-	);
+      if (evaluationRestult) return format.replace("{value}", output);
+      return output;
+    },
+    formatedDate,
+  );
 }
 
 /**
@@ -133,17 +133,17 @@ export function applyConditionBasedFormatting(
  * @returns the formated token.
  */
 function formatNumberDateToken(
-	datePart: number,
-	{ minLeght, hideSign }: DateTokenConfiguration<DateTokenType.number>
+  datePart: number,
+  { minLeght, hideSign }: DateTokenConfiguration<DateTokenType.number>,
 ): string {
-	let stringifiedToken = Math.abs(datePart).toString();
+  let stringifiedToken = Math.abs(datePart).toString();
 
-	if (minLeght < 0) minLeght = 0;
-	while (stringifiedToken.length < minLeght)
-		stringifiedToken = "0" + stringifiedToken;
+  if (minLeght < 0) minLeght = 0;
+  while (stringifiedToken.length < minLeght)
+    stringifiedToken = "0" + stringifiedToken;
 
-	if (!hideSign && datePart < 0) stringifiedToken = `-${stringifiedToken}`;
-	return stringifiedToken;
+  if (!hideSign && datePart < 0) stringifiedToken = `-${stringifiedToken}`;
+  return stringifiedToken;
 }
 
 /**
@@ -155,8 +155,8 @@ function formatNumberDateToken(
  * @returns the formated token.
  */
 function formatStringDateToken(
-	datePart: number,
-	{ dictionary }: DateTokenConfiguration<DateTokenType.string>
+  datePart: number,
+  { dictionary }: DateTokenConfiguration<DateTokenType.string>,
 ): string {
-	return dictionary[datePart];
+  return dictionary[datePart];
 }

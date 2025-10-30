@@ -1,10 +1,10 @@
 import cloneDeep from "lodash.clonedeep";
 import {
-	AbstractDate,
-	DateTokenConfiguration,
-	MarkdownCodeBlockTimelineProcessingContext,
-	DateTokenType,
-	Condition,
+  AbstractDate,
+  DateTokenConfiguration,
+  MarkdownCodeBlockTimelineProcessingContext,
+  DateTokenType,
+  Condition,
 } from "~/types";
 
 /**
@@ -16,18 +16,18 @@ import {
  * @returns The metadata value assigned to the given key or null if unvalidated or missing.
  */
 export function getMetadataKey<T extends "string" | "number" | "boolean">(
-	cachedMetadata: MarkdownCodeBlockTimelineProcessingContext["cachedMetadata"],
-	key: string,
-	type: T
+  cachedMetadata: MarkdownCodeBlockTimelineProcessingContext["cachedMetadata"],
+  key: string,
+  type: T,
 ):
-	| (T extends "string" ? string : T extends "number" ? number : boolean)
-	| undefined {
-	// Bail if no formatter object or if the key is missing
-	if (!cachedMetadata.frontmatter) return undefined;
+  | (T extends "string" ? string : T extends "number" ? number : boolean)
+  | undefined {
+  // Bail if no formatter object or if the key is missing
+  if (!cachedMetadata.frontmatter) return undefined;
 
-	return typeof cachedMetadata.frontmatter[key] === type
-		? cachedMetadata.frontmatter[key]
-		: undefined;
+  return typeof cachedMetadata.frontmatter[key] === type
+    ? cachedMetadata.frontmatter[key]
+    : undefined;
 }
 
 /**
@@ -37,7 +37,7 @@ export function getMetadataKey<T extends "string" | "number" | "boolean">(
  * @returns `true` if the element is defined, `false` if not.
  */
 export const isDefined = <T>(argument: T | undefined): argument is T =>
-	argument !== undefined;
+  argument !== undefined;
 
 /**
  * Check if a runtime value is defined and is a non NaN number.
@@ -46,7 +46,7 @@ export const isDefined = <T>(argument: T | undefined): argument is T =>
  * @returns `true` if the element is indeed a non NaN number, `false` if not.
  */
 export const isDefinedAsNonNaNNumber = (
-	argument: unknown
+  argument: unknown,
 ): argument is number => typeof argument === "number" && !isNaN(argument);
 
 /**
@@ -56,16 +56,16 @@ export const isDefinedAsNonNaNNumber = (
  * @returns `true` if the element is indeed a string, `false` if not.
  */
 export const isDefinedAsString = (argument: unknown): argument is string =>
-	typeof argument === "string";
+  typeof argument === "string";
 
 /**
- * Check if a runtime value is defined and is a boolean
+ * Check if a runtime value is defined and is a boolean.
  *
  * @param argument a possibly undefined argument.
  * @returns `true` if the element is indeed a boolean, `false` if not.
  */
 export const isDefinedAsBoolean = (argument: unknown): argument is boolean =>
-	typeof argument === "boolean";
+  typeof argument === "boolean";
 
 /**
  * Same as `Array.findIndex()` but going from right to left.
@@ -75,19 +75,19 @@ export const isDefinedAsBoolean = (argument: unknown): argument is boolean =>
  * @returns `-1` if no index was found, or the last occurence of the predicament.
  */
 export function findLastIndex<T extends unknown[]>(
-	arr: T,
-	predicate: (arg: T[number]) => boolean
+  arr: T,
+  predicate: (arg: T[number]) => boolean,
 ): number {
-	const length = arr ? arr.length : 0;
-	if (!length) return -1;
-	let index = length - 1;
+  const length = arr ? arr.length : 0;
+  if (!length) return -1;
+  let index = length - 1;
 
-	while (index--) if (predicate(arr[index])) return index;
-	return -1;
+  while (index--) if (predicate(arr[index])) return index;
+  return -1;
 }
 
 /**
- * https://en.wikipedia.org/wiki/Linear_interpolation
+ * Check https://en.wikipedia.org/wiki/Linear_interpolation for more details.
  *
  * @description A naive implementation of the linear interpolation function.
  * @param a - First point.
@@ -97,7 +97,7 @@ export function findLastIndex<T extends unknown[]>(
  */
 export const lerp = (a: number, b: number, t: number) => a + t * (b - a);
 /**
- * https://en.wikipedia.org/wiki/Linear_interpolation
+ * Check https://en.wikipedia.org/wiki/Linear_interpolation for more details.
  *
  * @description The inverse of a lerp.
  * @param a - First point.
@@ -114,12 +114,12 @@ export const inLerp = (a: number, b: number, v: number) => (v - a) / (b - a);
  * @returns the handler that will close the timer.
  */
 export const measureTime = (str: string) => {
-	const value = `[April's automatic timelines] - ${str}`;
-	console.time(value);
+  const value = `[April's automatic timelines] - ${str}`;
+  console.time(value);
 
-	return () => {
-		console.timeEnd(value);
-	};
+  return () => {
+    console.timeEnd(value);
+  };
 };
 
 /**
@@ -130,13 +130,13 @@ export const measureTime = (str: string) => {
  * @returns - The child at the desired index. If the element is missing the function will throw.
  */
 export function getChildAtIndexInHTMLElement(
-	el: HTMLElement,
-	index: number
+  el: HTMLElement,
+  index: number,
 ): HTMLElement {
-	const child = el.children.item(index) as HTMLElement | null;
+  const child = el.children.item(index) as HTMLElement | null;
 
-	if (!child) throw new Error(`Missing child @ index ${index} for element`);
-	return child;
+  if (!child) throw new Error(`Missing child @ index ${index} for element`);
+  return child;
 }
 
 /**
@@ -149,43 +149,43 @@ export function getChildAtIndexInHTMLElement(
  * @returns The created element.
  */
 export function createElementShort(
-	el: HTMLElement,
-	element: keyof HTMLElementTagNameMap,
-	classes?: string[] | string,
-	content?: string | number
+  el: HTMLElement,
+  element: keyof HTMLElementTagNameMap,
+  classes?: string[] | string,
+  content?: string | number,
 ) {
-	const out = el.createEl(element);
+  const out = el.createEl(element);
 
-	if (classes instanceof Array) out.addClass(...classes);
-	else if (classes) out.addClass(classes);
-	if (content !== undefined) out.innerHTML = content.toString();
-	return out;
+  if (classes instanceof Array) out.addClass(...classes);
+  else if (classes) out.addClass(classes);
+  if (content !== undefined) out.innerHTML = content.toString();
+  return out;
 }
 
 /**
- * Compares two Abstract Dates
+ * Compares two Abstract Dates.
  *
  * @param a - first Abstract Date
  * @param b - second Abstract Date
  * @returns 0 if they are equal 1 if a > b and -1 if a < b
  */
 export function compareAbstractDates(
-	a: AbstractDate | undefined | true,
-	b: AbstractDate | undefined | true
+  a: AbstractDate | undefined | true,
+  b: AbstractDate | undefined | true,
 ) {
-	// Since could be numbers we can't check with `!`
-	if (!isDefined(a) && !isDefined(b)) return 0;
-	if (!isDefined(a)) return -1;
-	if (!isDefined(b)) return 1;
+  // Since could be numbers we can't check with `!`
+  if (!isDefined(a) && !isDefined(b)) return 0;
+  if (!isDefined(a)) return -1;
+  if (!isDefined(b)) return 1;
 
-	if (a === true && b !== true) return 1;
-	if (b === true && a !== true) return -1;
-	if (a === true && b === true) return 0;
-	a = a as AbstractDate;
-	b = b as AbstractDate;
-	for (let index = 0; index < a.length; index++)
-		if (a[index] !== b[index]) return a[index] > b[index] ? 1 : -1;
-	return 0;
+  if (a === true && b !== true) return 1;
+  if (b === true && a !== true) return -1;
+  if (a === true && b === true) return 0;
+  a = a as AbstractDate;
+  b = b as AbstractDate;
+  for (let index = 0; index < a.length; index++)
+    if (a[index] !== b[index]) return a[index] > b[index] ? 1 : -1;
+  return 0;
 }
 
 /**
@@ -195,7 +195,7 @@ export function compareAbstractDates(
  * @returns `true` if the element is defined as an array, `false` if not.
  */
 export function isDefinedAsArray(value: unknown): value is unknown[] {
-	return isDefined(value) && value instanceof Array;
+  return isDefined(value) && value instanceof Array;
 }
 
 /**
@@ -205,71 +205,71 @@ export function isDefinedAsArray(value: unknown): value is unknown[] {
  * @returns `true` if the element is defined as an object, `false` if not.
  */
 export function isDefinedAsObject(
-	value: unknown
+  value: unknown,
 ): value is { [key: string]: unknown } {
-	return isDefined(value) && value instanceof Object;
+  return isDefined(value) && value instanceof Object;
 }
 
 /**
  * Shorthand to quickly get a well typed number date token configuration object.
  *
  * @param defaultValue - Override the values of the return object.
- * @returns DateTokenConfiguration<DateTokenType.number> - A well typed date token configuration object.
+ * @returns DateTokenConfiguration&lt;DateTokenType.number> - A well typed date token configuration object.
  */
 export function createNumberDateTokenConfiguration(
-	defaultValue: Partial<DateTokenConfiguration<DateTokenType.number>> = {}
+  defaultValue: Partial<DateTokenConfiguration<DateTokenType.number>> = {},
 ): DateTokenConfiguration<DateTokenType.number> {
-	return {
-		minLeght: 2,
-		name: "",
-		type: DateTokenType.number,
-		displayWhenZero: true,
-		formatting: [],
-		hideSign: false,
-		...defaultValue,
-	};
+  return {
+    minLeght: 2,
+    name: "",
+    type: DateTokenType.number,
+    displayWhenZero: true,
+    formatting: [],
+    hideSign: false,
+    ...defaultValue,
+  };
 }
 
 /**
  * Shorthand to quickly get a well typed string date token configuration object.
  *
  * @param defaultValue - Override the values of the return object.
- * @returns DateTokenConfiguration<DateTokenType.string> - A well typed date token configuration object.
+ * @returns DateTokenConfiguration&lt;DateTokenType.string> - A well typed date token configuration object.
  */
 export function createStringDateTokenConfiguration(
-	defaultValue: Partial<DateTokenConfiguration<DateTokenType.string>> = {}
+  defaultValue: Partial<DateTokenConfiguration<DateTokenType.string>> = {},
 ): DateTokenConfiguration<DateTokenType.string> {
-	return {
-		name: "",
-		type: DateTokenType.string,
-		dictionary: [""],
-		formatting: [],
-		...defaultValue,
-	};
+  return {
+    name: "",
+    type: DateTokenType.string,
+    dictionary: [""],
+    formatting: [],
+    ...defaultValue,
+  };
 }
 
 /**
  * Narrow type down to specific subtype for DateTokenConfigurations.
  *
- * @param value - Date token configuration.
+ * @param value - A Date token configuration object.
  * @returns typeguard.
  */
 export function dateTokenConfigurationIsTypeString(
-	value: DateTokenConfiguration
+  value: DateTokenConfiguration,
 ): value is DateTokenConfiguration<DateTokenType.string> {
-	return value.type === DateTokenType.string;
+  return value.type === DateTokenType.string;
 }
 
 /**
  * Narrow type down to specific subtype for DateTokenConfigurations.
  *
- * @param value - Date token configuration.
+ * @param value - A Date token configuration object.
  * @returns typeguard.
  */
 export function dateTokenConfigurationIsTypeNumber(
-	value: DateTokenConfiguration
+  value: DateTokenConfiguration,
 ): value is DateTokenConfiguration<DateTokenType.number> {
-	return value.type === DateTokenType.number;
+  return value.type === DateTokenType.number;
 }
 
 /**
@@ -281,28 +281,28 @@ export function dateTokenConfigurationIsTypeNumber(
  * @returns The parsed abstract date or nothing.
  */
 export function parseAbstractDate(
-	groupsToCheck: string[],
-	metadataString: string,
-	reg: RegExp | string
+  groupsToCheck: string[],
+  metadataString: string,
+  reg: RegExp | string,
 ): AbstractDate | undefined {
-	const matches = metadataString.match(reg);
+  const matches = metadataString.match(reg);
 
-	if (!matches || !matches.groups) return undefined;
+  if (!matches || !matches.groups) return undefined;
 
-	const { groups } = matches;
+  const { groups } = matches;
 
-	const output = groupsToCheck.reduce((accumulator, groupName) => {
-		const value = Number(groups[groupName]);
+  const output = groupsToCheck.reduce((accumulator, groupName) => {
+    const value = Number(groups[groupName]);
 
-		// In the case of a faulty regex given by the user in the settings
-		if (!isNaN(value)) accumulator.push(value);
-		return accumulator;
-	}, [] as AbstractDate);
+    // In the case of a faulty regex given by the user in the settings
+    if (!isNaN(value)) accumulator.push(value);
+    return accumulator;
+  }, [] as AbstractDate);
 
-	// Malformed payload bail out
-	if (output.length !== groupsToCheck.length) return undefined;
+  // Malformed payload bail out
+  if (output.length !== groupsToCheck.length) return undefined;
 
-	return output;
+  return output;
 }
 
 /**
@@ -314,24 +314,24 @@ export function parseAbstractDate(
  * @returns the evaluated boolean.
  */
 export function evalNumericalCondition(
-	condition: Condition,
-	a: number,
-	b: number
+  condition: Condition,
+  a: number,
+  b: number,
 ): boolean {
-	switch (condition) {
-		case Condition.Equal:
-			return a === b;
-		case Condition.NotEqual:
-			return a !== b;
-		case Condition.Greater:
-			return a > b;
-		case Condition.GreaterOrEqual:
-			return a >= b;
-		case Condition.Less:
-			return a < b;
-		case Condition.LessOrEqual:
-			return a <= b;
-	}
+  switch (condition) {
+    case Condition.Equal:
+      return a === b;
+    case Condition.NotEqual:
+      return a !== b;
+    case Condition.Greater:
+      return a > b;
+    case Condition.GreaterOrEqual:
+      return a >= b;
+    case Condition.Less:
+      return a < b;
+    case Condition.LessOrEqual:
+      return a <= b;
+  }
 }
 
 /**
@@ -343,36 +343,36 @@ export function evalNumericalCondition(
  * @returns `true` if we could find the subset in the source array, `false` otherwise
  */
 export function isOrderedSubArray(source: string[], subset: string[]): boolean {
-	let endsWithWildstar = false;
-	if (!subset.length) return true;
-	const target = subset[0];
-	const builtRegex = target.includes("*")
-		? new RegExp(target.replace(/\*/gi, ".*"))
-		: null;
-	const index = source.findIndex((el) => {
-		if (!builtRegex) return el === target;
-		const hasMatch = builtRegex.test(el);
+  let endsWithWildstar = false;
+  if (!subset.length) return true;
+  const target = subset[0];
+  const builtRegex = target.includes("*")
+    ? new RegExp(target.replace(/\*/gi, ".*"))
+    : null;
+  const index = source.findIndex((el) => {
+    if (!builtRegex) return el === target;
+    const hasMatch = builtRegex.test(el);
 
-		if (!hasMatch) return false;
-		if (target[target.length - 1] === "*") endsWithWildstar = true;
-		return true;
-	});
+    if (!hasMatch) return false;
+    if (target[target.length - 1] === "*") endsWithWildstar = true;
+    return true;
+  });
 
-	return index === -1
-		? false
-		: endsWithWildstar ||
-				isOrderedSubArray(source.slice(index + 1), subset.slice(1));
+  return index === -1
+    ? false
+    : endsWithWildstar ||
+        isOrderedSubArray(source.slice(index + 1), subset.slice(1));
 }
 
 /**
  * Utils to generate a array filled with numbers in order.
  *
  * @param start - The starting point of the numbers in the array.
- * @param size - The size of the array.
+ * @param size - A number representing the size of the array.
  * @returns the filled array.
  */
 export function generateNumberArray(start: number, size = 10) {
-	return [...Array(size).keys()].map((i) => start + i);
+  return [...Array(size).keys()].map((i) => start + i);
 }
 
 /**
@@ -382,14 +382,14 @@ export function generateNumberArray(start: number, size = 10) {
  * @returns a new object that shares a couple a referrences.
  */
 export function cloneMarkdownCodeBlockTimelineProcessingContext(
-	src: MarkdownCodeBlockTimelineProcessingContext
+  src: MarkdownCodeBlockTimelineProcessingContext,
 ): MarkdownCodeBlockTimelineProcessingContext {
-	return {
-		app: src.app,
-		cachedMetadata: cloneDeep(src.cachedMetadata),
-		elements: src.elements,
-		file: src.file,
-		settings: src.settings,
-		timelineFile: src.timelineFile,
-	};
+  return {
+    app: src.app,
+    cachedMetadata: cloneDeep(src.cachedMetadata),
+    elements: src.elements,
+    file: src.file,
+    settings: src.settings,
+    timelineFile: src.timelineFile,
+  };
 }

@@ -5,46 +5,44 @@ import VCard from "./VCard.vue";
 import type { DateTokenConfiguration } from "~/types";
 
 const props = withDefaults(
-	defineProps<{
-		modelValue: DateTokenConfiguration[];
-		displayDeleteOption?: boolean;
-	}>(),
-	{ displayDeleteOption: false }
+  defineProps<{
+    modelValue: DateTokenConfiguration[];
+    displayDeleteOption?: boolean;
+  }>(),
+  { displayDeleteOption: false },
 );
 
 const emit = defineEmits<{
-	"update:modelValue": [payload: DateTokenConfiguration[]];
+  "update:modelValue": [payload: DateTokenConfiguration[]];
 }>();
 
 function handleUpdateModelValueAtIndex(
-	modelValue: DateTokenConfiguration,
-	index: number
+  modelValue: DateTokenConfiguration,
+  index: number,
 ) {
-	const clone = [...props.modelValue];
+  const clone = [...props.modelValue];
 
-	clone[index] = modelValue;
-	emit("update:modelValue", clone);
+  clone[index] = modelValue;
+  emit("update:modelValue", clone);
 }
 
 function handleDeleteModelValueAtIndex(index: number) {
-	emit(
-		"update:modelValue",
-		props.modelValue.filter((_, i) => index !== i)
-	);
+  emit(
+    "update:modelValue",
+    props.modelValue.filter((_, i) => index !== i),
+  );
 }
 </script>
 
 <template>
-	<section class="v-grid-display">
-		<VCard v-for="(dateTokenConfiguration, index) in modelValue">
-			<VConfigureSingleDateToken
-				:model-value="dateTokenConfiguration"
-				:allowDelete="displayDeleteOption"
-				@update:model-value="
-					handleUpdateModelValueAtIndex($event, index)
-				"
-				@delete="handleDeleteModelValueAtIndex(index)"
-			/>
-		</VCard>
-	</section>
+  <section class="v-grid-display">
+    <VCard v-for="(dateTokenConfiguration, index) in modelValue">
+      <VConfigureSingleDateToken
+        :model-value="dateTokenConfiguration"
+        :allowDelete="displayDeleteOption"
+        @update:model-value="handleUpdateModelValueAtIndex($event, index)"
+        @delete="handleDeleteModelValueAtIndex(index)"
+      />
+    </VCard>
+  </section>
 </template>

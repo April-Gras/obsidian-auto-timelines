@@ -78,10 +78,10 @@ The most straight forward of all three date format settings. This is the templat
 
 Let's get a little wild and imagine a world where time is tracked this way
 
--   `Cycles` are the hightest value of time, each cycle can see 3 moons come and go.
--   `Moons` are more frequent than cycles and are comprised of phases.
--   `Phases` are more frequent than moons per cycle and are comprised of days.
--   `Days` are the lowest relevant time unit in this system.
+- `Cycles` are the hightest value of time, each cycle can see 3 moons come and go.
+- `Moons` are more frequent than cycles and are comprised of phases.
+- `Phases` are more frequent than moons per cycle and are comprised of days.
+- `Days` are the lowest relevant time unit in this system.
 
 Let's say in our metadata we want to store the value as such
 
@@ -112,19 +112,19 @@ The end result for our initially declared metadata would look something like: `c
 
 In some cases numbers displaying your dates as plain numbers won't really cut it. This is where date token types come in. For now they come in two flavors
 
--   `numerical`: These date tokens should be displayed as default, for example the day and the year in `06 july 2018` are numerical date tokens. The `day` token has a minimal length of `2` and the `year` token has a minimal length of `4`.
--   `string`: These are a bit more cumbersome to configure but add great visibility. For instance in our previous example (`06 july 2018`) the `month` token is a `string` date token.
-    To configure your date tokens head to the plugins settings and use the `Date Format Settings` setup flow or edit them using advanced mode.
+- `numerical`: These date tokens should be displayed as default, for example the day and the year in `06 july 2018` are numerical date tokens. The `day` token has a minimal length of `2` and the `year` token has a minimal length of `4`.
+- `string`: These are a bit more cumbersome to configure but add great visibility. For instance in our previous example (`06 july 2018`) the `month` token is a `string` date token.
+  To configure your date tokens head to the plugins settings and use the `Date Format Settings` setup flow or edit them using advanced mode.
 
 ##### Timeline specific settings override
 
 In some cases the output format used defined in the settings is too broad for some timelines. Let's say we defined the following tokens:
 
--   year
--   month
--   day
--   hour
--   minute
+- year
+- month
+- day
+- hour
+- minute
 
 We could set our default output format to `{day} {month} {year}` and cover a lot of use cases. But let's say we have a timeline full of events that are potentially minutes apart.
 Instead of trying to compromise with other timelines display we could just write
@@ -162,13 +162,13 @@ For example some people use `B.C.` and `A.D.` to annotate their dates. This can 
 
 As per obsidians [unofficial documentation](https://marcus.se.net/obsidian-plugin-docs/getting-started):
 
--   clone the repository in a test vault
--   `npm install` to install dependencies
--   `npm run dev` to launch development watcher
+- clone the repository in a test vault
+- `pnpm install` to install dependencies
+- `pnpm run dev` to launch development watcher
 
 ## Testing
 
-Before launching the unit tests, make sure to install the dependencies with `npm run install` and use `npm run prepare-vitest` to setup some changes for vitests to work correctly with obsidians package.
+Before launching the unit tests, make sure to install the dependencies with `pnpm install` and use `pnpm run prepare-vitest` to setup some changes for vitests to work correctly with obsidians package.
 
-Once that's out of the way use `npm run test` to just launch the tests.
-`npm run test-ui` to run the UI and see coverage in your browser.
+Once that's out of the way use `pnpm run test` to just launch the tests.
+`pnpm run test-ui` to run the UI and see coverage in your browser.

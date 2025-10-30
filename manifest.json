@@ -1,10 +1,10 @@
 {
-	"id": "aprils-automatic-timelines",
-	"name": "April's Automatic Timelines",
-	"version": "0.13.7",
-	"minAppVersion": "0.15.0",
-	"description": "Simple timeline generator for story tellers",
-	"author": "April Gras",
-	"authorUrl": "https://github.com/April-Gras",
-	"isDesktopOnly": false
+  "id": "aprils-automatic-timelines",
+  "name": "April's Automatic Timelines",
+  "version": "0.13.8",
+  "minAppVersion": "0.15.0",
+  "description": "Simple timeline generator for story tellers",
+  "author": "April Gras",
+  "authorUrl": "https://github.com/April-Gras",
+  "isDesktopOnly": false
 }

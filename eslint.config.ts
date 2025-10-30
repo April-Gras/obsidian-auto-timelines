@@ -1,0 +1,20 @@
+import { globalIgnores } from "eslint/config";
+import eslint from "@eslint/js";
+import tseslint from "typescript-eslint";
+import { jsdoc } from "eslint-plugin-jsdoc";
+import { defineConfig } from "eslint/config";
+
+export default defineConfig([
+  eslint.configs.recommended,
+  tseslint.configs.recommended,
+  // @ts-expect-error Idk why ?
+  jsdoc({
+    config: "flat/contents-typescript-error",
+  }),
+  globalIgnores([
+    "main.js",
+    "node_modules/*",
+    "coverage/*",
+    "version-bump.mjs",
+  ]),
+]);

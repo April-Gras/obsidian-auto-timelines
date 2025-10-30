@@ -2,10 +2,10 @@ import { getMetadataKey, isDefined, isOrderedSubArray } from "~/utils";
 
 import type { MarkdownCodeBlockTimelineProcessingContext } from "~/types";
 import {
-	getAbstractDateFromMetadata,
-	getBodyFromContextOrDocument,
-	getImageUrlFromContextOrDocument,
-	getTagsFromMetadataOrTagObject,
+  getAbstractDateFromMetadata,
+  getBodyFromContextOrDocument,
+  getImageUrlFromContextOrDocument,
+  getTagsFromMetadataOrTagObject,
 } from "./cardDataExtraction";
 
 /**
@@ -16,27 +16,23 @@ import {
  * @returns the context or underfined if it could not build it.
  */
 export async function getDataFromNoteMetadata(
-	context: MarkdownCodeBlockTimelineProcessingContext,
-	tagsToFind: string[]
+  context: MarkdownCodeBlockTimelineProcessingContext,
+  tagsToFind: string[],
 ) {
-	const { cachedMetadata, settings } = context;
-	const { frontmatter: metaData, tags } = cachedMetadata;
+  const { cachedMetadata, settings } = context;
+  const { frontmatter: metaData, tags } = cachedMetadata;
 
-	if (!metaData) return undefined;
-	if (metaData[settings.eventRenderToggleKey] !== true) return undefined;
+  if (!metaData) return undefined;
+  if (metaData[settings.eventRenderToggleKey] !== true) return undefined;
 
-	const timelineTags = getTagsFromMetadataOrTagObject(
-		settings,
-		metaData,
-		tags
-	);
+  const timelineTags = getTagsFromMetadataOrTagObject(settings, metaData, tags);
 
-	if (!extractedTagsAreValid(timelineTags, tagsToFind)) return undefined;
+  if (!extractedTagsAreValid(timelineTags, tagsToFind)) return undefined;
 
-	return {
-		cardData: await extractCardData(context),
-		context,
-	} as const;
+  return {
+    cardData: await extractCardData(context),
+    context,
+  } as const;
 }
 
 /**
@@ -47,20 +43,20 @@ export async function getDataFromNoteMetadata(
  * @returns `true` if valid.
  */
 export function extractedTagsAreValid(
-	noteTags: string[],
-	tagsToFind: string[]
+  noteTags: string[],
+  tagsToFind: string[],
 ): boolean {
-	// Split to accoun for obsidian nested tags
-	// https://help.obsidian.md/Editing+and+formatting/Tags#Nested+tags
-	const noteTagCollection = noteTags.map((e) => e.split("/"));
+  // Split to accoun for obsidian nested tags
+  // https://help.obsidian.md/Editing+and+formatting/Tags#Nested+tags
+  const noteTagCollection = noteTags.map((e) => e.split("/"));
 
-	return tagsToFind.some((tag) => {
-		const timelineTag = tag.split("/");
+  return tagsToFind.some((tag) => {
+    const timelineTag = tag.split("/");
 
-		return noteTagCollection.some((fileTag) =>
-			isOrderedSubArray(fileTag, timelineTag)
-		);
-	});
+    return noteTagCollection.some((fileTag) =>
+      isOrderedSubArray(fileTag, timelineTag),
+    );
+  });
 }
 
 /**
@@ -71,33 +67,27 @@ export function extractedTagsAreValid(
  * @returns The extracted data to create a card from a note.
  */
 export async function extractCardData(
-	context: MarkdownCodeBlockTimelineProcessingContext,
-	rawFileContent?: string
+  context: MarkdownCodeBlockTimelineProcessingContext,
+  rawFileContent?: string,
 ) {
-	const { file, cachedMetadata: c, settings } = context;
-	const fileTitle =
-		c.frontmatter?.[settings.metadataKeyEventTitleOverride] ||
-		file.basename;
+  const { file, cachedMetadata: c, settings } = context;
+  const fileTitle =
+    c.frontmatter?.[settings.metadataKeyEventTitleOverride] || file.basename;
 
-	rawFileContent = rawFileContent || (await file.vault.cachedRead(file));
-	return {
-		title: fileTitle as string,
-		body: getBodyFromContextOrDocument(rawFileContent, context),
-		imageURL: getImageUrlFromContextOrDocument(rawFileContent, context),
-		startDate: getAbstractDateFromMetadata(
-			context,
-			settings.metadataKeyEventStartDate
-		),
-		endDate:
-			getAbstractDateFromMetadata(
-				context,
-				settings.metadataKeyEventEndDate
-			) ??
-			(isDefined(
-				getMetadataKey(c, settings.metadataKeyEventEndDate, "boolean")
-			)
-				? true
-				: undefined),
-	} as const;
+  rawFileContent = rawFileContent || (await file.vault.cachedRead(file));
+  return {
+    title: fileTitle as string,
+    body: getBodyFromContextOrDocument(rawFileContent, context),
+    imageURL: getImageUrlFromContextOrDocument(rawFileContent, context),
+    startDate: getAbstractDateFromMetadata(
+      context,
+      settings.metadataKeyEventStartDate,
+    ),
+    endDate:
+      getAbstractDateFromMetadata(context, settings.metadataKeyEventEndDate) ??
+      (isDefined(getMetadataKey(c, settings.metadataKeyEventEndDate, "boolean"))
+        ? true
+        : undefined),
+  } as const;
 }
 export type FnExtractCardData = typeof extractCardData;
