@@ -1,7 +1,7 @@
 import type { App } from "obsidian";
 import type {
-	AutoTimelineSettings,
-	MarkdownCodeBlockTimelineProcessingContext,
+  AutoTimelineSettings,
+  MarkdownCodeBlockTimelineProcessingContext,
 } from "~/types";
 
 /**
@@ -14,39 +14,39 @@ import type {
  * @returns the nessessary context to build a timeline.
  */
 export function setupTimelineCreation(
-	app: App,
-	element: HTMLElement,
-	timelineFile: string,
-	settings: AutoTimelineSettings
+  app: App,
+  element: HTMLElement,
+  timelineFile: string,
+  settings: AutoTimelineSettings,
 ) {
-	const { vault, metadataCache } = app;
-	const fileArray = vault.getMarkdownFiles();
-	const root = element.createDiv();
-	const cardListRootElement = root.createDiv();
-	const timelineRootElement = root.createDiv();
+  const { vault, metadataCache } = app;
+  const fileArray = vault.getMarkdownFiles();
+  const root = element.createDiv();
+  const cardListRootElement = root.createDiv();
+  const timelineRootElement = root.createDiv();
 
-	element.classList.add("aat-root-container");
-	root.classList.add("aat-vertical-timeline");
-	cardListRootElement.classList.add("aat-card-list-root");
-	timelineRootElement.classList.add("aat-timeline-root");
+  element.classList.add("aat-root-container");
+  root.classList.add("aat-vertical-timeline");
+  cardListRootElement.classList.add("aat-card-list-root");
+  timelineRootElement.classList.add("aat-timeline-root");
 
-	const dataBundleArray = fileArray.reduce((accumulator, file) => {
-		const cachedMetadata = metadataCache.getFileCache(file);
+  const dataBundleArray = fileArray.reduce((accumulator, file) => {
+    const cachedMetadata = metadataCache.getFileCache(file);
 
-		if (cachedMetadata)
-			accumulator.push({
-				app,
-				settings,
-				timelineFile,
-				file,
-				cachedMetadata,
-				elements: {
-					timelineRootElement,
-					cardListRootElement,
-				},
-			});
-		return accumulator;
-	}, [] as MarkdownCodeBlockTimelineProcessingContext[]);
+    if (cachedMetadata)
+      accumulator.push({
+        app,
+        settings,
+        timelineFile,
+        file,
+        cachedMetadata,
+        elements: {
+          timelineRootElement,
+          cardListRootElement,
+        },
+      });
+    return accumulator;
+  }, [] as MarkdownCodeBlockTimelineProcessingContext[]);
 
-	return dataBundleArray;
+  return dataBundleArray;
 }

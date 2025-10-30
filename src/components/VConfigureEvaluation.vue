@@ -8,42 +8,42 @@ import VButton from "./VButton.vue";
 import { availableConditionArray } from "~/types";
 
 defineProps<{
-	modelValue: Evaluation;
-	inputId: string | number;
+  modelValue: Evaluation;
+  inputId: string | number;
 }>();
 
 const emit = defineEmits<{
-	"update:modelValue": [payload: Evaluation];
-	delete: [];
+  "update:modelValue": [payload: Evaluation];
+  delete: [];
 }>();
 </script>
 <template>
-	<div class="v-inline-flex-display">
-		<VButton @click.native="emit('delete')">X</VButton>
-		<div class="slim v-grid-display-2">
-			<VSelect
-				:options="availableConditionArray"
-				:model-value="modelValue.condition"
-				:input-id="`configure-single-date-token-format-condition-${inputId}`"
-				translation-key="conditions"
-				@update:model-value="
-					emit('update:modelValue', {
-						...modelValue,
-						condition: $event,
-					})
-				"
-			/>
-			<VInput
-				type="number"
-				:model-value="modelValue.value"
-				:input-id="`configure-single-date-token-format-value-${inputId}`"
-				@update:model-value="
-					emit('update:modelValue', {
-						...modelValue,
-						value: $event,
-					})
-				"
-			/>
-		</div>
-	</div>
+  <div class="v-inline-flex-display">
+    <VButton @click.native="emit('delete')">X</VButton>
+    <div class="slim v-grid-display-2">
+      <VSelect
+        :options="availableConditionArray"
+        :model-value="modelValue.condition"
+        :input-id="`configure-single-date-token-format-condition-${inputId}`"
+        translation-key="conditions"
+        @update:model-value="
+          emit('update:modelValue', {
+            ...modelValue,
+            condition: $event,
+          })
+        "
+      />
+      <VInput
+        type="number"
+        :model-value="modelValue.value"
+        :input-id="`configure-single-date-token-format-value-${inputId}`"
+        @update:model-value="
+          emit('update:modelValue', {
+            ...modelValue,
+            value: $event,
+          })
+        "
+      />
+    </div>
+  </div>
 </template>

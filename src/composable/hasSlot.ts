@@ -8,17 +8,16 @@ import { Comment, Text, type Slot, type VNode } from "vue";
  * @returns typeguard boolean, `true` if the slot exists.
  */
 export function hasSlot(slot: Slot | undefined, slotProps = {}): slot is Slot {
-	if (!slot) return false;
+  if (!slot) return false;
 
-	return slot(slotProps).some((vnode: VNode) => {
-		if (vnode.type === Comment) return false;
+  return slot(slotProps).some((vnode: VNode) => {
+    if (vnode.type === Comment) return false;
 
-		if (Array.isArray(vnode.children) && !vnode.children.length)
-			return false;
+    if (Array.isArray(vnode.children) && !vnode.children.length) return false;
 
-		return (
-			vnode.type !== Text ||
-			(typeof vnode.children === "string" && vnode.children.trim() !== "")
-		);
-	});
+    return (
+      vnode.type !== Text ||
+      (typeof vnode.children === "string" && vnode.children.trim() !== "")
+    );
+  });
 }

@@ -1,16 +1,16 @@
 import {
-	isDefinedAsString,
-	isDefined,
-	isDefinedAsArray,
-	getMetadataKey,
-	parseAbstractDate,
+  isDefinedAsString,
+  isDefined,
+  isDefinedAsArray,
+  getMetadataKey,
+  parseAbstractDate,
 } from "~/utils";
 
 import { FrontMatterCache, TagCache, TFile } from "obsidian";
 import type {
-	AutoTimelineSettings,
-	AbstractDate,
-	MarkdownCodeBlockTimelineProcessingContext,
+  AutoTimelineSettings,
+  AbstractDate,
+  MarkdownCodeBlockTimelineProcessingContext,
 } from "~/types";
 
 /**
@@ -22,31 +22,29 @@ import type {
  * @returns A list of tags to look for in a note.
  */
 export function getTagsFromMetadataOrTagObject(
-	settings: AutoTimelineSettings,
-	metaData: Omit<FrontMatterCache, "position">,
-	tags?: TagCache[]
+  settings: AutoTimelineSettings,
+  metaData: Omit<FrontMatterCache, "position">,
+  tags?: TagCache[],
 ): string[] {
-	let output = [] as string[];
-	const timelineArray = metaData[settings.metadataKeyEventTimelineTag];
+  let output = [] as string[];
+  const timelineArray = metaData[settings.metadataKeyEventTimelineTag];
 
-	if (isDefinedAsArray(timelineArray))
-		output = timelineArray.filter(isDefinedAsString);
-	// Breakout earlier if we don't check the tags
-	if (!settings.lookForTagsForTimeline) return output;
-	if (isDefinedAsArray(tags))
-		output = output.concat(tags.map(({ tag }) => tag.substring(1)));
+  if (isDefinedAsArray(timelineArray))
+    output = timelineArray.filter(isDefinedAsString);
+  // Breakout earlier if we don't check the tags
+  if (!settings.lookForTagsForTimeline) return output;
+  if (isDefinedAsArray(tags))
+    output = output.concat(tags.map(({ tag }) => tag.substring(1)));
 
-	// Tags in the frontmatter
-	const metadataInlineTags = metaData.tags;
-	if (!isDefined(metadataInlineTags)) return output;
-	if (isDefinedAsString(metadataInlineTags))
-		output = output.concat(
-			metadataInlineTags.split(",").map((e) => e.trim())
-		);
-	if (isDefinedAsArray(metadataInlineTags))
-		output = output.concat(metadataInlineTags.filter(isDefinedAsString));
-	// .substring called to remove the initial `#` in the notes tags
-	return output;
+  // Tags in the frontmatter
+  const metadataInlineTags = metaData.tags;
+  if (!isDefined(metadataInlineTags)) return output;
+  if (isDefinedAsString(metadataInlineTags))
+    output = output.concat(metadataInlineTags.split(",").map((e) => e.trim()));
+  if (isDefinedAsArray(metadataInlineTags))
+    output = output.concat(metadataInlineTags.filter(isDefinedAsString));
+  // .substring called to remove the initial `#` in the notes tags
+  return output;
 }
 
 /**
@@ -58,23 +56,23 @@ export function getTagsFromMetadataOrTagObject(
  * @returns the body of a given card or null if none was found.
  */
 export function getBodyFromContextOrDocument(
-	rawFileText: string,
-	context: MarkdownCodeBlockTimelineProcessingContext
+  rawFileText: string,
+  context: MarkdownCodeBlockTimelineProcessingContext,
 ): string | null {
-	const {
-		cachedMetadata: { frontmatter: metadata },
-		settings: { metadataKeyEventBodyOverride },
-	} = context;
-	const overrideBody = metadata?.[metadataKeyEventBodyOverride] ?? null;
+  const {
+    cachedMetadata: { frontmatter: metadata },
+    settings: { metadataKeyEventBodyOverride },
+  } = context;
+  const overrideBody = metadata?.[metadataKeyEventBodyOverride] ?? null;
 
-	if (!rawFileText.length || overrideBody) return overrideBody;
+  if (!rawFileText.length || overrideBody) return overrideBody;
 
-	const rawTextArray = rawFileText.split("\n");
-	rawTextArray.shift();
-	const processedArray = rawTextArray.slice(rawTextArray.indexOf("---") + 1);
-	const finalString = processedArray.join("\n").trim();
+  const rawTextArray = rawFileText.split("\n");
+  rawTextArray.shift();
+  const processedArray = rawTextArray.slice(rawTextArray.indexOf("---") + 1);
+  const finalString = processedArray.join("\n").trim();
 
-	return finalString;
+  return finalString;
 }
 
 /**
@@ -85,60 +83,60 @@ export function getBodyFromContextOrDocument(
  * @returns the URL of the image to be displayed in a card or null if none where found.
  */
 export function getImageUrlFromContextOrDocument(
-	rawFileText: string,
-	context: MarkdownCodeBlockTimelineProcessingContext
+  rawFileText: string,
+  context: MarkdownCodeBlockTimelineProcessingContext,
 ): string | null {
-	const {
-		cachedMetadata: { frontmatter: metadata },
-		file: currentFile,
-		app,
-		settings: { metadataKeyEventPictureOverride },
-	} = context;
-	const {
-		vault,
-		metadataCache: { getFirstLinkpathDest },
-	} = app;
-	const override: string = metadata?.[metadataKeyEventPictureOverride];
+  const {
+    cachedMetadata: { frontmatter: metadata },
+    file: currentFile,
+    app,
+    settings: { metadataKeyEventPictureOverride },
+  } = context;
+  const {
+    vault,
+    metadataCache: { getFirstLinkpathDest },
+  } = app;
+  const override: string = metadata?.[metadataKeyEventPictureOverride];
 
-	const text = override || rawFileText;
-	const internalLinkMatch = text.match(/!?\[\[(?<src>[^|\]]*).*\]\]/); // Allow for size and CSS modifiers on the image
-	const externalPictureMatch = text.match(/!\[.*\]\((?<src>.*)\)/);
-	const directLinkMatch = text.match(
-		/(?<scr>^https?:\/\/.*\/.*\.(png|gif|webp|jpeg|jpg)\??.*$)/
-	);
-	let internalLinkIsBeforeExternal = true;
-	let matches: null | RegExpMatchArray;
+  const text = override || rawFileText;
+  const internalLinkMatch = text.match(/!?\[\[(?<src>[^|\]]*).*\]\]/); // Allow for size and CSS modifiers on the image
+  const externalPictureMatch = text.match(/!\[.*\]\((?<src>.*)\)/);
+  const directLinkMatch = text.match(
+    /(?<scr>^https?:\/\/.*\/.*\.(png|gif|webp|jpeg|jpg)\??.*$)/,
+  );
+  let internalLinkIsBeforeExternal = true;
+  let matches: null | RegExpMatchArray;
 
-	if (!internalLinkMatch && !externalPictureMatch && directLinkMatch)
-		return directLinkMatch?.groups?.src || null;
-	// Check if we got a double match
-	if (internalLinkMatch && externalPictureMatch) {
-		internalLinkIsBeforeExternal =
-			(internalLinkMatch.index ?? 0) < (externalPictureMatch.index ?? 0);
-		matches = internalLinkIsBeforeExternal
-			? internalLinkMatch
-			: externalPictureMatch;
-	} else {
-		matches = internalLinkMatch || externalPictureMatch;
-	}
+  if (!internalLinkMatch && !externalPictureMatch && directLinkMatch)
+    return directLinkMatch?.groups?.src || null;
+  // Check if we got a double match
+  if (internalLinkMatch && externalPictureMatch) {
+    internalLinkIsBeforeExternal =
+      (internalLinkMatch.index ?? 0) < (externalPictureMatch.index ?? 0);
+    matches = internalLinkIsBeforeExternal
+      ? internalLinkMatch
+      : externalPictureMatch;
+  } else {
+    matches = internalLinkMatch || externalPictureMatch;
+  }
 
-	if (!matches || !matches.groups || !matches.groups.src) return null;
+  if (!matches || !matches.groups || !matches.groups.src) return null;
 
-	if (internalLinkMatch && internalLinkIsBeforeExternal) {
-		// https://github.com/obsidianmd/obsidian-releases/pull/1882#issuecomment-1512952295
-		const file = getFirstLinkpathDest.bind(app.metadataCache)(
-			matches.groups.src,
-			currentFile.path
-		) satisfies TFile | null;
+  if (internalLinkMatch && internalLinkIsBeforeExternal) {
+    // https://github.com/obsidianmd/obsidian-releases/pull/1882#issuecomment-1512952295
+    const file = getFirstLinkpathDest.bind(app.metadataCache)(
+      matches.groups.src,
+      currentFile.path,
+    ) satisfies TFile | null;
 
-		if (file instanceof TFile) return vault.getResourcePath(file);
-		// Thanks https://github.com/joethei
-		return null;
-	} else return encodeURI(matches.groups.src);
+    if (file instanceof TFile) return vault.getResourcePath(file);
+    // Thanks https://github.com/joethei
+    return null;
+  } else return encodeURI(matches.groups.src);
 }
 
 /**
- * Given a metadata key it'll try to parse the associated data as an `AbstractDate` and return it
+ * Given a metadata key it'll try to parse the associated data as an `AbstractDate` and return it.
  *
  * @param param0 - Timeline generic context.
  * @param param0.cachedMetadata - The cached metadata from a note.
@@ -147,26 +145,26 @@ export function getImageUrlFromContextOrDocument(
  * @returns the abstract date representation or undefined.
  */
 export function getAbstractDateFromMetadata(
-	{ cachedMetadata, settings }: MarkdownCodeBlockTimelineProcessingContext,
-	key: string
+  { cachedMetadata, settings }: MarkdownCodeBlockTimelineProcessingContext,
+  key: string,
 ): AbstractDate | undefined {
-	const groupsToCheck = settings.dateParserGroupPriority.split(",");
-	const numberValue = getMetadataKey(cachedMetadata, key, "number");
+  const groupsToCheck = settings.dateParserGroupPriority.split(",");
+  const numberValue = getMetadataKey(cachedMetadata, key, "number");
 
-	if (isDefined(numberValue)) {
-		const additionalContentForNumberOnlydate = [
-			...Array(Math.max(0, groupsToCheck.length - 1)),
-		].map(() => 1);
+  if (isDefined(numberValue)) {
+    const additionalContentForNumberOnlydate = [
+      ...Array(Math.max(0, groupsToCheck.length - 1)),
+    ].map(() => 1);
 
-		return [numberValue, ...additionalContentForNumberOnlydate];
-	}
+    return [numberValue, ...additionalContentForNumberOnlydate];
+  }
 
-	const stringValue = getMetadataKey(cachedMetadata, key, "string");
+  const stringValue = getMetadataKey(cachedMetadata, key, "string");
 
-	if (!stringValue) return undefined;
-	return parseAbstractDate(
-		groupsToCheck,
-		stringValue,
-		settings.dateParserRegex
-	);
+  if (!stringValue) return undefined;
+  return parseAbstractDate(
+    groupsToCheck,
+    stringValue,
+    settings.dateParserRegex,
+  );
 }
