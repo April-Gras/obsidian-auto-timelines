@@ -11,16 +11,19 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [20.x]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        run: npm install --global corepack@latest && corepack enable pnpm
+
       - name: Install dependencies
-        run: npm ci
+        run: pnpm i
 
       - name: Prepare vitests
-        run: npm run prepare-vitest
+        run: pnpm run prepare-vitest
 
       - name: Run tests
-        run: npm run test
+        run: pnpm run test
