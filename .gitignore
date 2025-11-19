@@ -19,8 +19,6 @@ node_modules
 main.js
 # Styles are now built from source
 styles.css
-# Blank file now generated in before the build process, no need to push to git
-main.css
 # root main.css will be kept to preserve build
 
 # Exclude sourcemaps
