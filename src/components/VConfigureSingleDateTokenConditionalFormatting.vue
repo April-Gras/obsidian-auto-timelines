@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { computed } from "vue";
-
 import cloneDeep from "lodash.clonedeep";
 
 import VButton from "./VButton.vue";
@@ -105,7 +103,7 @@ function removeEvaluationAtIndexFromFormatAtIndex(
       <div class="v-grid-display">
         <div class="v-inline-flex-display">
           <VButton @click.native="removeFormattingAtIndex(index)">X</VButton>
-          <VHeader>{{ $tc("common.formatCount", index + 1) }}</VHeader>
+          <VHeader>{{ $t("common.formatCount", index + 1) }}</VHeader>
         </div>
         <div class="v-grid-display slim">
           <VCheckbox
