@@ -3,8 +3,8 @@
     "baseUrl": ".",
     "inlineSourceMap": true,
     "inlineSources": true,
-    "module": "ESNext",
-    "target": "ESNext",
+    "module": "ES2022",
+    "target": "Es2018",
     "allowJs": true,
     "noImplicitAny": true,
     "moduleResolution": "bundler",
@@ -18,7 +18,7 @@
       "~/*": ["./src/*"],
       "@/*": ["./tests/*"]
     },
-    "lib": ["DOM", "ESNext"],
+    "lib": ["DOM", "Es2018"],
     "types": ["vitest/globals", "@types/lodash.clonedeep"]
   },
   "include": ["**/*.ts", "**/*.vue"]

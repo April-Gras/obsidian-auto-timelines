@@ -7,7 +7,6 @@ import { defineConfig } from "eslint/config";
 export default defineConfig([
   eslint.configs.recommended,
   tseslint.configs.recommended,
-  // @ts-expect-error Idk why ?
   jsdoc({
     config: "flat/contents-typescript-error",
   }),
