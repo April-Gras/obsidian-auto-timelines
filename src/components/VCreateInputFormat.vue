@@ -11,6 +11,10 @@ const props = defineProps<{
   tokenConfigurations: DateTokenConfiguration[];
 }>();
 
+const emit = defineEmits<{
+  "update:modelValue": [payload: string];
+}>();
+
 const template = ref(
   props.tokenConfigurations.map((e) => `{${e.name}}`).join("-"),
 );
@@ -49,10 +53,6 @@ function updateParentWithRegex() {
 
 updateParentWithRegex();
 watch(template, updateParentWithRegex);
-
-const emit = defineEmits<{
-  "update:modelValue": [payload: string];
-}>();
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 {
   "name": "obsidian-auto-timelines",
-  "version": "0.13.9",
+  "version": "0.13.10",
   "description": "This Obsidian (https://obsidian.md) plugin aims to simplify creating and maintaining timelines in different a project",
   "main": "main.js",
   "type": "module",
@@ -24,14 +24,14 @@
     "@vitest/ui": "^4.0.10",
     "builtin-modules": "5.0.0",
     "eslint": "^9.39.1",
-    "eslint-plugin-jsdoc": "^61.2.1",
+    "eslint-plugin-jsdoc": "^61.3.0",
     "eslint-plugin-tsdoc": "^0.5.0",
     "happy-dom": "^18.0.1",
     "jiti": "^2.6.1",
     "lodash.clonedeep": "^4.5.0",
     "obsidian": "1.10.3",
     "prettier": "3.6.2",
-    "sass": "~1.94.1",
+    "sass": "~1.94.2",
     "ts-essentials": "^10.0.3",
     "tslib": "2.8.1",
     "typescript": "5.9.3",
@@ -48,5 +48,6 @@
     "vue-feather": "^2.0.0",
     "vue-i18n": "^11.1.12",
     "yaml": "^2.8.1"
-  }
+  },
+  "packageManager": "pnpm@10.22.0+sha512.bf049efe995b28f527fd2b41ae0474ce29186f7edcb3bf545087bd61fbbebb2bf75362d1307fda09c2d288e1e499787ac12d4fcb617a974718a6051f2eee741c"
 }
