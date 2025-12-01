@@ -46,7 +46,7 @@
     "vue": "3.5.24",
     "vue-collapsed": "^1.3.4",
     "vue-feather": "^2.0.0",
-    "vue-i18n": "^11.1.12",
+    "vue-i18n": "^11.2.2",
     "yaml": "^2.8.1"
   },
   "packageManager": "pnpm@10.22.0+sha512.bf049efe995b28f527fd2b41ae0474ce29186f7edcb3bf545087bd61fbbebb2bf75362d1307fda09c2d288e1e499787ac12d4fcb617a974718a6051f2eee741c"
