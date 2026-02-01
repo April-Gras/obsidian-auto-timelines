@@ -49,7 +49,7 @@
       "inlineEventEndOfBodyMarker": "End of event body token",
       "dateParserGroupPriority": "Date parser group priority",
       "dateParserRegex": "Date parser regex",
-      "fantasyCalendarPresetKeys": "Use fantady calendar keys",
+      "fantasyCalendarPresetKeys": "Use fantasy calendar keys",
       "metadataKeyEventBodyOverride": "Event body override",
       "metadataKeyEventTimelineTag": "Event timelines tags",
       "metadataKeyEventEndDate": "Event end key",
