@@ -9,7 +9,7 @@ describe.concurrent("Range Markup", () => {
   test("[renderSingleRange] - ko missing HTML element", () => {
     expect(() =>
       renderSingleRange(mockRange(), 0, mockHTMLElement()),
-    ).toThrowError();
+    ).toThrow();
   });
 
   test("[renderSingleRange] - ok", () => {
@@ -18,7 +18,9 @@ describe.concurrent("Range Markup", () => {
       relatedCardData: {
         context: {
           elements: {
+            // @ts-expect-error this is fine
             timelineRootElement: element,
+            // @ts-expect-error this is fine
             cardListRootElement: element,
           },
         },
@@ -37,19 +39,19 @@ describe.concurrent("Range Markup", () => {
     const keepValue = window.document.querySelector;
 
     // @ts-expect-error
-    expect(() => output.onclick()).not.toThrowError();
+    expect(() => output.onclick()).not.toThrow();
     window.document.querySelector = vi.fn(mockHTMLElement);
     // @ts-expect-error
-    expect(() => output.onclick()).not.toThrowError();
+    expect(() => output.onclick()).not.toThrow();
     // @ts-expect-error
-    expect(() => output.onmouseleave()).not.toThrowError();
+    expect(() => output.onmouseleave()).not.toThrow();
     // @ts-expect-error
-    expect(() => output.onmouseenter()).not.toThrowError();
+    expect(() => output.onmouseenter()).not.toThrow();
     window.document.querySelector = keepValue;
   });
 
   test("[renderRanges] - ko no end date", () => {
-    expect(() => renderRanges([mockRange()], mockHTMLElement())).toThrowError();
+    expect(() => renderRanges([mockRange()], mockHTMLElement())).toThrow();
   });
 
   test("[renderRanges] - ok and overflow", () => {
@@ -64,7 +66,9 @@ describe.concurrent("Range Markup", () => {
         },
         context: {
           elements: {
+            // @ts-expect-error this is fine
             timelineRootElement: element,
+            // @ts-expect-error this is fine
             cardListRootElement: element,
           },
         },
@@ -78,7 +82,9 @@ describe.concurrent("Range Markup", () => {
         },
         context: {
           elements: {
+            // @ts-expect-error this is fine
             timelineRootElement: element,
+            // @ts-expect-error this is fine
             cardListRootElement: element,
           },
         },
@@ -101,6 +107,6 @@ describe.concurrent("Range Markup", () => {
         ],
         mockHTMLElement(),
       ),
-    ).not.toThrowError();
+    ).not.toThrow();
   });
 });

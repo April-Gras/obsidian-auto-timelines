@@ -43,7 +43,7 @@ describe.concurrent("Card Markup", () => {
 
     expect(() =>
       createCardFromBuiltContext(context, cardContent),
-    ).not.toThrowError();
+    ).not.toThrow();
 
     // @ts-expect-error
     cardContent.body = undefined;
@@ -51,7 +51,7 @@ describe.concurrent("Card Markup", () => {
     cardContent.imageURL = undefined;
     expect(() =>
       createCardFromBuiltContext(context, cardContent),
-    ).not.toThrowError();
+    ).not.toThrow();
   });
 
   test("[formatBodyForCard] - ok has other timelines", () => {
@@ -108,12 +108,12 @@ describe.concurrent("Card Markup", () => {
 
     expect(() =>
       createCardFromBuiltContext(context, cardContent),
-    ).not.toThrowError();
+    ).not.toThrow();
 
     context.settings.stylizeDateInline = false;
 
     expect(() =>
       createCardFromBuiltContext(context, cardContent),
-    ).not.toThrowError();
+    ).not.toThrow();
   });
 });

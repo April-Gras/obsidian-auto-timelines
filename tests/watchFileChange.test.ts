@@ -12,8 +12,8 @@ describe.concurrent("Watch file change", () => {
     const targetCallback = vi.fn();
     const watcher = watchFiles(app, files, targetCallback);
 
-    expect(() => watchFiles(app, files, vi.fn(), watcher)).not.toThrowError();
-    expect(app.vault.on).toBeCalledTimes(2);
+    expect(() => watchFiles(app, files, vi.fn(), watcher)).not.toThrow();
+    expect(app.vault.on).toHaveBeenCalledTimes(2);
     expect((app.vault.on as Mock).mock.lastCall?.[1](files[0])).toBe(true);
     expect((app.vault.on as Mock).mock.lastCall?.[1](files[0])).toBe(true);
     expect(app.vault.on as Mock).toBeCalledWith(
@@ -28,7 +28,7 @@ describe.concurrent("Watch file change", () => {
     const otherFile = mockTFile();
 
     otherFile.path = "./otherPath";
-    expect(() => watchFiles(app, filesToWatch, vi.fn())).not.toThrowError();
+    expect(() => watchFiles(app, filesToWatch, vi.fn())).not.toThrow();
     expect((app.vault.on as Mock).mock.lastCall?.[1](otherFile)).toBe(false);
   });
 });

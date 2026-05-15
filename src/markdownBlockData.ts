@@ -102,6 +102,7 @@ function formatValueFromKey(
 function parseSingleLine(
   line: string,
 ): Pick<Partial<AutoTimelineSettings>, OverridableSettingKey> {
+  // @ts-expect-error named capture groups only being available in ES2018
   const reg = /((?<key>(\s|\d|[a-z])*):(?<value>.*))/i;
   const matches = line.match(reg);
 

@@ -1,3 +1,4 @@
+// @ts-expect-error no type def for css's
 import "./main.css";
 
 import { type EventRef, MarkdownPostProcessorContext, Plugin } from "obsidian";
@@ -20,11 +21,11 @@ import { watchFiles } from "./watchFileChange";
 import { TimelineMarkdownSuggester } from "./suggester";
 
 export default class AprilsAutomaticTimelinesPlugin extends Plugin {
-  settings: AutoTimelineSettings;
+  settings!: AutoTimelineSettings;
   /**
    * Native file watcher that triggers on file edit and re-renders timelines
    */
-  fileWatcher: EventRef | null;
+  fileWatcher!: EventRef | null;
 
   /**
    * The default onload method of a obsidian plugin. See the official documentation for more details.

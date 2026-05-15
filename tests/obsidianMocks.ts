@@ -223,6 +223,7 @@ export function mockVault(): Vault {
  */
 export function mockMarkdownCodeBlockTimelineProcessingContext(): MarkdownCodeBlockTimelineProcessingContext {
   const vault = mockVault();
+  // @ts-expect-error this is fine
   return mock<MarkdownCodeBlockTimelineProcessingContext>({
     app: {
       vault,
@@ -239,7 +240,9 @@ export function mockMarkdownCodeBlockTimelineProcessingContext(): MarkdownCodeBl
       vault,
     },
     elements: {
+      // @ts-expect-error this is fine
       cardListRootElement: mockHTMLElement(),
+      // @ts-expect-error this is fine
       timelineRootElement: mockHTMLElement(),
     },
     settings: SETTINGS_DEFAULT,

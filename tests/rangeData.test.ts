@@ -14,7 +14,7 @@ describe.concurrent("Range Data", () => {
   test("[findBoundaries] - ko no start", () => {
     expect(() =>
       findBoundaries([5], [mockCompleteCardContext()], mockHTMLElement(), 0),
-    ).toThrowError(
+    ).toThrow(
       "No first over found - Can't draw range since there are no other two start date to referrence it's position",
     );
   });
@@ -33,7 +33,7 @@ describe.concurrent("Range Data", () => {
         mockHTMLElement(),
         0,
       ),
-    ).toThrowError(
+    ).toThrow(
       "Could not find a firstLastUnderIndex, this means this function was called with un rangeable members",
     );
   });
@@ -62,7 +62,7 @@ describe.concurrent("Range Data", () => {
         mockHTMLElement(),
         0,
       ),
-    ).toThrowError("Missing child @ index 2 for element");
+    ).toThrow("Missing child @ index 2 for element");
   });
 
   test("[findBoundaries] - ok", () => {
@@ -91,9 +91,7 @@ describe.concurrent("Range Data", () => {
     ];
 
     element.children.item = vi.fn(mockHTMLElement);
-    expect(() =>
-      findBoundaries([5], collection, element, 0),
-    ).not.toThrowError();
+    expect(() => findBoundaries([5], collection, element, 0)).not.toThrow();
   });
 
   test("[findBoundaries] - should not offset start position", () => {
@@ -117,9 +115,7 @@ describe.concurrent("Range Data", () => {
     ];
 
     element.children.item = vi.fn(mockHTMLElement);
-    expect(() =>
-      findBoundaries([5], collection, element, 0),
-    ).not.toThrowError();
+    expect(() => findBoundaries([5], collection, element, 0)).not.toThrow();
   });
 
   test("[getInLerpValues] - ok", () => {
@@ -209,6 +205,7 @@ describe.concurrent("Range Data", () => {
         mockCompleteCardContext({
           context: {
             elements: {
+              // @ts-expect-error this is fine
               timelineRootElement: mockHTMLElement(),
             },
           },
@@ -223,7 +220,9 @@ describe.concurrent("Range Data", () => {
         mockCompleteCardContext({
           context: {
             elements: {
+              // @ts-expect-error this is fine
               timelineRootElement: mockHTMLElement(),
+              // @ts-expect-error this is fine
               cardListRootElement: mockHTMLElement(),
             },
           },
@@ -241,7 +240,9 @@ describe.concurrent("Range Data", () => {
         mockCompleteCardContext({
           context: {
             elements: {
+              // @ts-expect-error this is fine
               timelineRootElement: mockHTMLElement(),
+              // @ts-expect-error this is fine
               cardListRootElement: mockHTMLElement(),
             },
           },
@@ -263,7 +264,9 @@ describe.concurrent("Range Data", () => {
         mockCompleteCardContext({
           context: {
             elements: {
+              // @ts-expect-error this is fine
               timelineRootElement: element,
+              // @ts-expect-error this is fine
               cardListRootElement: element,
             },
           },
@@ -284,7 +287,9 @@ describe.concurrent("Range Data", () => {
         mockCompleteCardContext({
           context: {
             elements: {
+              // @ts-expect-error this is fine
               timelineRootElement: element,
+              // @ts-expect-error this is fine
               cardListRootElement: element,
             },
           },
