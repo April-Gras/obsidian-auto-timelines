@@ -47,7 +47,11 @@ export default defineConfig(({ mode }) => {
         input: {
           main: resolve(__dirname, "src/main.ts"),
         },
+        transform: {
+          target: "es2018",
+        },
         output: {
+          format: "cjs",
           entryFileNames: "main.js",
           assetFileNames: "styles.css",
         },
