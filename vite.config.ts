@@ -4,7 +4,6 @@ import { defineConfig, configDefaults } from "vitest/config";
 import Vue from "@vitejs/plugin-vue";
 import TsConfigPath from "vite-tsconfig-paths";
 
-// @ts-expect-error IDK some plugin not acting nice
 export default defineConfig(({ mode }) => {
   const prod = mode === "production";
 

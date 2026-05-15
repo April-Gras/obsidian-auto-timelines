@@ -16,8 +16,8 @@ describe.concurrent("Timeline Markup", () => {
     );
 
     expect(data.length).toBe(1);
-    expect(ObsidianAppMock.metadataCache.getFileCache).toBeCalledTimes(2);
-    expect(ObsidianAppMock.vault.getMarkdownFiles).toBeCalledTimes(1);
+    expect(ObsidianAppMock.metadataCache.getFileCache).toHaveBeenCalledTimes(2);
+    expect(ObsidianAppMock.vault.getMarkdownFiles).toHaveBeenCalledTimes(1);
     expect(data[0].settings).toBe(SETTINGS_DEFAULT);
     expectTypeOf(
       // @ts-expect-error a little agressive

@@ -8,264 +8,264 @@ If your plugin does not need CSS, delete this file.
 */
 
 .aat-root-container {
-	container-type: inline-size;
-	container-name: root;
+  container-type: inline-size;
+  container-name: root;
 }
 
 .aat-vertical-timeline {
-	--timelineCursorWidth: 96px;
+  --timelineCursorWidth: 96px;
 
-	display: grid;
-	gap: 8px;
-	grid-template-columns: auto var(--timelineCursorWidth);
+  display: grid;
+  gap: 8px;
+  grid-template-columns: auto var(--timelineCursorWidth);
 }
 
 .aat-timeline-root {
-	height: 100%;
-	width: 100%;
-	position: relative;
+  height: 100%;
+  width: 100%;
+  position: relative;
 }
 
 .aat-card-list-root {
-	display: grid;
-	gap: 24px;
-	grid-template-columns: 1fr;
-	position: relative;
-	container-type: inline-size;
-	container-name: cardList;
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1fr;
+  position: relative;
+  container-type: inline-size;
+  container-name: cardList;
 }
 
 .aat-card-text-wraper,
 a.internal-link.aat-card {
-	width: 100%;
-	display: grid;
-	gap: 16px;
+  width: 100%;
+  display: grid;
+  gap: 16px;
 }
 
 a.internal-link.aat-card {
-	transition: filter 150ms ease-in-out;
+  transition: filter 150ms ease-in-out;
 }
 
 .theme-dark {
-	--highlight-intensity: 150%;
+  --highlight-intensity: 150%;
 }
 
 .theme-light {
-	--highlight-intensity: 90%;
+  --highlight-intensity: 90%;
 }
 
 .internal-link.aat-card.aat-highlight-relative-card-to-range {
-	filter: brightness(var(--highlight-intensity));
+  filter: brightness(var(--highlight-intensity));
 }
 
 a.internal-link.aat-card.aat-card-has-image {
-	grid-template-columns: 120px 1fr;
+  grid-template-columns: 120px 1fr;
 }
 
 .aat-card-text-wraper {
-	padding: 16px;
+  padding: 16px;
 }
 
 a.internal-link.aat-card {
-	text-decoration: none !important;
-	background-color: var(--background-secondary);
-	border-radius: 8px;
-	box-shadow: var(--input-shadow);
+  text-decoration: none !important;
+  background-color: var(--background-secondary);
+  border-radius: 8px;
+  box-shadow: var(--input-shadow);
 
-	transition: all 150ms ease-in-out;
+  transition: all 150ms ease-in-out;
 }
 
 a.internal-link.aat-card:hover {
-	background-color: var(--background-secondary-alt);
-	box-shadow: var(--input-shadow-hover);
+  background-color: var(--background-secondary-alt);
+  box-shadow: var(--input-shadow-hover);
 }
 
 h2.aat-card-title {
-	margin: 0 !important;
-	color: var(--color-accent);
-	overflow: hidden;
-	-webkit-line-clamp: 1;
-	-webkit-box-orient: vertical;
-	display: -webkit-box;
+  margin: 0 !important;
+  color: var(--color-accent);
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
 }
 
 header.aat-card-head-wrap.inline {
-	display: flex;
-	gap: 16px;
-	justify-content: space-between;
-	align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: center;
 }
 
 a.aat-card > img.aat-card-image {
-	height: 100%;
-	width: 168px;
-	object-fit: cover;
-	margin: 0;
-	object-position: center;
-	border-radius: 8px;
-	box-shadow: var(--panel-shadow);
-	position: relative;
-	transform: scale(1.1);
+  height: 100%;
+  width: 168px;
+  object-fit: cover;
+  margin: 0;
+  object-position: center;
+  border-radius: 8px;
+  box-shadow: var(--panel-shadow);
+  position: relative;
+  transform: scale(1.1);
 }
 
 div.aat-card-body {
-	overflow: hidden;
-	-webkit-line-clamp: 3;
-	-webkit-box-orient: vertical;
-	display: -webkit-box;
-	margin: 0;
-	color: var(--text-normal);
-	height: fit-content;
+  overflow: hidden;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
+  margin: 0;
+  color: var(--text-normal);
+  height: fit-content;
 }
 
 h4.aat-card-start-date {
-	margin: 0 !important;
-	color: var(--color-muted);
-	font-size: smaller;
-	overflow: hidden;
-	-webkit-line-clamp: 1;
-	-webkit-box-orient: vertical;
-	display: -webkit-box;
+  margin: 0 !important;
+  color: var(--color-muted);
+  font-size: smaller;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  display: -webkit-box;
 }
 
 div.aat-range-element {
-	position: absolute;
-	width: 8px;
-	border-radius: 4px;
-	opacity: 0.75;
-	transition: opacity 150ms ease-in-out;
-	cursor: pointer;
+  position: absolute;
+  width: 8px;
+  border-radius: 4px;
+  opacity: 0.75;
+  transition: opacity 150ms ease-in-out;
+  cursor: pointer;
 }
 
 div.aat-range-element:hover {
-	opacity: 1;
+  opacity: 1;
 }
 
 @container cardList (max-width: 480px) {
-	a.internal-link.aat-card.aat-card-has-image {
-		grid-template-columns: 1fr !important;
-	}
+  a.internal-link.aat-card.aat-card-has-image {
+    grid-template-columns: 1fr !important;
+  }
 
-	a.aat-card > img.aat-card-image {
-		transform: none !important;
-		width: 100% !important;
-	}
+  a.aat-card > img.aat-card-image {
+    transform: none !important;
+    width: 100% !important;
+  }
 
-	header.aat-card-head-wrap {
-		display: grid !important;
-		grid-template-columns: 1fr !important;
-	}
+  header.aat-card-head-wrap {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
 }
 
 @container root (max-width: 320px) {
-	.aat-vertical-timeline {
-		grid-template-columns: 1fr !important;
-	}
+  .aat-vertical-timeline {
+    grid-template-columns: 1fr !important;
+  }
 
-	.aat-timeline-root {
-		display: none;
-	}
+  .aat-timeline-root {
+    display: none;
+  }
 }
 
 /** VUE COMPONENTS **/
 .v-grid-display,
 .v-grid-display-2 {
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: 24px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
 }
 
 .v-grid-display.slim,
 .v-grid-display-2.slim {
-	gap: 8px;
+  gap: 8px;
 }
 
 .v-grid-display.clickable,
 .v-grid-display-2.clickable {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 .v-grid-display-2 {
-	grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
 }
 
 .v-inline-flex-display {
-	display: flex;
-	gap: 8px;
-	align-items: center;
-	justify-content: start;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: start;
 }
 
 .v-input-wrap {
-	display: grid;
-	grid-template-columns: 1fr;
-	gap: 8px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
 }
 
 .v-input-wrap.v-checkbox {
-	/* 40 being the width of those little switch checkboxes */
-	grid-template-columns: auto 40px;
-	gap: 24px;
+  /* 40 being the width of those little switch checkboxes */
+  grid-template-columns: auto 40px;
+  gap: 24px;
 }
 
 .v-nav > ol {
-	display: flex;
-	gap: 24px;
-	width: 100%;
+  display: flex;
+  gap: 24px;
+  width: 100%;
 }
 
 .v-nav > ol {
-	padding: 0;
+  padding: 0;
 }
 
 .v-nav > ol > li {
-	list-style-type: none;
-	padding: 8px 16px;
-	padding-left: 0;
-	font-size: 20px;
-	font-weight: 600;
-	cursor: pointer;
-	border-bottom: 1px solid var(--color-base-30);
-	opacity: 0.8;
-	text-align: center;
-	transition: 150ms ease-in-out;
+  list-style-type: none;
+  padding: 8px 16px;
+  padding-left: 0;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 1px solid var(--color-base-30);
+  opacity: 0.8;
+  text-align: center;
+  transition: 150ms ease-in-out;
 }
 
 .v-nav > ol > li:hover:not(.v-nav-selected-route) {
-	opacity: 0.9;
+  opacity: 0.9;
 }
 
 .v-nav > ol > li.v-nav-selected-route {
-	opacity: 1;
-	color: var(--color-accent);
+  opacity: 1;
+  color: var(--color-accent);
 }
 
 .v-enter-active,
 .v-leave-active {
-	transition: opacity 0.15s ease-in-out;
+  transition: opacity 0.15s ease-in-out;
 }
 
 .v-enter-from,
 .v-leave-to {
-	opacity: 0;
+  opacity: 0;
 }
 
 .v-warning-block {
-	background-color: rgba(var(--color-yellow-rgb), 0.15);
-	border-radius: 8px;
-	margin: 0px;
-	padding: 16px 24px;
+  background-color: rgba(var(--color-yellow-rgb), 0.15);
+  border-radius: 8px;
+  margin: 0px;
+  padding: 16px 24px;
 }
 
 .v-warning-block > figcaption {
-	font-size: 20px;
-	font-weight: 600;
+  font-size: 20px;
+  font-weight: 600;
 }
 
 h2.v-header {
-	margin: 0px !important;
+  margin: 0px !important;
 }
 
 .v-pre-wrap {
-	white-space: pre-wrap;
+  white-space: pre-wrap;
 }

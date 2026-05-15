@@ -28,6 +28,7 @@ describe.concurrent("Inline Event Data", () => {
       context,
       cardData: { body },
     } = mockCompleteCardContext({
+      // @ts-expect-error this is fine
       context: mockMarkdownCodeBlockTimelineProcessingContext(),
       cardData: {
         body: "%%aat-inline-event\n%%\nsampletext",
@@ -44,6 +45,7 @@ describe.concurrent("Inline Event Data", () => {
       context,
       cardData: { body },
     } = mockCompleteCardContext({
+      // @ts-expect-error this is fine
       context: mockMarkdownCodeBlockTimelineProcessingContext(),
       cardData: {
         body: "nothing here",
@@ -60,6 +62,7 @@ describe.concurrent("Inline Event Data", () => {
       context,
       cardData: { body },
     } = mockCompleteCardContext({
+      // @ts-expect-error this is fine
       context: mockMarkdownCodeBlockTimelineProcessingContext(),
       cardData: {
         body: "'%%aat-inline-event\naat-event-start-date: 54\naat-event-end-date: true\naat-render-enabled: true\ntimelines: [nottimeline]\n%%",
@@ -76,6 +79,7 @@ describe.concurrent("Inline Event Data", () => {
       context,
       cardData: { body },
     } = mockCompleteCardContext({
+      // @ts-expect-error this is fine
       context: mockMarkdownCodeBlockTimelineProcessingContext(),
       cardData: {
         body: "'%%aat-inline-event\naat-event-start-date: 54\naat-event-end-date: true\naat-render-enabled: false\ntimelines: [nottimeline]\n%%",
@@ -92,6 +96,7 @@ describe.concurrent("Inline Event Data", () => {
       context,
       cardData: { body },
     } = mockCompleteCardContext({
+      // @ts-expect-error this is fine
       context: mockMarkdownCodeBlockTimelineProcessingContext(),
       cardData: {
         body: "'%%aat-inline-event\naat-event-start-date: 54\naat-event-end-date: true\naat-render-enabled: true\ntimelines: [timeline]\n%%",
@@ -125,6 +130,7 @@ describe.concurrent("Inline Event Data", () => {
       context,
       cardData: { body },
     } = mockCompleteCardContext({
+      // @ts-expect-error this is fine
       context: mockMarkdownCodeBlockTimelineProcessingContext(),
       cardData: {
         body: "<span data-name='nothing' />\n",
@@ -141,6 +147,7 @@ describe.concurrent("Inline Event Data", () => {
       context,
       cardData: { body },
     } = mockCompleteCardContext({
+      // @ts-expect-error this is fine
       context: mockMarkdownCodeBlockTimelineProcessingContext(),
       cardData: {
         body: "nothing here",
@@ -157,6 +164,7 @@ describe.concurrent("Inline Event Data", () => {
       context,
       cardData: { body },
     } = mockCompleteCardContext({
+      // @ts-expect-error this is fine
       context: mockMarkdownCodeBlockTimelineProcessingContext(),
       cardData: {
         body: "<span data-name='hehe' data-date='54' data-end='true' timelines='[nottimeline]' />",
@@ -173,6 +181,7 @@ describe.concurrent("Inline Event Data", () => {
       context,
       cardData: { body },
     } = mockCompleteCardContext({
+      // @ts-expect-error this is fine
       context: mockMarkdownCodeBlockTimelineProcessingContext(),
       cardData: {
         body: `<div
@@ -198,6 +207,7 @@ describe.concurrent("Inline Event Data", () => {
       context,
       cardData: { body },
     } = mockCompleteCardContext({
+      // @ts-expect-error this is fine
       context: mockMarkdownCodeBlockTimelineProcessingContext(),
       cardData: {
         body: `<div

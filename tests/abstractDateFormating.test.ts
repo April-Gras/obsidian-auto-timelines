@@ -27,9 +27,7 @@ describe.concurrent("Abstract Date Formatting", () => {
 
     settings.dateTokenConfiguration = [];
 
-    expect(() =>
-      formatAbstractDate(absctractDateMock, settings),
-    ).toThrowError();
+    expect(() => formatAbstractDate(absctractDateMock, settings)).toThrow();
   });
 
   test("[formatAbstractDate] - abstract date", () => {
@@ -77,7 +75,7 @@ describe.concurrent("Abstract Date Formatting", () => {
     configuration.type = "unvalid type";
     // @ts-expect-error
     configuration.dictionary = ["a", "b", "c", "d"];
-    expect(() => formatDateToken(2, configuration)).toThrowError();
+    expect(() => formatDateToken(2, configuration)).toThrow();
   });
 
   test("[applyConditionBasedFormatting] - ok skip formatting", () => {

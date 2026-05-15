@@ -20,14 +20,14 @@ describe.concurrent("Main", () => {
 
     expectTypeOf(plugin).toMatchTypeOf<AprilsAutomaticTimelinesPlugin>();
     let promise = plugin.loadSettings();
-    expect(() => promise).not.toThrowError();
+    expect(() => promise).not.toThrow();
 
     await promise;
     expect(plugin.loadData).toHaveBeenCalledOnce();
     expect(Object.keys(plugin.settings)).toContain("someKey");
 
     promise = plugin.saveSettings();
-    expect(() => promise).not.toThrowError();
+    expect(() => promise).not.toThrow();
     await promise;
     expect(plugin.saveData).toHaveBeenCalledOnce();
   });
@@ -61,10 +61,10 @@ describe.concurrent("Main", () => {
     const plugin = new AprilsAutomaticTimelinesPlugin(app, manifest);
     const spy = vi.spyOn(plugin, "run");
 
-    expect(() => plugin.onunload()).not.toThrowError();
+    expect(() => plugin.onunload()).not.toThrow();
 
     const promise = plugin.onload();
-    expect(() => promise).not.toThrowError();
+    expect(() => promise).not.toThrow();
 
     await promise;
     expect(plugin.registerMarkdownCodeBlockProcessor).toHaveBeenCalledOnce();
@@ -78,7 +78,7 @@ describe.concurrent("Main", () => {
       mock.lastCall?.[1]("timeline", mockHTMLElement(), {
         sourcePath: "sample",
       }),
-    ).not.toThrowError();
+    ).not.toThrow();
     expect(spy).toHaveBeenCalledOnce();
   });
 });

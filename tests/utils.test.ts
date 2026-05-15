@@ -121,9 +121,7 @@ describe.concurrent("Utils", () => {
       getChildAtIndexInHTMLElement(htmlElementMock, 0),
     ).not.toBeUndefined();
 
-    expect(() =>
-      getChildAtIndexInHTMLElement(htmlElementMock, 1),
-    ).toThrowError();
+    expect(() => getChildAtIndexInHTMLElement(htmlElementMock, 1)).toThrow();
   });
 
   test("[measureTime] - ok", () => {

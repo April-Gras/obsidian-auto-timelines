@@ -222,6 +222,7 @@ function getSuggestionType(
   line: string,
 ): SuggestionType {
   if (cursor.line === startOfMarkdownBlock + 1) return SuggestionType.TagToFind;
+  // @ts-expect-error named capture groups only being available in ES2018
   const reg = /((?<key>(\s|\d|[a-z])*):.*)/i;
   const key = line.match(reg)?.groups?.key;
 
