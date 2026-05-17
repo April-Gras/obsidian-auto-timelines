@@ -74,4 +74,8 @@ withDefaults(
 button.iconButton {
   width: 100%;
 }
+
+h4 {
+  margin: 0 !important;
+}
 </style>

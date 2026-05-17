@@ -7,7 +7,10 @@ import VApp from "~/views/App.vue";
 
 import type { App as ObsidianApp } from "obsidian";
 import type AprilsAutomaticTimelinesPlugin from "~/main";
-import type { AutoTimelineSettings, DateTokenConfiguration } from "./types";
+import {
+  type AutoTimelineSettings,
+  type DateTokenConfiguration,
+} from "./types";
 import type { App as VueApp } from "vue";
 import { createNumberDateTokenConfiguration } from "./utils";
 
@@ -75,7 +78,6 @@ export class TimelineSettingTab extends PluginSettingTab {
       template: "<VApp :model-value='modelValue' @update:model-value='save' />",
       setup: () => {
         const modelValue = ref(this.plugin.settings);
-
         return {
           modelValue,
           save: async (payload: Partial<AutoTimelineSettings>) => {
@@ -91,7 +93,8 @@ export class TimelineSettingTab extends PluginSettingTab {
       methods: {},
     });
 
-    this.vueApp.use(i18n).mount(this.containerEl);
+    this.vueApp.use(i18n);
+    this.vueApp.mount(this.containerEl);
   }
 
   hide() {

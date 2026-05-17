@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import builtins from "builtin-modules";
+import { builtinModules } from "node:module";
 import { defineConfig, configDefaults } from "vitest/config";
 import Vue from "@vitejs/plugin-vue";
 import TsConfigPath from "vite-tsconfig-paths";
@@ -28,8 +28,13 @@ export default defineConfig(({ mode }) => {
     },
     resolve: {
       alias: {
-        vue: "vue/dist/vue.esm-bundler.js",
+        vue: "vue/dist/vue.esm-browser.prod.js",
+        "vue-i18n": "vue-i18n/dist/vue-i18n.esm-browser.prod.js",
       },
+    },
+    define: {
+      __VUE_OPTIONS_API__: true,
+      __VUE_PROD_DEVTOOLS__: false,
     },
     build: {
       lib: {
@@ -47,29 +52,44 @@ export default defineConfig(({ mode }) => {
         input: {
           main: resolve(__dirname, "src/main.ts"),
         },
+        treeshake: true,
         transform: {
           target: "es2018",
         },
         output: {
-          format: "cjs",
+          format: "commonjs",
           entryFileNames: "main.js",
           assetFileNames: "styles.css",
         },
         external: [
           "obsidian",
           "electron",
+          "codemirror",
           "@codemirror/autocomplete",
+          "@codemirror/closebrackets",
           "@codemirror/collab",
           "@codemirror/commands",
+          "@codemirror/comment",
+          "@codemirror/fold",
+          "@codemirror/gutter",
+          "@codemirror/highlight",
+          "@codemirror/history",
           "@codemirror/language",
           "@codemirror/lint",
+          "@codemirror/matchbrackets",
+          "@codemirror/panel",
+          "@codemirror/rangeset",
+          "@codemirror/rectangular-selection",
           "@codemirror/search",
           "@codemirror/state",
+          "@codemirror/stream-parser",
+          "@codemirror/text",
+          "@codemirror/tooltip",
           "@codemirror/view",
           "@lezer/common",
-          "@lezer/highlight",
           "@lezer/lr",
-          ...builtins,
+          "@lezer/highlight",
+          ...builtinModules,
         ],
       },
     },
