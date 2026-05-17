@@ -23,6 +23,7 @@ vi.mock("vue", async () => {
         use: vi.fn(() => ({
           mount: vi.fn(),
         })),
+        mount: vi.fn(),
         unmount: vi.fn(),
       };
     }),

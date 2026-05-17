@@ -3,7 +3,7 @@ defineSlots<{
   default(props: {}): any;
 }>();
 
-withDefaults(defineProps<{ slim?: boolean; clickable?: false }>(), {
+withDefaults(defineProps<{ slim?: boolean; clickable?: boolean }>(), {
   slim: false,
   clickable: false,
 });
