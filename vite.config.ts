@@ -2,13 +2,12 @@ import { resolve } from "path";
 import { builtinModules } from "node:module";
 import { defineConfig, configDefaults } from "vitest/config";
 import Vue from "@vitejs/plugin-vue";
-import TsConfigPath from "vite-tsconfig-paths";
 
 export default defineConfig(({ mode }) => {
   const prod = mode === "production";
 
   return {
-    plugins: [Vue(), TsConfigPath()],
+    plugins: [Vue()],
     test: {
       globals: true,
       environment: "happy-dom",
@@ -27,6 +26,7 @@ export default defineConfig(({ mode }) => {
       },
     },
     resolve: {
+      tsconfigPaths: true,
       alias: {
         vue: "vue/dist/vue.esm-browser.prod.js",
         "vue-i18n": "vue-i18n/dist/vue-i18n.esm-browser.prod.js",

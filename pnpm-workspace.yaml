@@ -1,3 +1,13 @@
+allowBuilds:
+  "@parcel/watcher": true
+  core-js: true
+minimumReleaseAgeExclude:
+  - "@intlify/core-base@11.4.6"
+  - "@intlify/devtools-types@11.4.6"
+  - "@intlify/message-compiler@11.4.6"
+  - "@intlify/shared@11.4.6"
+  - happy-dom@20.10.6
+  - vue-i18n@11.4.6
 onlyBuiltDependencies:
   - "@parcel/watcher"
   - core-js

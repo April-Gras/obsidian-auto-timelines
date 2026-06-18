@@ -14,14 +14,14 @@
     "allowSyntheticDefaultImports": true,
     "paths": {
       "~/*": ["./src/*"],
-      "@/*": ["./tests/*"],
+      "@/*": ["./tests/*"]
     },
     "lib": ["DOM", "ES5", "ES6", "ES7"],
     "types": [
       "vitest/globals",
       "@types/lodash.clonedeep",
-      "@types/lodash.isequal",
-    ],
+      "@types/lodash.isequal"
+    ]
   },
-  "include": ["**/*.ts", "**/*.vue"],
+  "include": ["**/*.ts", "**/*.vue"]
 }
