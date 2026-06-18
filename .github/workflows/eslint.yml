@@ -32,7 +32,7 @@ jobs:
         run: npm install --global corepack@latest && corepack enable pnpm
 
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm approve-builds --all && pnpm i
 
       - name: Run ESLint
         run: pnpm eslint .
