@@ -81,6 +81,15 @@ describe.concurrent("Card Data", () => {
     expect(imageURL).toBeNull();
   });
 
+  test("[getImageUrlFromContextOrDocument] - ko plain wikilink is not an image", () => {
+    const imageURL = getImageUrlFromContextOrDocument(
+      "[[Some Note]]",
+      mockMarkdownCodeBlockTimelineProcessingContext(),
+    );
+
+    expect(imageURL).toBeNull();
+  });
+
   test("[getImageUrlFromContextOrDocument] - ok overrided", () => {
     const context = mockMarkdownCodeBlockTimelineProcessingContext();
 
