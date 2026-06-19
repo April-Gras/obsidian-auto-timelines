@@ -100,7 +100,7 @@ export function getImageUrlFromContextOrDocument(
 
   const text = override || rawFileText;
   // @ts-expect-error named capture groups only being available in ES2018
-  const internalLinkMatch = text.match(/!?\[\[(?<src>[^|\]]*).*\]\]/); // Allow for size and CSS modifiers on the image
+  const internalLinkMatch = text.match(/!\[\[(?<src>[^|\]]*).*\]\]/); // Allow for size and CSS modifiers on the image
   // @ts-expect-error named capture groups only being available in ES2018
   const externalPictureMatch = text.match(/!\[.*\]\((?<src>.*)\)/);
   const directLinkMatch = text.match(
