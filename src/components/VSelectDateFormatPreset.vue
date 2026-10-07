@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import isEqual from "lodash.isequal";
 
 import { allFormats } from "~/datePresets";
+import { isDeepEqual } from "~/utils";
 
 import VDisplayDatePreset from "./VDisplayDatePreset.vue";
 
@@ -30,7 +30,7 @@ const selectedPresetName = computed(() => {
         presetSettings.dateParserGroupPriority &&
       appSettings.applyAdditonalConditionFormatting ===
         presetSettings.applyAdditonalConditionFormatting &&
-      isEqual(
+      isDeepEqual(
         appSettings.dateTokenConfiguration,
         presetSettings.dateTokenConfiguration,
       )

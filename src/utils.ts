@@ -140,6 +140,29 @@ export function getChildAtIndexInHTMLElement(
 }
 
 /**
+ * Structural deep equality for plain data (primitives, arrays, plain objects).
+ *
+ * @param a - First value.
+ * @param b - Second value.
+ * @returns Whether both values are deeply equal.
+ */
+export function isDeepEqual(a: unknown, b: unknown): boolean {
+  if (Object.is(a, b)) return true;
+  if (typeof a !== "object" || typeof b !== "object" || !a || !b) return false;
+  if (Array.isArray(a) !== Array.isArray(b)) return false;
+  const keysA = Object.keys(a);
+  if (keysA.length !== Object.keys(b).length) return false;
+  return keysA.every(
+    (key) =>
+      Object.prototype.hasOwnProperty.call(b, key) &&
+      isDeepEqual(
+        (a as Record<string, unknown>)[key],
+        (b as Record<string, unknown>)[key],
+      ),
+  );
+}
+
+/**
  * Shorthand function to create an HTMLElement in a given HTMLElement.
  *
  * @param el - The root element.
@@ -158,7 +181,7 @@ export function createElementShort(
 
   if (classes instanceof Array) out.addClass(...classes);
   else if (classes) out.addClass(classes);
-  if (content !== undefined) out.innerHTML = content.toString();
+  if (content !== undefined) out.setText(content.toString());
   return out;
 }
 
