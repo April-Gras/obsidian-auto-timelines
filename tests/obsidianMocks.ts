@@ -105,7 +105,10 @@ vi.mock("obsidian", () => {
  */
 export function mockHTMLElement(): HTMLElement {
   // @ts-expect-error very agressive mock.
-  return mock<HTMLElement>({
+  const element: HTMLElement = mock<HTMLElement>({
+    setText: vi.fn((text: string | DocumentFragment) => {
+      element.textContent = text.toString();
+    }),
     children: {
       item: vi
         .fn((_: number) => null as Element | null)
@@ -135,6 +138,7 @@ export function mockHTMLElement(): HTMLElement {
       }),
     },
   });
+  return element;
 }
 
 /**

@@ -7,6 +7,7 @@ import {
 import {
   compareAbstractDates,
   createElementShort,
+  isDeepEqual,
   getChildAtIndexInHTMLElement,
   measureTime,
   inLerp,
@@ -110,8 +111,9 @@ describe.concurrent("Utils", () => {
       "sample content",
     );
 
-    expect(output.addClass).not.toHaveBeenCalledOnce();
-    expect(output.innerHTML).toBe("sample content");
+    expect(output.addClass).not.toHaveBeenCalled();
+    expect(output.setText).toHaveBeenCalledWith("sample content");
+    expect(output.textContent).toBe("sample content");
   });
 
   test("[getChildAtIndexInHTMLElement] - ok/ko", () => {
@@ -374,5 +376,14 @@ describe.concurrent("Utils", () => {
     expect(isOrderedSubArray(bigArray, ["*6", "*"])).toBe(true);
     expect(isOrderedSubArray(bigArray, ["*6", "*someotherText"])).toBe(false);
     expect(isOrderedSubArray(bigArray, ["*6", "*w*o*r", "8"])).toBe(true);
+  });
+
+  test("[isDeepEqual] - ok/ko", () => {
+    expect(isDeepEqual({ a: [1, { b: 2 }] }, { a: [1, { b: 2 }] })).toBe(true);
+    expect(isDeepEqual({ a: 1, b: 2 }, { b: 2, a: 1 })).toBe(true);
+    expect(isDeepEqual({ a: [1, { b: 2 }] }, { a: [1, { b: 3 }] })).toBe(false);
+    expect(isDeepEqual({ a: undefined }, { b: undefined })).toBe(false);
+    expect(isDeepEqual([1, 2], { 0: 1, 1: 2 })).toBe(false);
+    expect(isDeepEqual(null, {})).toBe(false);
   });
 });

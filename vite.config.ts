@@ -38,7 +38,7 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       lib: {
-        entry: resolve(__dirname, "src/main.ts"),
+        entry: resolve(import.meta.dirname, "src/main.ts"),
         name: "main",
         fileName: () => "main.js",
         formats: ["cjs"],
@@ -50,7 +50,7 @@ export default defineConfig(({ mode }) => {
       outDir: "",
       rollupOptions: {
         input: {
-          main: resolve(__dirname, "src/main.ts"),
+          main: resolve(import.meta.dirname, "src/main.ts"),
         },
         treeshake: true,
         transform: {

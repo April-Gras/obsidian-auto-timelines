@@ -19,8 +19,7 @@
     "lib": ["DOM", "ES5", "ES6", "ES7"],
     "types": [
       "vitest/globals",
-      "@types/lodash.clonedeep",
-      "@types/lodash.isequal"
+      "@types/lodash.clonedeep"
     ]
   },
   "include": ["**/*.ts", "**/*.vue"]
